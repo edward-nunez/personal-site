@@ -1,17 +1,43 @@
 {
-  "name": "portfolio",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "react": "^16.5.2",
-    "react-dom": "^16.5.2",
-    "react-scripts": "2.0.4"
+  "name": "frontend-react",
+  "version": "1.0.0",
+  "homepage": "https://edwardnunez.io",
+  "author": {
+    "name": "Edward Nunez",
+    "email": "edwardnnz@gmail.com",
+    "url": "https://linkedin.com/in/edwardnunez"
   },
+  "descripton": "",
+  "license": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dotRollen/edwardnunez.io"
+  },
+  "private": true,
+  "proxy": "http://localhost:3001/",
   "scripts": {
-    "start": "react-scripts start",
+    "dev": "react-scrips start",
+    "start": "serve -s build",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "heroku-postbuild": "npm run build"
+  },
+  "dependencies": {
+    "axios": "^0.16.2",
+    "lodash": "^4.17.11",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "react-redux": "^5.0.7",
+    "react-router-dom": "^4.1.2",
+    "react-scripts": "1.0.14",
+    "redux": "^4.0.0",
+    "redux-thunk": "^2.3.0",
+    "serve": "^10.0.2"
+  },
+  "engines": {
+    "node": "10.11.0",
+    "yarn": "1.9.4"
   },
   "eslintConfig": {
     "extends": "react-app"
