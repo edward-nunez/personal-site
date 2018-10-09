@@ -1,7 +1,9 @@
 import React from 'react';
 import Particles from 'react-particles-js';
 
-export const xParticles = () => {
+const background = '/images/bg_test.jpg'
+
+export const SnowFall = () => {
     return (
         <Particles
         params={{
@@ -72,6 +74,9 @@ export const xParticles = () => {
                 rotateY: 600
               }
             }
+          },
+          style: {
+            backgroundImage: `url(${background})`
           },
           interactivity: {
             detect_on: 'canvas',
