@@ -499,6 +499,16 @@ box-sizing: border-box;
     animation: blink linear infinite 2s;
 }
 
+.portfolio-title b{
+    font-family: 'Permanent Marker', cursive;
+    color: #fee;
+    text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em #ff38fb, 0 0 0.5em #ff38fb, 0 0 0.1em #ff38fb, 0 10px 3px #000;
+}
+
+.portfolio-title b span{
+    animation: blink linear infinite 2s;
+}
+
 @keyframes blink {
     78% {
         color: inherit;
