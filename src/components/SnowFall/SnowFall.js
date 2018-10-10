@@ -7,7 +7,7 @@ export const SnowFall = () => {
         params={{
           particles: {
             number: {
-              value: 600,
+              value: 125,
               density: {
                 enable: true,
                 value_area: 800
@@ -47,7 +47,7 @@ export const SnowFall = () => {
               }
             },
             line_linked: {
-              enable: true,
+              enable: false,
               distance: 20,
               color: '#ffffff',
               opacity: 0.4,
