@@ -109,7 +109,7 @@ export default class Home extends Component {
               </GeneralCard>
             </div>
             <div className='portfolio-blog__posts mdl-grid'>
-              <h1 className='portfolio-title'><b>Projects:</b></h1>
+              <h1 className='portfolio-title'><b>PROJECTS:</b></h1>
             </div>
             <div className='portfolio-blog__posts mdl-grid'>
               { projects.map( project => <ProjectCard {...project} />) }

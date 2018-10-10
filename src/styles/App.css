@@ -490,7 +490,7 @@ box-sizing: border-box;
 
 .my-title b{
     font-size: 30px;
-    font-family: 'Permanent Marker', cursive;
+    font-family: 'Nova Mono', monospace;
     color: #fee;
     text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em #ff38fb, 0 0 0.5em #ff38fb, 0 0 0.1em #ff38fb, 0 10px 3px #000;
 }
@@ -500,7 +500,7 @@ box-sizing: border-box;
 }
 
 .portfolio-title b{
-    font-family: 'Permanent Marker', cursive;
+    font-family: 'Nova Mono', monospace;
     color: #fee;
     text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em #38ffee, 0 0 0.5em #38ffee, 0 0 0.1em #38ffee, 0 10px 3px #000;
 }
