@@ -7,6 +7,7 @@
   "license": "ISC",
   "scripts": {
     "server": "node server.js",
+    "production": "forever start server.js",
     "client": "node scripts/start-client.js",
     "start": "concurrently \"nodemon server.js\" \"yarn run client \"",
     "build": "node scripts/build-client.js",
