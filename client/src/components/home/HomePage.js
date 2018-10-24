@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { ProjectCard } from '../../components/ProjectCard';
-import { GeneralCard } from '../../components/GeneralCard';
+import { Link } from 'react-router';
+import { ProjectCard } from '../../common/ProjectCard';
+import { GeneralCard } from '../../common/GeneralCard';
 
 const projects = [
   {
@@ -84,7 +85,7 @@ const projects = [
 
 ];
 
-export default class Home extends Component {
+class HomePage extends Component {
     render() {
         return (
           <React.Fragment>
@@ -118,3 +119,5 @@ export default class Home extends Component {
         );
     };
 }
+
+export default HomePage

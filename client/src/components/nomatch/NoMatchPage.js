@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 
-export default class NoMatch extends Component {
+class NoMatchPage extends Component {
     render() {
         return(
             <h1>404 not found</h1>
         );
     };
 }
+
+export default NoMatchPage
