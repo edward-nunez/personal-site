@@ -67,7 +67,6 @@ body .portfolio-blog {
     -webkit-align-items: flex-end;
         -ms-flex-align: end;
             align-items: flex-end;
-    cursor: pointer;
 }
 .portfolio-blog .mdl-card__media a,
 .portfolio-blog .mdl-card__title a {

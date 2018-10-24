@@ -8,78 +8,91 @@ const projects = [
     projectName: 'Project Clicky',
     language: 'Javascript',
     githubLink: 'https://github.com/dotRollen/clicky',
+    liveLink: 'https://dotrollen.github.io/clicky/',
     bgImage: '/images/projects/clicky.png'
   },
   {
     projectName: 'Project Scraper',
     language: 'Javascript',
     githubLink: 'https://github.com/dotRollen/scraper',
+    liveLink: 'https://limitless-escarpment-83542.herokuapp.com/',
     bgImage: '/images/projects/scraper.png'
   },
   {
     projectName: 'Project Crypto',
     language: 'Javascript',
     githubLink: 'https://github.com/dotRollen/crypto',
+    liveLink: '#',
     bgImage: '/images/projects/javascript.png'
   },
   {
     projectName: 'Project Burger',
     language: 'Javascript',
     githubLink: 'https://github.com/dotRollen/burger-sequel',
+    liveLink: '#',
     bgImage: '/images/projects/burger.png'
   },
   {
     projectName: 'Project Friend Finder',
     language: 'Javascript',
     githubLink: 'https://github.com/dotRollen/friend-finder',
+    liveLink: '#',
     bgImage: '/images/projects/friendfinder.png'
   },
   {
     projectName: 'Project bAmazon',
     language: 'Javascript',
     githubLink: 'https://github.com/dotRollen/cli-bamazon',
+    liveLink: '#',
     bgImage: '/images/projects/bamazon.png'
   },
   {
     projectName: 'Project Word Guess',
     language: 'Javascript',
     githubLink: 'https://github.com/dotRollen/word-guess-cli',
+    liveLink: '#',
     bgImage: '/images/projects/javascript.png'
   },
   {
     projectName: 'Project LIRI Bot',
     language: 'Javascript',
     githubLink: 'https://github.com/dotRollen/liri-bot',
+    liveLink: '#',
     bgImage: '/images/projects/javascript.png'
   },
   {
     projectName: 'Project SuperDens',
     language: 'Javascript',
     githubLink: 'https://github.com/TeamSEND/ProjectSuperDens',
+    liveLink: '#',
     bgImage: '/images/projects/superdens.png'
   },
   {
     projectName: 'Project Janken Joust',
     language: 'Javascript',
     githubLink: 'https://github.com/dotRollen/janken-joust',
+    liveLink: '#',
     bgImage: '/images/projects/jankenjoust.png'
   },
   {
     projectName: 'Project Giphy',
     language: 'Javascript',
     githubLink: 'https://github.com/dotRollen/giphy',
+    liveLink: '#',
     bgImage: '/images/projects/giphy.png'
   },
   {
     projectName: 'Project Trivia Game',
     language: 'Javascript',
     githubLink: 'https://github.com/dotRollen/trivia-game',
+    liveLink: '#',
     bgImage: '/images/projects/triviaGame.png'
   },
   {
     projectName: 'Project Hangman Game',
     language: 'Javascript',
     githubLink: 'https://github.com/dotRollen/Hangman-Game',
+    liveLink: '#',
     bgImage: '/images/projects/hangman.png'
   },
 
