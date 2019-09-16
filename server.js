@@ -37,7 +37,7 @@ const routes = require('./routes');
 
 app.use('/', routes());
 
-app.listen((process.env.NODE_PORT || 8080), () => {
+app.listen((process.env.NODE_PORT || 8080), '0.0.0.0', () => {
   console.log(
     `🌎  ==> API Server now listening on PORT ${process.env.PORT || 8080}!`,
   );
