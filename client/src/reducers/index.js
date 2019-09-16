@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
+import { connectRouter } from 'connected-react-router'
 import axiosCallsInProgress from './axiosStatusReducer';
 
-const rootReducer = combineReducers({
-  axiosCallsInProgress
+export default (history) => combineReducers({
+  axiosCallsInProgress,
+  router: connectRouter(history),
 })
-
-export default rootReducer;
