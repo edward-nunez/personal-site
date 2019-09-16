@@ -6,11 +6,12 @@
   "author": "dotRollen <edwardnnz@gmail.com>",
   "license": "ISC",
   "scripts": {
-    "server": "node server.js",
-    "production": "forever start server.js",
+    "start": "node server.js",
+    "production": "npx pm2 start server.js",
     "client": "node scripts/start-client.js",
-    "start": "concurrently \"nodemon server.js\" \"yarn run client \"",
+    "start-dev": "concurrently \"nodemon server.js\" \"yarn run client \"",
     "build": "node scripts/build-client.js",
+    "prune": "node scripts/yarn-prune.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "installDeps": "yarn && cd client && yarn",
     "heroku-postbuild": "cd client && yarn && yarn run build"
@@ -27,11 +28,13 @@
     "csurf": "^1.10.0",
     "dotenv": "^8.1.0",
     "express": "^4.17.1",
+    "forever": "^1.0.0",
     "fs": "^0.0.1-security",
     "helmet": "^3.21.0",
     "keygrip": "^1.1.0",
     "mongoose": "^5.7.1",
     "morgan": "^1.9.1",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "pm2": "^3.5.1"
   }
 }

@@ -116,9 +116,9 @@ class HomePage extends Component {
               </div>
               <div className="mdl-card__supporting-text mdl-color-text--white">
                 Hello! My name is Edward Nunez, I'm a Full Stack Developer full time and as hobby.
-                I have a diverse set of skills, ranging from UI/UX (React.js), backend (Python, Node.js and C++)
-                and all the way down to the database ( PostgreSQL, MongoDB, FireBase ). As well as infrastructure
-                automation on Linux servers.
+                I have a diverse set of skills, ranging from UI/UX, frontend frameworks (Angular, React.js), backend (Python, Node.js and Java)
+                and all the way down to the database ( MySQL, PostgreSQL, MongoDB, FireBase ). As well as infrastructure
+                automation for linux based microservice deployment, security and scaling.
               </div>
               </GeneralCard>
             </div>
