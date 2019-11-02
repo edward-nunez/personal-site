@@ -3,6 +3,7 @@
 import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import CopyWebpackPlugin from 'copy-webpack-plugin';
 import path from 'path';
 
 const GLOBALS = {
@@ -19,11 +20,11 @@ export default {
     },
   },
   devtool: 'source-map', // more info:https://webpack.js.org/guides/production/#source-mapping and https://webpack.js.org/configuration/devtool/
-  entry: path.resolve(__dirname, 'src/client/index'),
+  entry: path.resolve(__dirname, '../src/client/index'),
   target: 'web',
   mode: 'production',
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, '../src/server/public'),
     publicPath: '/',
     filename: '[name].[contenthash].js',
   },
@@ -57,6 +58,9 @@ export default {
       // To track JavaScript errors via TrackJS, sign up for a free trial at TrackJS.com and enter your token below.
       trackJSToken: '',
     }),
+    new CopyWebpackPlugin([
+      { from: path.resolve(__dirname, '../src/client/assets'), to: 'assets' },
+    ]),
   ],
   module: {
     rules: [
@@ -147,7 +151,7 @@ export default {
             loader: 'sass-loader',
             options: {
               sassOptions: {
-                includePaths: [path.resolve(__dirname, 'src/client')],
+                includePaths: [path.resolve(__dirname, '../src/client')],
               },
               sourceMap: true,
             },

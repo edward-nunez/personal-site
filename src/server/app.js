@@ -30,6 +30,6 @@ app.use(
 app.use(express.static(path.join(__dirname, './public')));
 
 // Routes
-app.use('/', allRoutes(passport));
+app.use('/', allRoutes());
 
 module.exports = app;
