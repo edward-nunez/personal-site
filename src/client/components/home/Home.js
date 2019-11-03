@@ -97,7 +97,7 @@ const projects = [
   },
 ];
 
-class HomePage extends Component {
+class Home extends Component {
   render() {
     return (
       <React.Fragment>

@@ -14,7 +14,11 @@
     "server": "nodemon src/server/bin/www",
     "client": "babel-node utils/srcServer.js",
     "build": "babel-node utils/build.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest -c ./config/jest.config.js --watch",
+    "test:ci": "jest -c ./config/jest.config.js",
+    "test:cover": "npm run test -- --coverage ",
+    "test:cover:CI": "npm run test:CI -- --coverage && cat ./coverage/lcov.info | node_modules/coveralls/bin/coveralls.js",
+    "open:cover": "npm run test:cover && open-cli ./coverage/lcov-report/index.html"
   },
   "engines": {
     "node": ">=8",

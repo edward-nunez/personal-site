@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { Route, Switch } from 'react-router';
 import { connect } from 'react-redux';
 
-import Home from '../components/home/HomePage';
-import NoMatch from '../components/nomatch/NoMatchPage';
+import Home from '../components/home/Home';
+import NoMatch from '../components/nomatch/NoMatch';
 
 class Routes extends Component {
   render() {
