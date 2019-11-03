@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import { ConnectedRouter } from 'connected-react-router';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { hot } from 'react-hot-loader';
 
 import Routes from '../routes';
