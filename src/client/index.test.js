@@ -1,18 +1,24 @@
 import React from 'react';
-import { render, unmountComponentAtNode } from 'react-dom';
+import { shallow } from 'enzyme';
 import { AppContainer } from 'react-hot-loader';
 
 import configureStore, { history } from './store/configureStore';
 import Root from './components/Root';
-
-const store = configureStore();
+import * as serviceWorker from './serviceWorker';
+import 'Styles/index.scss';
+import './favicon.ico';
 
 it('renders without crashing', () => {
-  render(
+  const store = configureStore();
+
+  const wrapper = shallow(
     <AppContainer>
       <Root store={store} history={history} />
     </AppContainer>,
-    document.createElement('root')
+    document.getElementById('root')
   );
-  unmountComponentAtNode(document.createElement('root'));
+
+  serviceWorker.unregister();
+
+  expect(wrapper).toMatchSnapshot();
 });

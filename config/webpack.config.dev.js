@@ -10,6 +10,8 @@ export default {
     // To support react-hot-loader
     alias: {
       'react-dom': '@hot-loader/react-dom',
+      Styles: path.resolve(__dirname, '../src/client/styles/'),
+      Assets: path.resolve(__dirname, '../src/client/assets/'),
     },
   },
   devtool: 'cheap-module-eval-source-map', // more info:https://webpack.js.org/guides/development/#using-source-maps and https://webpack.js.org/configuration/devtool/

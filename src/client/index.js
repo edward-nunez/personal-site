@@ -5,8 +5,8 @@ import { AppContainer } from 'react-hot-loader';
 import configureStore, { history } from './store/configureStore';
 import Root from './components/Root';
 import * as serviceWorker from './serviceWorker';
-import './styles/index.scss';
-require('./favicon.ico');
+import 'Styles/index.scss';
+import './favicon.ico';
 
 const store = configureStore();
 

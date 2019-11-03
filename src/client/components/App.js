@@ -4,7 +4,7 @@ import { hot } from 'react-hot-loader';
 
 import Routes from '../routes';
 import { SnowFall } from '../common/SnowFall';
-import '../styles/App.scss';
+import 'Styles/App.scss';
 
 class App extends Component {
   render() {

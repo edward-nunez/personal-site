@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
 import { ProjectCard } from '../../common/ProjectCard';
 import { GeneralCard } from '../../common/GeneralCard';
 

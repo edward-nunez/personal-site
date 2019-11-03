@@ -1,5 +1,8 @@
 // For a detailed explanation regarding each configuration property, visit:
 // https://jestjs.io/docs/en/configuration.html
+('use strict');
+
+const path = require('path');
 
 module.exports = {
   // All imported modules in your tests should be mocked automatically
@@ -27,9 +30,7 @@ module.exports = {
   coverageDirectory: 'coverage',
 
   // An array of regexp pattern strings used to skip coverage collection
-  // coveragePathIgnorePatterns: [
-  //   "/node_modules/"
-  // ],
+  coveragePathIgnorePatterns: ['/node_modules/'],
 
   // A list of reporter names that Jest uses when writing coverage reports
   // coverageReporters: [
@@ -100,9 +101,9 @@ module.exports = {
       testEnvironment: 'jsdom',
       setupFiles: ['./tests/enzyme.setup.js'],
       moduleNameMapper: {
-        '\\.(jpg|jpeg|png|svg|gif|eot|otf|webp|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$':
+        '\\.(jpg|jpeg|png|svg|gif|eot|otf|webp|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga|ico)$':
           '<rootDir>/tests/fileMock.js',
-        '\\.(css|less|scss|sass)': '<rootdir>/tests/styleMock.js',
+        '\\.(css|less|scss|sass)': '<rootDir>/tests/styleMock.js',
       },
       testMatch: ['<rootDir>/src/client/**/*.test.js'],
     },
@@ -129,12 +130,10 @@ module.exports = {
   // restoreMocks: false,
 
   // The root directory that Jest should scan for tests and modules within
-  // rootDir: null,
+  // rootDir: './',
 
   // A list of paths to directories that Jest should use to search for files in
-  // roots: [
-  //   "<rootDir>"
-  // ],
+  // roots: ['<rootDir>'],
 
   // Allows you to use a custom runner instead of Jest's default test runner
   // runner: "jest-runner",
