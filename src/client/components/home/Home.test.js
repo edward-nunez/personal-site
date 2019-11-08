@@ -4,7 +4,7 @@ import { shallow } from 'enzyme';
 import Home from './Home';
 
 it('renders header', () => {
-  const home = shallow(<Home />);
+  const wrapper = shallow(<Home />);
 
-  expect(home.find('h1').length).toBe(1);
+  expect(wrapper.find('h1').length).toBe(1);
 });

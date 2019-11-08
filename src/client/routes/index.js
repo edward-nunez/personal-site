@@ -11,7 +11,7 @@ class Routes extends Component {
       <React.Fragment>
         <Switch>
           <Route exact path="/" component={Home} />
-          <Route compomnent={NoMatch} />
+          <Route component={NoMatch} />
         </Switch>
       </React.Fragment>
     );
