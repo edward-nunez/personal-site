@@ -1,2 +1,0 @@
-export const BEGIN_AXIOS_CALL = 'BEGIN_AXIOS_CALL';
-export const AXIOS_CALL_ERROR = 'AXIOS_CALL_ERROR';
