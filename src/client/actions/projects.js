@@ -1,21 +1,12 @@
-import * as types from '../constants/actionTypes';
+import * as types from './types';
 
-export function saveFuelSavings(settings) {
-  return function(dispatch) {
-    return dispatch({
-      type: types.SAVE_FUEL_SAVINGS,
-      dateModified: getFormattedDateTime(),
-      settings,
-    });
-  };
-}
-
-export function calculateFuelSavings(settings, fieldName, value) {
-  return {
-    type: types.CALCULATE_FUEL_SAVINGS,
-    dateModified: getFormattedDateTime(),
-    settings,
-    fieldName,
-    value,
-  };
-}
+export const getProjects = () => dispatch => {
+  fetch('http://localhost:8000/api/v1/projects')
+    .then(res => res.json())
+    .then(projects =>
+      dispatch({
+        type: types.GET_PROJECTS,
+        payload: projects,
+      })
+    );
+};

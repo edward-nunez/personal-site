@@ -9,10 +9,8 @@ class App extends Component {
   render() {
     return (
       <React.Fragment>
-        <div className="portfolio-blog portfolio-blog--blogpost mdl-layout mdl-js-layout has-drawer is-upgraded">
-          <main className="mdl-layout__content">
-            <Routes />
-          </main>
+        <div>
+          <Routes />
         </div>
       </React.Fragment>
     );

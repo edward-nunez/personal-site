@@ -36,6 +36,7 @@ export default {
     new HtmlWebpackPlugin({
       // Create HTML file that includes references to bundled CSS and JS.
       template: path.resolve(__dirname, '../src/client/index.ejs'),
+      favicon: path.resolve(__dirname, '../src/client/favicon.ico'),
       minify: {
         removeComments: true,
         collapseWhitespace: true,
@@ -44,6 +45,10 @@ export default {
     }),
     new CopyWebpackPlugin([
       { from: path.resolve(__dirname, '../src/client/assets'), to: 'assets' },
+      {
+        from: path.resolve(__dirname, '../src/client/manifest.json'),
+        to: './',
+      },
     ]),
   ],
   module: {

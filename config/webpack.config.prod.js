@@ -4,6 +4,7 @@ import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
+import WorkboxWebpackPlugin from 'workbox-webpack-plugin';
 import path from 'path';
 
 const GLOBALS = {
@@ -17,6 +18,8 @@ export default {
     // To support react-hot-loader
     alias: {
       'react-dom': '@hot-loader/react-dom',
+      Styles: path.resolve(__dirname, '../src/client/styles/'),
+      Assets: path.resolve(__dirname, '../src/client/assets/'),
     },
   },
   devtool: 'source-map', // more info:https://webpack.js.org/guides/production/#source-mapping and https://webpack.js.org/configuration/devtool/
@@ -39,8 +42,8 @@ export default {
 
     // Generate HTML file that contains references to generated bundles. See here for how this works: https://github.com/ampedandwired/html-webpack-plugin#basic-usage
     new HtmlWebpackPlugin({
-      template: 'src/client/index.ejs',
-      favicon: 'src/client/favicon.ico',
+      template: path.resolve(__dirname, '../src/client/index.ejs'),
+      favicon: path.resolve(__dirname, '../src/client/favicon.ico'),
       minify: {
         removeComments: true,
         collapseWhitespace: true,
@@ -60,7 +63,26 @@ export default {
     }),
     new CopyWebpackPlugin([
       { from: path.resolve(__dirname, '../src/client/assets'), to: 'assets' },
+      {
+        from: path.resolve(__dirname, '../src/client/manifest.json'),
+        to: './',
+      },
     ]),
+    new WorkboxWebpackPlugin.GenerateSW({
+      clientsClaim: true,
+      exclude: [/\.map$/, /asset-manifest\.json$/],
+      importWorkboxFrom: 'cdn',
+      navigateFallback: '/index.html',
+      navigateFallbackBlacklist: [
+        // Exclude URLs starting with /_, as they're likely an API call
+        new RegExp('^/_'),
+        // Exclude any URLs whose last part seems to be a file extension
+        // as they're likely a resource and not a SPA route.
+        // URLs containing a "?" character won't be blacklisted as they're likely
+        // a route with query params (e.g. auth callbacks).
+        new RegExp('/[^/?]+\\.[^/]+$'),
+      ],
+    }),
   ],
   module: {
     rules: [
