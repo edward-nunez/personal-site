@@ -18,8 +18,10 @@ export default {
     // To support react-hot-loader
     alias: {
       'react-dom': '@hot-loader/react-dom',
+      Components: path.resolve(__dirname, '../src/client/components/'),
       Styles: path.resolve(__dirname, '../src/client/styles/'),
       Assets: path.resolve(__dirname, '../src/client/assets/'),
+      Common: path.resolve(__dirname, '../src/client/common/'),
     },
   },
   devtool: 'source-map', // more info:https://webpack.js.org/guides/production/#source-mapping and https://webpack.js.org/configuration/devtool/
