@@ -14,7 +14,7 @@
     "start": "concurrently  -k -r -s first \"npm run server\" \"npm run client\"",
     "server": "nodemon src/server/bin/www",
     "client": "babel-node utils/srcServer.js",
-    "build": "babel-node utils/build.js",
+    "build": "rimraf src/server/public && babel-node utils/build.js",
     "test": "jest --verbose --watch",
     "test:ci": "jest",
     "test:cover": "npm run test -- --coverage ",
