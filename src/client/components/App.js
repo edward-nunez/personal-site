@@ -1,20 +1,20 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { hot } from 'react-hot-loader';
 
 import Routes from '../routes';
+import Navigation from 'Common/Navigation';
 import 'Styles/App.scss';
 
-class App extends Component {
-  render() {
-    return (
-      <React.Fragment>
-        <div>
-          <Routes />
-        </div>
-      </React.Fragment>
-    );
-  }
+function App() {
+  return (
+    <React.Fragment>
+      <Navigation />
+      <section>
+        <Routes />
+      </section>
+    </React.Fragment>
+  );
 }
 
 App.propTypes = {
