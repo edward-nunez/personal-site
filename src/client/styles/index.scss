@@ -1,6 +1,6 @@
-@import '../assets/scss/bootstrap';
+// Bootstrap theme overrides
+$body-bg: #d2cdd8;
+$body-color: #655467;
 
-body {
-  background-color: #c6c5b9;
-  color: #393d3f;
-}
+// Include all of Bootstrap
+@import '../assets/scss/bootstrap';
