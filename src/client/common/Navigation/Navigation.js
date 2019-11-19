@@ -6,8 +6,8 @@ import 'Styles/Navigation.scss';
 export default function Navigation() {
   return (
     <nav
-      className="navbar navbar-light navbar-expand-lg navbar-fix-top"
-      style={{ backgroundColor: '#c6c5b9' }}
+      className="navbar navbar-expand-lg fixed-top"
+      style={{ backgroundColor: '#F3F3F3' }}
     >
       <div className="container">
         <Link to="/" className="navbar-brand">
@@ -25,7 +25,7 @@ export default function Navigation() {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav">
+          <ul className="navbar-nav ml-auto">
             <li className="nav-item ">
               <NavLink
                 className="nav-link underline-effect"
@@ -36,22 +36,26 @@ export default function Navigation() {
               </NavLink>
             </li>
             <li className="nav-item">
-              <NavLink className="nav-link" to="/blog" activeClassName="active">
+              <NavLink
+                className="nav-link underline-effect"
+                to="/blog"
+                activeClassName="active"
+              >
                 Blog
               </NavLink>
             </li>
             <li className="nav-item">
               <NavLink
-                className="nav-link"
+                className="nav-link underline-effect"
                 to="/about"
-                activeClassName="underline-active active"
+                activeClassName="active"
               >
                 About
               </NavLink>
             </li>
             <li className="nav-item">
               <NavLink
-                className="nav-link"
+                className="nav-link underline-effect"
                 to="/contact"
                 activeClassName="active"
               >
