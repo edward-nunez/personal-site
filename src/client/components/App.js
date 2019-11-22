@@ -5,20 +5,20 @@ import Routes from '../routes';
 import Navigation from 'Common/Navigation';
 import Banner from 'Common/Banner';
 import Footer from 'Common/Footer';
-import 'Styles/App.scss';
+import './App.style.scss';
 
 function App() {
   return (
     <React.Fragment>
-      <header className="header">
-        <Navigation path={window.location.pathname} />
+      <header>
+        <Navigation />
         <div className="container">
           <Banner />
         </div>
       </header>
-      <section className="content">
+      <main role="main">
         <Routes />
-      </section>
+      </main>
       <Footer />
     </React.Fragment>
   );

@@ -5,7 +5,7 @@ import { AppContainer } from 'react-hot-loader';
 import * as serviceWorker from './serviceWorker';
 import configureStore, { history } from './store/configureStore';
 import Root from './components/Root';
-import 'Styles/index.scss';
+import './index.style.scss';
 
 //
 import './favicon.ico';

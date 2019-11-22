@@ -1,12 +1,11 @@
 import React from 'react';
 
-import Intro from 'Common/Intro';
-import 'Styles/Home.scss';
+import './Home.style.scss';
 
 export default function Home() {
   return (
-    <React.Fragment>
-      <Intro />
-    </React.Fragment>
+    <div className="container">
+      <h1>placeholder</h1>
+    </div>
   );
 }
