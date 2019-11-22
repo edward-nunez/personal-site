@@ -1,17 +1,21 @@
 import React from 'react';
 import { NavLink, Link } from 'react-router-dom';
 
-import 'Styles/Navigation.scss';
+import './Navigation.style.scss';
 
 export default function Navigation() {
   return (
-    <nav
-      className="navbar navbar-expand-lg fixed-top"
-      style={{ backgroundColor: '#F3F3F3' }}
-    >
+    <nav className="navbar navbar-expand-lg">
       <div className="container">
         <Link to="/" className="navbar-brand">
-          Edward Nunez
+          <img
+            src="/assets/img/template/logo.svg"
+            width="30"
+            height="30"
+            alt=""
+            style={{ verticalAlign: 'middle' }}
+          ></img>
+          <span style={{ margin: '0px 20px' }}>E N</span>
         </Link>
         <button
           className="navbar-toggler"
@@ -26,7 +30,7 @@ export default function Navigation() {
         </button>
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav ml-auto">
-            <li className="nav-item ">
+            <li className="nav-item" style={{ margin: '0px 20px' }}>
               <NavLink
                 className="nav-link underline-effect"
                 to="/projects"
@@ -35,7 +39,7 @@ export default function Navigation() {
                 Projects
               </NavLink>
             </li>
-            <li className="nav-item">
+            <li className="nav-item" style={{ margin: '0px 20px' }}>
               <NavLink
                 className="nav-link underline-effect"
                 to="/blog"
@@ -44,7 +48,7 @@ export default function Navigation() {
                 Blog
               </NavLink>
             </li>
-            <li className="nav-item">
+            <li className="nav-item" style={{ margin: '0px 20px' }}>
               <NavLink
                 className="nav-link underline-effect"
                 to="/about"
@@ -53,7 +57,7 @@ export default function Navigation() {
                 About
               </NavLink>
             </li>
-            <li className="nav-item">
+            <li className="nav-item" style={{ margin: '0px 20px' }}>
               <NavLink
                 className="nav-link underline-effect"
                 to="/contact"
