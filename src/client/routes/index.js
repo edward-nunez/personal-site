@@ -7,7 +7,6 @@ import NoMatch from 'Components/NoMatch';
 import Projects from 'Components/Projects';
 import Blog from 'Components/Blog';
 import About from 'Components/About';
-import Contact from 'Components/Contact';
 
 class Routes extends Component {
   render() {
@@ -18,7 +17,6 @@ class Routes extends Component {
           <Route path="/projects" component={Projects} />
           <Route path="/blog" component={Blog} />
           <Route path="/about" component={About} />
-          <Route path="/contact" component={Contact} />
           <Route component={NoMatch} />
         </Switch>
       </React.Fragment>

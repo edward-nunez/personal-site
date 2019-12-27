@@ -5,3 +5,12 @@ $primary: #000;
 
 // Include all of Bootstrap
 @import './assets/scss/bootstrap';
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 430px; /* Margin bottom by footer height */
+}

@@ -1,5 +1,7 @@
 import React from 'react';
 import { NavLink, Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
 
 import './Navigation.style.scss';
 
@@ -15,7 +17,7 @@ export default function Navigation() {
             alt=""
             style={{ verticalAlign: 'middle' }}
           ></img>
-          <span style={{ margin: '0px 20px' }}>E N</span>
+          <span style={{ margin: '0px 20px' }}>EDWARD NUNEZ</span>
         </Link>
         <button
           className="navbar-toggler"
@@ -26,10 +28,23 @@ export default function Navigation() {
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
-          <span className="navbar-toggler-icon"></span>
+          <FontAwesomeIcon
+            icon={faBars}
+            className="social-icon"
+            style={{ color: '#000' }}
+          />
         </button>
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav ml-auto">
+            <li className="nav-item" style={{ margin: '0px 20px' }}>
+              <NavLink
+                className="nav-link underline-effect"
+                to="/"
+                activeClassName="active"
+              >
+                Home
+              </NavLink>
+            </li>
             <li className="nav-item" style={{ margin: '0px 20px' }}>
               <NavLink
                 className="nav-link underline-effect"
@@ -55,15 +70,6 @@ export default function Navigation() {
                 activeClassName="active"
               >
                 About
-              </NavLink>
-            </li>
-            <li className="nav-item" style={{ margin: '0px 20px' }}>
-              <NavLink
-                className="nav-link underline-effect"
-                to="/contact"
-                activeClassName="active"
-              >
-                Contact
               </NavLink>
             </li>
           </ul>
