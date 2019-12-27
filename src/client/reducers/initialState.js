@@ -1,3 +1,8 @@
 export default {
-  axiosCallsInProgress: 0
-}
+  projects: [],
+  projectsLoading: false,
+  projectsError: null,
+  project: {},
+  projectLoading: false,
+  projectError: null,
+};

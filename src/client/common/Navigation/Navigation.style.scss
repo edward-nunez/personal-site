@@ -1,0 +1,32 @@
+.underline-effect {
+  display: inline-block;
+  padding: 15px 20px;
+  position: relative;
+}
+.underline-active {
+  background: none repeat scroll 0 0 transparent;
+  bottom: 0;
+  content: '';
+  display: block;
+  height: 2px;
+  position: absolute;
+  background: #555467;
+  transition: width 0.3s ease 0s, left 0.3s ease 0s;
+  width: 100%;
+}
+.underline-effect:after {
+  background: none repeat scroll 0 0 transparent;
+  bottom: 0;
+  content: '';
+  display: block;
+  height: 2px;
+  left: 50%;
+  position: absolute;
+  background: #545567;
+  transition: width 0.3s ease 0s, left 0.3s ease 0s;
+  width: 0;
+}
+.underline-effect:hover:after {
+  width: 100%;
+  left: 0;
+}

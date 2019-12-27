@@ -10,8 +10,10 @@ export default {
     // To support react-hot-loader
     alias: {
       'react-dom': '@hot-loader/react-dom',
+      Components: path.resolve(__dirname, '../src/client/components/'),
       Styles: path.resolve(__dirname, '../src/client/styles/'),
       Assets: path.resolve(__dirname, '../src/client/assets/'),
+      Common: path.resolve(__dirname, '../src/client/common/'),
     },
   },
   devtool: 'cheap-module-eval-source-map', // more info:https://webpack.js.org/guides/development/#using-source-maps and https://webpack.js.org/configuration/devtool/
@@ -36,6 +38,7 @@ export default {
     new HtmlWebpackPlugin({
       // Create HTML file that includes references to bundled CSS and JS.
       template: path.resolve(__dirname, '../src/client/index.ejs'),
+      favicon: path.resolve(__dirname, '../src/client/favicon.ico'),
       minify: {
         removeComments: true,
         collapseWhitespace: true,
@@ -44,6 +47,10 @@ export default {
     }),
     new CopyWebpackPlugin([
       { from: path.resolve(__dirname, '../src/client/assets'), to: 'assets' },
+      {
+        from: path.resolve(__dirname, '../src/client/manifest.json'),
+        to: './',
+      },
     ]),
   ],
   module: {
