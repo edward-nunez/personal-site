@@ -3,3 +3,10 @@
   left: 0;
   right: 0;
 }
+
+/* Divider */
+hr.divider {
+  border-top: 2px solid rgb(201, 200, 200);
+  opacity: 0.3;
+  width: 95%;
+}

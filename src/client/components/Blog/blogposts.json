@@ -1,0 +1,173 @@
+[
+  {
+    "id": "abc121",
+    "author": {
+      "name": "Edward Nunez",
+      "email": "mail@edwardnunez.io"
+    },
+    "title": "Blog About JavaScript",
+    "titleImage": "./assets/img/template/stock-photo-1.jpg",
+    "body": "JavaScript Some quick example text to build on the card title and make up the bulk of the card's content. Some quick example text to build on the card title and make up the bulk of the card's content. Some quick example text to build on the card title and make up the bulk of the card's content.",
+    "createdAt": "2016-05-22T16:00:00Z",
+    "updatedAt": "2016-05-22T16:30:00Z",
+    "upvotes": 0,
+    "downvotes": 0,
+    "tags": ["javascript"],
+    "comments": [
+      {
+        "id": "",
+        "author": "",
+        "comment": "",
+        "likes": "",
+        "dislikes": "",
+        "replies": [
+          {
+            "id": "",
+            "author": "",
+            "comment": "",
+            "likes": "",
+            "dislikes": "",
+            "replies": [{}]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "abc122",
+    "author": {
+      "name": "Edward Nunez",
+      "email": "mail@edwardnunez.io"
+    },
+    "title": "Blog About Python",
+    "titleImage": "./assets/img/template/stock-photo-2.jpg",
+    "body": "Python Some quick example text to build on the card title and make up the bulk of the card's content. Some quick example text to build on the card title and make up the bulk of the card's content. Some quick example text to build on the card title and make up the bulk of the card's content.",
+    "createdAt": "2016-05-21T16:00:00Z",
+    "updatedAt": "2016-05-21T16:30:00Z",
+    "upvotes": 0,
+    "downvotes": 0,
+    "tags": ["python"],
+    "comments": [
+      {
+        "id": "",
+        "author": "",
+        "comment": "",
+        "likes": "",
+        "dislikes": "",
+        "replies": [
+          {
+            "id": "",
+            "author": "",
+            "comment": "",
+            "likes": "",
+            "dislikes": "",
+            "replies": [{}]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "abc123",
+    "author": {
+      "name": "Edward Nunez",
+      "email": "mail@edwardnunez.io"
+    },
+    "title": "Blog About React",
+    "titleImage": "./assets/img/template/stock-photo-3.jpg",
+    "body": "React Some quick example text to build on the card title and make up the bulk of the card's content. Some quick example text to build on the card title and make up the bulk of the card's content. Some quick example text to build on the card title and make up the bulk of the card's content.",
+    "createdAt": "2016-05-20T16:00:00Z",
+    "updatedAt": "2016-05-20T16:30:00Z",
+    "upvotes": 0,
+    "downvotes": 0,
+    "tags": ["react"],
+    "comments": [
+      {
+        "id": "",
+        "author": "",
+        "comment": "",
+        "likes": "",
+        "dislikes": "",
+        "replies": [
+          {
+            "id": "",
+            "author": "",
+            "comment": "",
+            "likes": "",
+            "dislikes": "",
+            "replies": [{}]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "abc124",
+    "author": {
+      "name": "Edward Nunez",
+      "email": "mail@edwardnunez.io"
+    },
+    "title": "Blog About C#",
+    "titleImage": "./assets/img/template/stock-photo-1.jpg",
+    "body": "C# Some quick example text to build on the card title and make up the bulk of the card's content. Some quick example text to build on the card title and make up the bulk of the card's content. Some quick example text to build on the card title and make up the bulk of the card's content.",
+    "createdAt": "2016-05-19T16:00:00Z",
+    "updatedAt": "2016-05-19T16:30:00Z",
+    "upvotes": 0,
+    "downvotes": 0,
+    "tags": ["c#"],
+    "comments": [
+      {
+        "id": "",
+        "author": "",
+        "comment": "",
+        "likes": "",
+        "dislikes": "",
+        "replies": [
+          {
+            "id": "",
+            "author": "",
+            "comment": "",
+            "likes": "",
+            "dislikes": "",
+            "replies": [{}]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "abc125",
+    "author": {
+      "avatar": "",
+      "name": "Edward Nunez",
+      "email": "mail@edwardnunez.io"
+    },
+    "title": "Blog About Docker",
+    "titleImage": "./assets/img/template/stock-photo-2.jpg",
+    "body": "Docker Some quick example text to build on the card title and make up the bulk of the card's content. Some quick example text to build on the card title and make up the bulk of the card's content. Some quick example text to build on the card title and make up the bulk of the card's content.",
+    "createdAt": "2016-05-18T16:00:00Z",
+    "updatedAt": "2016-05-18T16:30:00Z",
+    "upvotes": 0,
+    "downvotes": 0,
+    "tags": ["docker"],
+    "comments": [
+      {
+        "id": "",
+        "author": "",
+        "comment": "",
+        "likes": "",
+        "dislikes": "",
+        "replies": [
+          {
+            "id": "",
+            "author": "",
+            "comment": "",
+            "likes": "",
+            "dislikes": "",
+            "replies": [{}]
+          }
+        ]
+      }
+    ]
+  }
+]

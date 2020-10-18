@@ -6,8 +6,7 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import Home from '../components/Home';
 import NoMatch from '../components/NoMatch';
 import Projects from '../components/Projects';
-import Blog from '../components/Blog';
-import BlogPost from '../components/BlogPost';
+import { Blog, BlogPost } from '../components/Blog';
 import About from '../components/About';
 import Contact from '../components/Contact';
 
