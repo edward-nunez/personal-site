@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import moment from 'moment';
 
 import './BlogCard.style.scss';
 
@@ -46,20 +47,24 @@ export default function BlogCard(props) {
             <Link to={`/blog/${props.post.id}`} className="card-link">
               {props.post.title}
             </Link>
+            <h6 className="card-text" style={{ opacity: '65%' }}>
+              {props.post.subTitle}
+            </h6>
           </h5>
           <div
             className="card-subtitle mb-2 text-muted"
             style={{ fontSize: '14px' }}
           >
-            {new Date(props.post.createdAt).toDateString()}
-          </div>
-          <p className="card-text">{props.post.body}</p>
-          <p className="card-text">
+            {moment(props.post.createdAt).format('MMM DD, YYYY')}{' '}
             <small className="text-muted">
               Last updated {timeSince(props.post.updatedAt)} ago
             </small>
-          </p>
+          </div>
           <div className="tags">
+            <small className="text-muted">
+              Comments {props.post.comments.length}
+            </small>
+            {'  '}
             <small className="text-muted">Tags </small>
             {props.post.tags.map((tag, index) => (
               <a href="#" key={index} className="tag">

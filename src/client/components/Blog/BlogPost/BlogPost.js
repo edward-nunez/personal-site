@@ -30,10 +30,12 @@ export default function BlogPost(props) {
     <div className="container content">
       <div className="row" style={{ margin: '20px 0px' }}>
         <div className="col-12">
-          <h1>Blog Title</h1>
+          <h1>
+            Blog Title <h4 style={{ opacity: '65%' }}>Sub Title</h4>
+          </h1>
         </div>
         <div className="col-12">
-          <div className="card-subtitle mb-2 text-muted">December 27, 2019</div>
+          <div className="card-subtitle mb-2 text-muted">Dec 27, 2019</div>
         </div>
         <div className="col-12">
           <img
@@ -58,7 +60,6 @@ export default function BlogPost(props) {
           </a>
         </div>
         <div className="col-6 text-right">
-          <span className="font-weight-bold">Share:</span>{' '}
           <a
             className="social-link"
             rel="noopener noreferrer"
