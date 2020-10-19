@@ -2,8 +2,8 @@ import React from 'react';
 import { hot } from 'react-hot-loader';
 
 import Routes from '../routes';
-import Navigation from 'Common/Navigation';
-import Footer from 'Common/Footer';
+import Navigation from '../common/Navigation';
+import Footer from '../common/Footer';
 import './App.style.scss';
 
 function App() {

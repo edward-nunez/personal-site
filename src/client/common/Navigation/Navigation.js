@@ -36,40 +36,41 @@ export default function Navigation() {
         </button>
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav ml-auto">
-            <li className="nav-item" style={{ margin: '0px 20px' }}>
-              <NavLink
-                className="nav-link underline-effect"
-                to="/"
-                activeClassName="active"
-              >
+            <li className="nav-item link-spacing cl-effect-1">
+              <NavLink className="nav-link" to="/" activeClassName="active">
                 Home
               </NavLink>
             </li>
-            <li className="nav-item" style={{ margin: '0px 20px' }}>
+            <li className="nav-item link-spacing cl-effect-1">
               <NavLink
-                className="nav-link underline-effect"
+                className="nav-link"
                 to="/projects"
                 activeClassName="active"
               >
                 Projects
               </NavLink>
             </li>
-            <li className="nav-item" style={{ margin: '0px 20px' }}>
-              <NavLink
-                className="nav-link underline-effect"
-                to="/blog"
-                activeClassName="active"
-              >
+            <li className="nav-item link-spacing cl-effect-1" style={{}}>
+              <NavLink className="nav-link" to="/blog" activeClassName="active">
                 Blog
               </NavLink>
             </li>
-            <li className="nav-item" style={{ margin: '0px 20px' }}>
+            <li className="nav-item link-spacing cl-effect-1">
               <NavLink
-                className="nav-link underline-effect"
+                className="nav-link"
                 to="/about"
                 activeClassName="active"
               >
                 About
+              </NavLink>
+            </li>
+            <li className="nav-item link-spacing cl-effect-1">
+              <NavLink
+                className="nav-link"
+                to="/contact"
+                activeClassName="active"
+              >
+                Contact
               </NavLink>
             </li>
           </ul>

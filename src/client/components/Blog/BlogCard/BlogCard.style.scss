@@ -1,0 +1,21 @@
+// .tags {
+// }
+
+.tag {
+  color: #004080;
+  font-size: 14px;
+}
+
+.tag:hover {
+  text-decoration: none;
+  color: #000;
+}
+
+img.center-crop {
+  width: 100%;
+  height: 200px;
+}
+
+.center-crop {
+  object-fit: cover;
+}

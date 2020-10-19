@@ -1,0 +1,219 @@
+[
+  {
+    "id": "abc121",
+    "author": {
+      "name": "Edward Nunez",
+      "email": "mail@edwardnunez.io"
+    },
+    "title": "Blog About JavaScript",
+    "titleImage": "./assets/img/template/stock-photo-1.jpg",
+    "subTitle": "sub title 1",
+    "body": "JavaScript Some quick example text to build on the card title and make up the bulk of the card's content. Some quick example text to build on the card title and make up the bulk of the card's content. Some quick example text to build on the card title and make up the bulk of the card's content.",
+    "createdAt": "2016-05-22T16:00:00Z",
+    "updatedAt": "2016-05-22T16:30:00Z",
+    "upVotes": 0,
+    "downVotes": 0,
+    "tags": ["javascript"],
+    "comments": [
+      {
+        "id": "",
+        "author": "John Doe",
+        "createdAt": "2016-05-18T16:00:00Z",
+        "updatedAt": "2016-05-18T16:30:00Z",
+        "comment": "thsi is a test comment to Blog About JavaScript",
+        "upVotes": 0,
+        "downVotes": 1,
+        "replies": [
+          {
+            "id": "",
+            "author": "Jane Doe",
+            "createdAt": "2016-05-18T16:00:00Z",
+            "updatedAt": "2016-05-18T16:30:00Z",
+            "comment": "I HATE THIS COMMENT",
+            "upVotes": 0,
+            "downVotes": 0,
+            "replies": [{}]
+          }
+        ]
+      },
+
+      {
+        "id": "",
+        "author": "Sam Doe",
+        "createdAt": "2016-05-18T16:00:00Z",
+        "updatedAt": "2016-05-18T16:30:00Z",
+        "comment": "Nice article on JavaScript!",
+        "upVotes": 0,
+        "downVotes": 0,
+        "replies": [{}]
+      }
+    ]
+  },
+  {
+    "id": "abc122",
+    "author": {
+      "name": "Edward Nunez",
+      "email": "mail@edwardnunez.io"
+    },
+    "title": "Blog About Python",
+    "titleImage": "./assets/img/template/stock-photo-2.jpg",
+    "subTitle": "sub title 2",
+    "body": "Python Some quick example text to build on the card title and make up the bulk of the card's content. Some quick example text to build on the card title and make up the bulk of the card's content. Some quick example text to build on the card title and make up the bulk of the card's content.",
+    "createdAt": "2016-05-21T16:00:00Z",
+    "updatedAt": "2016-05-21T16:30:00Z",
+    "upVotes": 0,
+    "downVotes": 0,
+    "tags": ["python"],
+    "comments": [
+      {
+        "id": "",
+        "author": "John Doe",
+        "createdAt": "2016-05-18T16:00:00Z",
+        "updatedAt": "2016-05-18T16:30:00Z",
+        "comment": "thsi is a test comment to Blog About Python",
+        "upVotes": 1,
+        "downVotes": 0,
+        "replies": [
+          {
+            "id": "",
+            "author": "Jane Doe",
+            "createdAt": "2016-05-18T16:00:00Z",
+            "updatedAt": "2016-05-18T16:30:00Z",
+            "comment": "I LOVE THIS COMMENT",
+            "upVotes": 0,
+            "downVotes": 0,
+            "replies": [{}]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "abc123",
+    "author": {
+      "name": "Edward Nunez",
+      "email": "mail@edwardnunez.io"
+    },
+    "title": "Blog About React",
+    "titleImage": "./assets/img/template/stock-photo-3.jpg",
+    "subTitle": "sub title 3",
+    "body": "React Some quick example text to build on the card title and make up the bulk of the card's content. Some quick example text to build on the card title and make up the bulk of the card's content. Some quick example text to build on the card title and make up the bulk of the card's content.",
+    "createdAt": "2016-05-20T16:00:00Z",
+    "updatedAt": "2016-05-20T16:30:00Z",
+    "upVotes": 0,
+    "downVotes": 0,
+    "tags": ["react"],
+    "comments": [
+      {
+        "id": "",
+        "author": "John Doe",
+        "createdAt": "2016-05-18T16:00:00Z",
+        "updatedAt": "2016-05-18T16:30:00Z",
+        "comment": "thsi is a test comment to Blog About React",
+        "upVotes": 0,
+        "downVotes": 0,
+        "replies": [
+          {
+            "id": "",
+            "author": "Jane Doe",
+            "createdAt": "2016-05-18T16:00:00Z",
+            "updatedAt": "2016-05-18T16:30:00Z",
+            "comment": "I don't know how to feel about this comment",
+            "upVotes": 0,
+            "downVotes": 0,
+            "replies": [{}]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "abc124",
+    "author": {
+      "name": "Edward Nunez",
+      "email": "mail@edwardnunez.io"
+    },
+    "title": "Blog About C#",
+    "titleImage": "./assets/img/template/stock-photo-1.jpg",
+    "subTitle": "sub title 4",
+    "body": "C# Some quick example text to build on the card title and make up the bulk of the card's content. Some quick example text to build on the card title and make up the bulk of the card's content. Some quick example text to build on the card title and make up the bulk of the card's content.",
+    "createdAt": "2016-05-19T16:00:00Z",
+    "updatedAt": "2016-05-19T16:30:00Z",
+    "upVotes": 0,
+    "downVotes": 0,
+    "tags": ["c-sharp"],
+    "comments": [
+      {
+        "id": "",
+        "author": "John Doe",
+        "createdAt": "2016-05-18T16:00:00Z",
+        "updatedAt": "2016-05-18T16:30:00Z",
+        "comment": "thsi is a test comment to Blog About C#",
+        "upVotes": 1,
+        "downVotes": 1,
+        "replies": [
+          {
+            "id": "",
+            "author": "Jane Doe",
+            "createdAt": "2016-05-18T16:00:00Z",
+            "updatedAt": "2016-05-18T16:30:00Z",
+            "comment": "I like this!",
+            "upVotes": 0,
+            "downVotes": 0,
+            "replies": [{}]
+          },
+          {
+            "id": "",
+            "author": "Sam Doe",
+            "createdAt": "2016-05-18T16:00:00Z",
+            "updatedAt": "2016-05-18T16:30:00Z",
+            "comment": "I don't like this!",
+            "upVotes": 0,
+            "downVotes": 0,
+            "replies": [{}]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "abc125",
+    "author": {
+      "avatar": "",
+      "name": "Edward Nunez",
+      "email": "mail@edwardnunez.io"
+    },
+    "title": "Blog About Docker",
+    "titleImage": "./assets/img/template/stock-photo-2.jpg",
+    "subTitle": "sub title 5",
+    "body": "Docker Some quick example text to build on the card title and make up the bulk of the card's content. Some quick example text to build on the card title and make up the bulk of the card's content. Some quick example text to build on the card title and make up the bulk of the card's content.",
+    "createdAt": "2016-05-18T16:00:00Z",
+    "updatedAt": "2016-05-18T16:30:00Z",
+    "upVotes": 0,
+    "downVotes": 0,
+    "tags": ["docker"],
+    "comments": [
+      {
+        "id": "",
+        "author": "John Doe",
+        "createdAt": "2016-05-18T16:00:00Z",
+        "updatedAt": "2016-05-18T16:30:00Z",
+        "comment": "thsi is a test comment to Blog About Docker",
+        "upVotes": 0,
+        "downVotes": 0,
+        "replies": [
+          {
+            "id": "",
+            "author": "Jane Doe",
+            "createdAt": "2016-05-18T16:00:00Z",
+            "updatedAt": "2016-05-18T16:30:00Z",
+            "comment": "",
+            "upVotes": 0,
+            "downVotes": 0,
+            "replies": [{}]
+          }
+        ]
+      }
+    ]
+  }
+]
