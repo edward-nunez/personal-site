@@ -5,9 +5,17 @@ import {
   faLinkedinIn,
   faFacebook,
 } from '@fortawesome/free-brands-svg-icons';
-import { faShareAlt } from '@fortawesome/free-solid-svg-icons';
+import {
+  faShareAlt,
+  faHeartBroken,
+  faHeart,
+} from '@fortawesome/free-solid-svg-icons';
+import { faBookmark } from '@fortawesome/free-regular-svg-icons';
 
 import './BlogPost.style.scss';
+import CommentCard from '../../../common/CommentCard';
+
+import blogPosts from '../blogposts.json';
 
 export default function BlogPost(props) {
   const recaptchaRef = React.createRef();
@@ -54,10 +62,9 @@ export default function BlogPost(props) {
           </p>
         </div>
         <div className="col-6">
-          <small className="text-muted">Tags </small>
-          <a href="#" className="tag">
-            #JavaScript
-          </a>
+          <FontAwesomeIcon icon={faHeart} className="social-icon" /> 0{' '}
+          <FontAwesomeIcon icon={faHeartBroken} className="social-icon" /> 0{' '}
+          <FontAwesomeIcon icon={faBookmark} className="social-icon" />{' '}
         </div>
         <div className="col-6 text-right">
           <a
@@ -93,8 +100,40 @@ export default function BlogPost(props) {
             <FontAwesomeIcon icon={faFacebook} className="social-icon" />
           </a>
         </div>
+        <div className="col-6">
+          <small className="text-muted">Tags </small>
+          <a href="#" className="tag">
+            #JavaScript
+          </a>
+        </div>
         <div className="col-12">
           <hr className="divider"></hr>
+        </div>
+        <div className="col-12">
+          <div className="input-group">
+            <textarea
+              className="form-control"
+              aria-label="With textarea"
+              style={{ width: '100%', height: '100px' }}
+            ></textarea>
+          </div>
+          <div style={{ marginTop: '5px' }}>
+            <button type="button" className="btn btn-dark">
+              Comment
+            </button>{' '}
+            <button
+              type="button"
+              className="btn btn-outline-dark"
+              style={{ border: 'none' }}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+        <div className="col-12 row">
+          {blogPosts[0].comments.map(comment => (
+            <CommentCard key={comment.id} data={comment} />
+          ))}
         </div>
       </div>
     </div>
