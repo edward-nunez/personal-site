@@ -16,7 +16,7 @@
     "tags": ["javascript"],
     "comments": [
       {
-        "id": "",
+        "id": "12",
         "author": "John Doe",
         "createdAt": "2016-05-18T16:00:00Z",
         "updatedAt": "2016-05-18T16:30:00Z",
@@ -25,7 +25,7 @@
         "downVotes": 1,
         "replies": [
           {
-            "id": "",
+            "id": "11",
             "author": "Jane Doe",
             "createdAt": "2016-05-18T16:00:00Z",
             "updatedAt": "2016-05-18T16:30:00Z",
@@ -36,9 +36,8 @@
           }
         ]
       },
-
       {
-        "id": "",
+        "id": "10",
         "author": "Sam Doe",
         "createdAt": "2016-05-18T16:00:00Z",
         "updatedAt": "2016-05-18T16:30:00Z",
@@ -66,7 +65,7 @@
     "tags": ["python"],
     "comments": [
       {
-        "id": "",
+        "id": "9",
         "author": "John Doe",
         "createdAt": "2016-05-18T16:00:00Z",
         "updatedAt": "2016-05-18T16:30:00Z",
@@ -75,7 +74,7 @@
         "downVotes": 0,
         "replies": [
           {
-            "id": "",
+            "id": "8",
             "author": "Jane Doe",
             "createdAt": "2016-05-18T16:00:00Z",
             "updatedAt": "2016-05-18T16:30:00Z",
@@ -105,7 +104,7 @@
     "tags": ["react"],
     "comments": [
       {
-        "id": "",
+        "id": "7",
         "author": "John Doe",
         "createdAt": "2016-05-18T16:00:00Z",
         "updatedAt": "2016-05-18T16:30:00Z",
@@ -114,7 +113,7 @@
         "downVotes": 0,
         "replies": [
           {
-            "id": "",
+            "id": "6",
             "author": "Jane Doe",
             "createdAt": "2016-05-18T16:00:00Z",
             "updatedAt": "2016-05-18T16:30:00Z",
@@ -144,7 +143,7 @@
     "tags": ["c-sharp"],
     "comments": [
       {
-        "id": "",
+        "id": "5",
         "author": "John Doe",
         "createdAt": "2016-05-18T16:00:00Z",
         "updatedAt": "2016-05-18T16:30:00Z",
@@ -153,7 +152,7 @@
         "downVotes": 1,
         "replies": [
           {
-            "id": "",
+            "id": "4",
             "author": "Jane Doe",
             "createdAt": "2016-05-18T16:00:00Z",
             "updatedAt": "2016-05-18T16:30:00Z",
@@ -163,7 +162,7 @@
             "replies": [{}]
           },
           {
-            "id": "",
+            "id": "3",
             "author": "Sam Doe",
             "createdAt": "2016-05-18T16:00:00Z",
             "updatedAt": "2016-05-18T16:30:00Z",
@@ -194,7 +193,7 @@
     "tags": ["docker"],
     "comments": [
       {
-        "id": "",
+        "id": "1",
         "author": "John Doe",
         "createdAt": "2016-05-18T16:00:00Z",
         "updatedAt": "2016-05-18T16:30:00Z",
@@ -203,7 +202,7 @@
         "downVotes": 0,
         "replies": [
           {
-            "id": "",
+            "id": "2",
             "author": "Jane Doe",
             "createdAt": "2016-05-18T16:00:00Z",
             "updatedAt": "2016-05-18T16:30:00Z",

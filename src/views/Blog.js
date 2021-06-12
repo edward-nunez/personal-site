@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import BlogCard from "./BlogCard";
-import "../../App.style.scss";
+import BlogCard from "../components/elements/BlogCard";
 
 import blogPosts from "./blogposts.json";
 
@@ -41,7 +40,7 @@ export default function Blog() {
   // }
 
   return (
-    <div className="container content">
+    <>
       <div className="row">
         {blogPosts.map((post) => (
           <BlogCard key={post.id} post={post} />
@@ -77,6 +76,6 @@ export default function Blog() {
           </ul>
         </nav>
       </div>
-    </div>
+    </>
   );
 }

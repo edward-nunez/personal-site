@@ -1,21 +1,17 @@
 import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faTwitter,
-  faLinkedinIn,
-  faFacebook,
-} from "@fortawesome/free-brands-svg-icons";
-import {
-  faShareAlt,
-  faHeartBroken,
-  faHeart,
-} from "@fortawesome/free-solid-svg-icons";
-import { faBookmark } from "@fortawesome/free-regular-svg-icons";
+  HandThumbsUp,
+  HandThumbsDown,
+  Bookmark,
+  ShareFill,
+  Twitter,
+  Linkedin,
+} from "react-bootstrap-icons";
 
 import "./BlogPost.style.scss";
-import CommentCard from "../../../components/elements/CommentCard";
+import CommentCard from "../components/elements/CommentCard";
 
-import blogPosts from "../blogposts.json";
+import blogPosts from "./blogposts.json";
 
 export default function BlogPost(props) {
   // const recaptchaRef = React.createRef();
@@ -38,9 +34,7 @@ export default function BlogPost(props) {
     <div className="container content">
       <div className="row" style={{ margin: "20px 0px" }}>
         <div className="col-12">
-          <h1>
-            Blog Title <h4 style={{ opacity: "65%" }}>Sub Title</h4>
-          </h1>
+          <h1>Blog Title Sub Title</h1>
         </div>
         <div className="col-12">
           <div className="card-subtitle mb-2 text-muted">Dec 27, 2019</div>
@@ -62,9 +56,9 @@ export default function BlogPost(props) {
           </p>
         </div>
         <div className="col-6">
-          <FontAwesomeIcon icon={faHeart} className="social-icon" /> 0{" "}
-          <FontAwesomeIcon icon={faHeartBroken} className="social-icon" /> 0{" "}
-          <FontAwesomeIcon icon={faBookmark} className="social-icon" />{" "}
+          <HandThumbsUp className="social-icon" /> 0{" "}
+          <HandThumbsDown className="social-icon" /> 0{" "}
+          <Bookmark className="social-icon" />{" "}
         </div>
         <div className="col-6 text-right">
           <a
@@ -73,7 +67,7 @@ export default function BlogPost(props) {
             href="/#"
             target="_blank"
           >
-            <FontAwesomeIcon icon={faShareAlt} className="social-icon" />
+            <ShareFill className="social-icon" />
           </a>
           <a
             className="social-link"
@@ -81,7 +75,7 @@ export default function BlogPost(props) {
             href="/#"
             target="_blank"
           >
-            <FontAwesomeIcon icon={faTwitter} className="social-icon" />
+            <Twitter className="social-icon" />
           </a>
           <a
             className="social-link"
@@ -89,15 +83,7 @@ export default function BlogPost(props) {
             href="/#"
             target="_blank"
           >
-            <FontAwesomeIcon icon={faLinkedinIn} className="social-icon" />
-          </a>
-          <a
-            className="social-link"
-            rel="noopener noreferrer"
-            href="/#"
-            target="_blank"
-          >
-            <FontAwesomeIcon icon={faFacebook} className="social-icon" />
+            <Linkedin className="social-icon" />
           </a>
         </div>
         <div className="col-6">
