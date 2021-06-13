@@ -6,6 +6,7 @@ $primary: #000;
 
 // Import Bootstrap and its default variables
 @import "~bootstrap/scss/bootstrap.scss";
+@import "./Header.style.scss";
 
 html {
   position: relative;
@@ -25,4 +26,14 @@ hr.divider {
   border-top: 2px solid rgb(201, 200, 200);
   opacity: 0.3;
   width: 95%;
+}
+
+.footer {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: rgb(235, 195, 64);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
 }

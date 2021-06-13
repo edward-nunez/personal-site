@@ -1,13 +1,12 @@
 import React from "react";
 import { NavLink, Link } from "react-router-dom";
 
-import "./Header.style.scss";
 import logo from "../../../assets/img/template/logo.svg";
 
 export default function Header() {
   return (
     <header>
-      <nav className="navbar navbar-expand-md fixed-top">
+      <nav className="navbar navbar-expand-md sticky-top">
         <div className="container">
           <Link to="/" className="navbar-brand">
             <span>
@@ -31,7 +30,9 @@ export default function Header() {
             aria-expanded="false"
             aria-label="Toggle navigation"
           >
-            <span className="navbar-toggler-icon"></span>
+            <span className="navbar-toggler-icon" style={{ color: "black" }}>
+              S
+            </span>
           </button>
           <div className="collapse navbar-collapse" id="navbarCollapse">
             <ul className="navbar-nav ml-auto">
