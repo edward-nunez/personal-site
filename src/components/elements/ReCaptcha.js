@@ -8,7 +8,7 @@ import ReCAPTCHA from "react-google-recaptcha";
  * @param {Object} props.onChange Used to listen for changes of the reCAPTCHA validity.
  */
 export default function ReCaptcha(props) {
-  function handleValidness(valid) {
+  function handleValidChange(valid) {
     if (valid !== null) {
       props.onChange(true); // True if value has valid captcha response stored
     } else {
@@ -20,7 +20,7 @@ export default function ReCaptcha(props) {
     <>
       <ReCAPTCHA
         sitekey="6LeFmQkTAAAAAIwpph9vOJU7yCZQ2mAWb25B-VET"
-        onChange={handleValidness}
+        onChange={handleValidChange}
       />
     </>
   );
