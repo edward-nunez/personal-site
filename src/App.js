@@ -1,21 +1,31 @@
 import React from "react";
+import { Switch } from "react-router-dom";
 
-import Routes from "./utils";
-import Navigation from "./components/layout/Navigation";
-import Footer from "./components/layout/Footer";
-import "./App.style.scss";
+// Layouts
+import LayoutDefault from "./layouts/LayoutDefault";
+
+// Views
+import AppRoute from "./utils/AppRoute";
+import Home from "./views/Home";
+import NoMatch from "./views/NoMatch";
+import Work from "./views/Work";
+import Blog from "./views/Blog";
+import BlogPost from "./views/BlogPost";
+import About from "./views/About";
+import Contact from "./views/Contact";
 
 function App() {
   return (
-    <React.Fragment>
-      <header>
-        <Navigation />
-      </header>
-      <main role="main">
-        <Routes />
-      </main>
-      <Footer />
-    </React.Fragment>
+    <Switch>
+      <AppRoute exact path="/" component={Home} layout={LayoutDefault} />
+      <AppRoute path="/work" component={Work} layout={LayoutDefault} />
+      <AppRoute path="/blog/:id" component={BlogPost} layout={LayoutDefault} />
+      <AppRoute path="/blog" component={Blog} layout={LayoutDefault} />
+      <AppRoute path="/about" component={About} layout={LayoutDefault} />
+      <AppRoute path="/contact" component={Contact} layout={LayoutDefault} />
+      <AppRoute exact path="/" component={Home} layout={LayoutDefault} />
+      <AppRoute component={NoMatch} layout={LayoutDefault} />
+    </Switch>
   );
 }
 
