@@ -5,7 +5,7 @@ import Footer from "../components/layout/Footer";
 const LayoutDefault = ({ children }) => (
   <>
     <Header />
-    <main className="flex-shrink-0">
+    <main>
       <div className="container">{children}</div>
     </main>
     <Footer />

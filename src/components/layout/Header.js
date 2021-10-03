@@ -45,15 +45,6 @@ export default function Header() {
                   Work
                 </NavLink>
               </li>
-              <li className="nav-item link-spacing cl-effect-1" style={{}}>
-                <NavLink
-                  className="nav-link"
-                  to="/blog"
-                  activeClassName="active"
-                >
-                  Blog
-                </NavLink>
-              </li>
               <li className="nav-item link-spacing cl-effect-1">
                 <NavLink
                   className="nav-link"
