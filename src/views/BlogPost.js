@@ -8,10 +8,9 @@ import {
   Linkedin,
 } from "react-bootstrap-icons";
 
-import "./BlogPost.style.scss";
 import CommentCard from "../components/elements/CommentCard";
 
-import blogPosts from "./blogposts.json";
+import blogPosts from "../utils/blogposts.json";
 
 export default function BlogPost(props) {
   // const recaptchaRef = React.createRef();

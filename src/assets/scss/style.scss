@@ -4,10 +4,16 @@ $body-bg: #fff;
 $body-color: #000;
 $primary: #000;
 
+// images
+
+img.center-crop {
+  padding: 0px 0px;
+}
+
 // Import Bootstrap and its default variables
 @import "~bootstrap/scss/bootstrap.scss";
-@import "./Header.style.scss";
 
+// main
 html {
   position: relative;
   min-height: 100%;
@@ -18,7 +24,11 @@ body {
 }
 
 main > .container {
-  padding: 60px 15px 0;
+  padding: 60px 12px 0;
+}
+
+a {
+  text-decoration: none;
 }
 
 /* Divider */
@@ -28,10 +38,94 @@ hr.divider {
   width: 95%;
 }
 
+// Header
+
+/* Effect 1: Brackets */
+.link-spacing {
+  margin: "0px 20px";
+}
+
+.cl-effect-1 a:hover {
+  text-decoration: none;
+}
+
+.cl-effect-1 a::before,
+.cl-effect-1 a::after {
+  display: inline-block;
+  opacity: 0;
+  -webkit-transition: -webkit-transform 0.3s, opacity 0.2s;
+  -moz-transition: -moz-transform 0.3s, opacity 0.2s;
+  transition: transform 0.3s, opacity 0.2s;
+}
+
+.cl-effect-1 a::before {
+  margin-right: 10px;
+  content: "{";
+  -webkit-transform: translateX(20px);
+  -moz-transform: translateX(20px);
+  transform: translateX(20px);
+}
+
+.cl-effect-1 a::after {
+  margin-left: 10px;
+  content: "}";
+  -webkit-transform: translateX(-20px);
+  -moz-transform: translateX(-20px);
+  transform: translateX(-20px);
+}
+
+.cl-effect-1 a:hover::before,
+.cl-effect-1 a:hover::after,
+.cl-effect-1 a:focus::before,
+.cl-effect-1 a:focus::after {
+  opacity: 1;
+  -webkit-transform: translateX(0px);
+  -moz-transform: translateX(0px);
+  transform: translateX(0px);
+}
+
+// Footer
+
 .footer {
   position: absolute;
   bottom: 0;
   width: 100%;
   height: 100px; /* Set the fixed height of the footer here */
   line-height: 60px; /* Vertically center the text there */
+}
+
+/* Active Link Effect */
+.active a:hover {
+  text-decoration: none;
+}
+
+.active a::before {
+  margin-right: 10px;
+  content: "[";
+}
+
+.active a::after {
+  margin-left: 10px;
+  content: "]";
+}
+
+// Blog
+
+.tag {
+  color: #004080;
+  font-size: 14px;
+}
+
+.tag:hover {
+  text-decoration: none;
+  color: #000;
+}
+
+img.center-crop {
+  width: 100%;
+  height: 200px;
+}
+
+.center-crop {
+  object-fit: cover;
 }

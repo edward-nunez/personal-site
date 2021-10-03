@@ -9,7 +9,6 @@ import AppRoute from "./utils/AppRoute";
 import Home from "./views/Home";
 import NoMatch from "./views/NoMatch";
 import Work from "./views/Work";
-import Blog from "./views/Blog";
 import BlogPost from "./views/BlogPost";
 import About from "./views/About";
 import Contact from "./views/Contact";
@@ -20,7 +19,6 @@ function App() {
       <AppRoute exact path="/" component={Home} layout={LayoutDefault} />
       <AppRoute path="/work" component={Work} layout={LayoutDefault} />
       <AppRoute path="/blog/:id" component={BlogPost} layout={LayoutDefault} />
-      <AppRoute path="/blog" component={Blog} layout={LayoutDefault} />
       <AppRoute path="/about" component={About} layout={LayoutDefault} />
       <AppRoute path="/contact" component={Contact} layout={LayoutDefault} />
       <AppRoute exact path="/" component={Home} layout={LayoutDefault} />
