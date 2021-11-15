@@ -1,64 +1,33 @@
 {
-  "name": "edwardnunez.io-web",
-  "homepage": "https://edwardnunez.io",
+  "name": "personal-site",
   "version": "1.0.0",
-  "description": "My portfolio of projects and information of my current progress.",
-  "main": "server.js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/dotRollen/edwardnunez.io-web"
-  },
-  "author": "Edward Nunez <edwardnnz@gmail.com>",
-  "license": "ISC",
+  "description": "This is my personal site source for edwardnunez.io, a blog and portfolio of my latest activity.",
+  "main": "server/index.js",
+  "repository": "https://github.com/edward-nunez/personal-site",
+  "author": "mail@edwardnunez.io",
+  "private": true,
   "scripts": {
-    "start": "node sammy.js; serve -s _static -l tcp://0.0.0.0:$PORT -n",
-    "build": "rm -r _static 2>/dev/null; node sammy.js; react-scripts build && mv build _static",
-    "test": "react-scripts test",
-    "dev": "react-scripts start",
-    "eject": "react-scripts eject"
-  },
-  "engines": {
-    "node": ">=8",
-    "npm": ">=3"
+    "start": "node sammy.js; node ./server/bin/www",
+    "client": "node scripts/start-client.js",
+    "dev": "concurrently \"nodemon server.js\" \"yarn run client \"",
+    "build": "node scripts/build-client.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "installDeps": "yarn && cd client && yarn"
   },
   "dependencies": {
-    "serve": "^11.3.2",
-    "web-vitals": "^2.0.1"
+    "concurrently": "^6.4.0",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
+    "morgan": "~1.9.1"
   },
   "devDependencies": {
-    "@popperjs/core": "^2.9.2",
-    "@testing-library/jest-dom": "^5.14.1",
-    "@testing-library/react": "^11.2.7",
-    "@testing-library/user-event": "^13.1.9",
-    "bootstrap": "^5.0.1",
-    "connected-react-router": "6.5.2",
-    "emailjs-com": "^3.1.0",
-    "moment": "^2.29.1",
-    "node-sass": "^6.0.0",
-    "react": "^17.0.2",
-    "react-bootstrap-icons": "^1.5.0",
-    "react-dom": "^17.0.2",
-    "react-ga": "^3.3.0",
-    "react-google-recaptcha": "^2.1.0",
-    "react-router-dom": "^5.2.0",
-    "react-scripts": "^4.0.3"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "eslint": "^7.11.0",
+    "eslint-config-airbnb": "^19.0.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-react": "^7.27.0",
+    "nodemon": "^2.0.15"
   }
 }

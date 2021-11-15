@@ -37,6 +37,11 @@ export default function Header() {
           <div className="collapse navbar-collapse" id="navbarCollapse">
             <ul className="navbar-nav ml-auto">
               <li className="nav-item link-spacing cl-effect-1">
+                <NavLink className="nav-link" to="/" activeClassName="active">
+                  Home
+                </NavLink>
+              </li>
+              <li className="nav-item link-spacing cl-effect-1">
                 <NavLink
                   className="nav-link"
                   to="/work"
