@@ -44,10 +44,10 @@ export default function Header() {
               <li className="nav-item link-spacing cl-effect-1">
                 <NavLink
                   className="nav-link"
-                  to="/work"
+                  to="/portfolio"
                   activeClassName="active"
                 >
-                  Work
+                  Portfolio
                 </NavLink>
               </li>
               <li className="nav-item link-spacing cl-effect-1">
