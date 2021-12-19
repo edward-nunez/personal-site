@@ -9,16 +9,19 @@
   "scripts": {
     "start": "node sammy.js; node ./server/bin/www",
     "client": "node scripts/start-client.js",
-    "dev": "concurrently \"nodemon server.js\" \"yarn run client \"",
+    "server": "nodemon ./server/bin/www",
     "build": "node scripts/build-client.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "installDeps": "yarn && cd client && yarn"
+    "installDeps": "yarn && cd client && yarn",
+    "lint": "eslint ."
   },
   "dependencies": {
     "concurrently": "^6.4.0",
     "debug": "~2.6.9",
+    "dotenv": "^10.0.0",
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
+    "mongodb": "^4.2.1",
     "morgan": "~1.9.1"
   },
   "devDependencies": {
