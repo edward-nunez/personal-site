@@ -1,57 +1,62 @@
 [
   {
     "id": "abc121",
-    "title": "Blog About JavaScript",
+    "title": "React Project",
     "titleImage": "../../assets/img/template/stock-photo-1.jpg",
-    "description": "sub title 1",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "criteria": " Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+    "results": "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+    "liveSite": "#",
     "createdAt": "2016-05-22T16:00:00Z",
     "updatedAt": "2016-05-22T16:30:00Z",
-    "languages": ["javascript"],
-    "frameworks": ["React"],
-    "technology": ["MongoDB"]
+    "tags": ["JavaScript", "React", "MongoDB", "Mobile App Design", "Mobile Development"]
   },
   {
     "id": "abc122",
-    "title": "Blog About JavaScript",
+    "title": "Angular Project",
     "titleImage": "../../assets/img/template/stock-photo-1.jpg",
-    "description": "sub title 1",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "criteria": " Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+    "results": "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+    "liveSite": "#",
     "createdAt": "2016-05-22T16:00:00Z",
     "updatedAt": "2016-05-22T16:30:00Z",
-    "languages": ["javascript"],
-    "frameworks": ["Angular"],
-    "technology": ["MySQL"]
+    "tags": ["JavaScript", "Angular", "MySQL", "Web App Design", "Web Development"]
   },
   {
     "id": "abc123",
-    "title": "Blog About JavaScript",
+    "title": "Django Project",
     "titleImage": "../../assets/img/template/stock-photo-1.jpg",
-    "description": "sub title 1",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "criteria": " Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+    "results": "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+    "liveSite": "#",
     "createdAt": "2016-05-22T16:00:00Z",
     "updatedAt": "2016-05-22T16:30:00Z",
-    "languages": ["python"],
-    "frameworks": ["django"],
-    "technology": ["postgresql"]
+    "tags": ["Python", "Django", "PostgreSQL", "Web App Design", "Web Development"]
   },
   {
     "id": "abc124",
-    "title": "Blog About JavaScript",
+    "title": "Unity Project",
     "titleImage": "../../assets/img/template/stock-photo-1.jpg",
-    "description": "sub title 1",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "criteria": " Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+    "results": "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+    "liveSite": "#",
     "createdAt": "2016-05-22T16:00:00Z",
     "updatedAt": "2016-05-22T16:30:00Z",
-    "languages": ["c#"],
-    "frameworks": ["unity"],
-    "technology": ["postgresql"]
+    "tags": ["C#", "Unity", "PostgreSQL", "Game Design", "Game Development"]
   },
   {
     "id": "abc125",
-    "title": "Blog About JavaScript",
+    "title": "Spring Project",
     "titleImage": "../../assets/img/template/stock-photo-1.jpg",
-    "description": "sub title 1",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "criteria": " Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+    "results": "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+    "liveSite": "#",
     "createdAt": "2016-05-22T16:00:00Z",
     "updatedAt": "2016-05-22T16:30:00Z",
-    "languages": ["javascript"],
-    "frameworks": ["React"],
-    "technology": ["MongoDB"]
+    "tags": ["Java", "Spring", "MongoDB", "Web App Design", "Web Development"]
   }
 ]
