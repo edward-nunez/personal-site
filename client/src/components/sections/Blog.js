@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import BlogCard from "../elements/BlogCard";
-
-import blogPosts from "../../utils/blogposts.json";
+import blogData from "../../utils/blogData.json";
 
 export default function Blog() {
   const numberPerPage = 3;
@@ -10,7 +9,7 @@ export default function Blog() {
 
   useEffect(() => {
     const list = [];
-    for (let i = 0; i < Math.ceil(blogPosts.length / numberPerPage); i++) {
+    for (let i = 0; i < Math.ceil(blogData.length / numberPerPage); i++) {
       list.push(i + 1);
     }
 
@@ -41,7 +40,7 @@ export default function Blog() {
 
   return (
     <div className="col-md-9">
-      {blogPosts.map((post) => (
+      {blogData.map((post) => (
         <BlogCard key={post.id} post={post} />
       ))}
       <nav

@@ -10,7 +10,7 @@ import {
 
 import CommentCard from "../components/elements/CommentCard";
 
-import blogPosts from "../utils/blogposts.json";
+import blogData from "../utils/blogData.json";
 
 export default function BlogPost(props) {
   // const recaptchaRef = React.createRef();
@@ -31,7 +31,7 @@ export default function BlogPost(props) {
 
   return (
     <div className="container content">
-      <div className="row" style={{ margin: "20px 0px" }}>
+      <article className="row" style={{ margin: "20px 0px" }}>
         <div className="col-12">
           <h1>Blog Title Sub Title</h1>
         </div>
@@ -116,11 +116,11 @@ export default function BlogPost(props) {
           </div>
         </div>
         <div className="col-12 row">
-          {blogPosts[0].comments.map((comment) => (
+          {blogData[0].comments.map((comment) => (
             <CommentCard key={comment.id} data={comment} />
           ))}
         </div>
-      </div>
+      </article>
     </div>
   );
 }
