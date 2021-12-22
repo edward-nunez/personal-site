@@ -7,17 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [1.0.1] - 2021-12-19
+## [0.1.0] - 2021-12-19
 
 ### Changed
 
 * Changed "Work" to "Portfolio", so that it represents both personal and professional projects.
+* Moved Time Since function to utils for reuse
 
 ### Added
 
+* Portfolio features
 * Added MongoDB Node Driver
 
-## [1.0.0] - 2021-11-15
+## [0.0.0] - 2021-11-15
 
 ### Changed
 
