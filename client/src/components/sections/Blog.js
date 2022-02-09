@@ -39,7 +39,7 @@ export default function Blog() {
   // }
 
   return (
-    <div className="col-md-9">
+    <div className="col-md-9 mx-auto">
       {blogData.map((post) => (
         <BlogCard key={post.id} post={post} />
       ))}

@@ -4,7 +4,7 @@ import ContactForm from "../components/sections/ContactForm";
 export default function Home() {
   return (
     <div className="row">
-      <div className="col-md-8 mx-auto">
+      <div className="col-md-12 mx-auto">
         <article className="card mb-4" style={{ border: "none" }}>
           <header
             className="card-header text-center"
