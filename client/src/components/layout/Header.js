@@ -6,9 +6,41 @@ import logo from "../../assets/img/template/logo.svg";
 export default function Header() {
   return (
     <header>
-      <nav className="navbar navbar-expand-md sticky-top">
+      <nav className="navbar navbar-expand-md navbar-light bg-white absolute-top">
         <div className="container">
-          <Link to="/" className="navbar-brand">
+          <button
+            className="navbar-toggler order-2 order-md-1"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target=".navbar-collapse"
+            aria-controls="navbar-left navbar-right"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <div
+            className="collapse navbar-collapse order-3 order-md-2"
+            id="navbar-left"
+          >
+            <ul className="navbar-nav me-auto">
+              <li className="nav-item link-spacing cl-effect-1 ml-auto">
+                <NavLink className="nav-link" to="/" activeClassName="active">
+                  Home
+                </NavLink>
+              </li>
+              <li className="nav-item link-spacing cl-effect-1 ml-auto">
+                <NavLink
+                  className="nav-link"
+                  to="/portfolio"
+                  activeClassName="active"
+                >
+                  Portfolio
+                </NavLink>
+              </li>
+            </ul>
+          </div>
+          <Link to="/" className="navbar-brand mx-auto order-1 order-md-3">
             <span>
               EDWARD{" "}
               <img
@@ -21,36 +53,12 @@ export default function Header() {
               NUNEZ
             </span>
           </Link>
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarCollapse"
-            aria-controls="navbarCollapse"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
+          <div
+            className="collapse navbar-collapse order-4 order-md-4"
+            id="navbar-right"
           >
-            <span className="navbar-toggler-icon" style={{ color: "black" }}>
-              S
-            </span>
-          </button>
-          <div className="collapse navbar-collapse" id="navbarCollapse">
-            <ul className="navbar-nav ml-auto">
-              <li className="nav-item link-spacing cl-effect-1">
-                <NavLink className="nav-link" to="/" activeClassName="active">
-                  Home
-                </NavLink>
-              </li>
-              <li className="nav-item link-spacing cl-effect-1">
-                <NavLink
-                  className="nav-link"
-                  to="/portfolio"
-                  activeClassName="active"
-                >
-                  Portfolio
-                </NavLink>
-              </li>
-              <li className="nav-item link-spacing cl-effect-1">
+            <ul className="navbar-nav ms-auto">
+              <li className="nav-item link-spacing cl-effect-1 mr-auto">
                 <NavLink
                   className="nav-link"
                   to="/about"
@@ -59,7 +67,7 @@ export default function Header() {
                   About
                 </NavLink>
               </li>
-              <li className="nav-item link-spacing cl-effect-1">
+              <li className="nav-item link-spacing cl-effect-1 mr-auto">
                 <NavLink
                   className="nav-link"
                   to="/contact"
