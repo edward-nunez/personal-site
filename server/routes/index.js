@@ -1,15 +1,12 @@
-const path = require('path');
-const express = require('express');
+const path = require("path");
+const router = require("express").Router();
 
-const router = express.Router();
+const apiRoutes = require("./api");
 
-/* GET users listing. */
-router.get('/api', (req, res, next) => {
-  res.json({ message: 'respond with a resource' });
-});
+router.use("/api", apiRoutes);
 
-router.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '../_static', 'index.html'));
+router.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "../_static", "index.html"));
 });
 
 module.exports = router;
