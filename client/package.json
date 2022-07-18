@@ -8,6 +8,7 @@
   },
   "author": "Edward Nunez <mail@edwardnunez.io>",
   "license": "ISC",
+  "proxy": "http://localhost:3001/api",
   "scripts": {
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -23,6 +24,7 @@
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^13.1.9",
+    "axios": "^0.27.2",
     "axios-hooks": "^3.1.4",
     "bootstrap": "^5.0.1",
     "connected-react-router": "6.5.2",
