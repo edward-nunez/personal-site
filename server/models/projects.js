@@ -7,11 +7,11 @@ const projectSchema = new Schema(
       trim: true,
       required: true,
     },
-    description: {
+    titleImage: {
       type: String,
       trim: true,
     },
-    showcaseImage: {
+    description: {
       type: String,
       trim: true,
     },
@@ -34,6 +34,10 @@ const projectSchema = new Schema(
       },
     ],
     createdAt: {
+      type: Date,
+      default: Date.now,
+    },
+    updatedAt: {
       type: Date,
       default: Date.now,
     },
