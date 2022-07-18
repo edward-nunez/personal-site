@@ -5,6 +5,7 @@
   "main": "server/index.js",
   "repository": "https://github.com/edward-nunez/personal-site",
   "author": "mail@edwardnunez.io",
+  "proxy": "http://localhost:3000/",
   "private": true,
   "scripts": {
     "start": "node sammy.js; node ./server/bin/www",
@@ -17,6 +18,7 @@
   },
   "dependencies": {
     "concurrently": "^6.4.0",
+    "cors": "^2.8.5",
     "debug": "~2.6.9",
     "dotenv": "^10.0.0",
     "express": "~4.16.1",
