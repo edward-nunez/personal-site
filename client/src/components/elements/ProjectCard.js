@@ -2,15 +2,22 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 export default function ProjectCard(props) {
-  let project = props.project;
+  const project = props.project;
 
   return (
     <div className="card mb-3 mx-auto">
       <div className="row g-0">
         <div className="col-md-8">
-          <Link to={`/portfolio/${project.id}`}>
+          <Link
+            to={{
+              pathname: `/portfolio/${project.id}`,
+              state: {
+                projectData: project,
+              },
+            }}
+          >
             <img
-              src={project.titleImage}
+              src={project.showcaseImage}
               className="img-fluid rounded-start"
               alt="..."
             />
@@ -19,18 +26,35 @@ export default function ProjectCard(props) {
         <div className="col-md-4">
           <div className="card-body">
             <h5 className="card-title">
-              <Link to={`/portfolio/${project.id}`}>{props.project.title}</Link>
+              <Link
+                to={{
+                  pathname: `/portfolio/${project.id}`,
+                  state: {
+                    projectData: project,
+                  },
+                }}
+              >
+                {project.title}
+              </Link>
             </h5>
             <p className="card-text">{project.description}</p>
             <p>
               <small className="text-muted">Tags </small>
               {project.tags.map((tag, index) => (
                 <span key={index} className="badge bg-light text-dark">
-                  {tag}
+                  {tag.name}
                 </span>
               ))}
             </p>
-            <Link to={`/portfolio/${project.id}`} className="btn btn-primary">
+            <Link
+              to={{
+                pathname: `/portfolio/${project.id}`,
+                state: {
+                  projectData: project,
+                },
+              }}
+              className="btn btn-primary"
+            >
               Details
             </Link>
           </div>
