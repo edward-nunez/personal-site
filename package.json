@@ -2,19 +2,27 @@
   "name": "personal-site",
   "version": "1.0.0",
   "description": "This is my personal site source for edwardnunez.io, a blog and portfolio of my latest activity.",
-  "main": "server/index.js",
-  "repository": "https://github.com/edward-nunez/personal-site",
-  "author": "mail@edwardnunez.io",
+  "main": "server/bin/www",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/edward-nunez/personal-site"
+  },
+  "author": "Edward Nunez <mail@edwardnunez.io>",
   "proxy": "http://localhost:3000/",
   "private": true,
   "scripts": {
-    "start": "node sammy.js; node ./server/bin/www",
-    "client": "node scripts/start-client.js",
+    "start": "node ./server/bin/www",
+    "client": "react-scripts start",
     "server": "nodemon ./server/bin/www",
-    "build": "node scripts/build-client.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "installDeps": "yarn && cd client && yarn",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "build": "react-scripts build",
+    "test-server": "echo \"Error: no test specified\" && exit 1",
+    "test-client": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "engines": {
+    "node": ">=8",
+    "npm": ">=3"
   },
   "dependencies": {
     "concurrently": "^6.4.0",
@@ -33,6 +41,42 @@
     "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-react": "^7.27.0",
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.15",
+    "@popperjs/core": "^2.9.2",
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^11.2.7",
+    "@testing-library/user-event": "^13.1.9",
+    "axios": "^0.27.2",
+    "axios-hooks": "^3.1.4",
+    "bootstrap": "^5.2.2",
+    "connected-react-router": "6.5.2",
+    "emailjs-com": "^3.1.0",
+    "moment": "^2.29.1",
+    "node-sass": "^6.0.0",
+    "react": "^17.0.2",
+    "react-bootstrap-icons": "^1.5.0",
+    "react-dom": "^17.0.2",
+    "react-ga": "^3.3.0",
+    "react-google-recaptcha": "^2.1.0",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "^4.0.3"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
