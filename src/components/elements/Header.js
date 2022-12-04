@@ -1,7 +1,7 @@
-import React from "react";
-import { NavLink, Link } from "react-router-dom";
+import React from 'react';
+import { NavLink, Link } from 'react-router-dom';
 
-import logo from "../../assets/img/template/logo.svg";
+import logo from '../../assets/img/template/logo.svg';
 
 export default function Header() {
   return (
@@ -17,12 +17,9 @@ export default function Header() {
             aria-expanded="false"
             aria-label="Toggle navigation"
           >
-            <span className="navbar-toggler-icon"></span>
+            <span className="navbar-toggler-icon" />
           </button>
-          <div
-            className="collapse navbar-collapse order-3 order-md-2"
-            id="navbar-left"
-          >
+          <div className="collapse navbar-collapse order-3 order-md-2" id="navbar-left">
             <ul className="navbar-nav me-auto">
               <li className="nav-item link-spacing cl-effect-1 ml-auto">
                 <NavLink className="nav-link" to="/" activeClassName="active">
@@ -30,11 +27,7 @@ export default function Header() {
                 </NavLink>
               </li>
               <li className="nav-item link-spacing cl-effect-1 ml-auto">
-                <NavLink
-                  className="nav-link"
-                  to="/portfolio"
-                  activeClassName="active"
-                >
+                <NavLink className="nav-link" to="/portfolio" activeClassName="active">
                   Portfolio
                 </NavLink>
               </li>
@@ -42,37 +35,18 @@ export default function Header() {
           </div>
           <Link to="/" className="navbar-brand mx-auto order-1 order-md-3">
             <span>
-              EDWARD{" "}
-              <img
-                src={logo}
-                width="30"
-                height="30"
-                alt=""
-                style={{ verticalAlign: "middle" }}
-              ></img>{" "}
-              NUNEZ
+              EDWARD <img src={logo} width="30" height="30" alt="" style={{ verticalAlign: 'middle' }} /> NUNEZ
             </span>
           </Link>
-          <div
-            className="collapse navbar-collapse order-4 order-md-4"
-            id="navbar-right"
-          >
+          <div className="collapse navbar-collapse order-4 order-md-4" id="navbar-right">
             <ul className="navbar-nav ms-auto">
               <li className="nav-item link-spacing cl-effect-1 mr-auto">
-                <NavLink
-                  className="nav-link"
-                  to="/about"
-                  activeClassName="active"
-                >
+                <NavLink className="nav-link" to="/about" activeClassName="active">
                   About
                 </NavLink>
               </li>
               <li className="nav-item link-spacing cl-effect-1 mr-auto">
-                <NavLink
-                  className="nav-link"
-                  to="/contact"
-                  activeClassName="active"
-                >
+                <NavLink className="nav-link" to="/contact" activeClassName="active">
                   Contact
                 </NavLink>
               </li>
