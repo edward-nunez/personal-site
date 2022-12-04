@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-import Blog from "../components/sections/Blog";
+import Blog from '../components/sections/Blog';
 
 export default function Home() {
   return (

@@ -1,14 +1,14 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { Router } from "react-router-dom";
-import { createBrowserHistory } from "history";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Router } from 'react-router-dom';
+import { createBrowserHistory } from 'history';
 
-import * as serviceWorker from "./serviceWorker";
+import * as serviceWorker from './serviceWorker';
 
-import "./assets/scss/style.scss";
-import "bootstrap/dist/js/bootstrap.min.js";
+import './assets/scss/style.scss';
+import 'bootstrap/dist/js/bootstrap.min';
 
-import App from "./App";
+import App from './App';
 
 const history = createBrowserHistory();
 
@@ -16,7 +16,7 @@ ReactDOM.render(
   <Router history={history}>
     <App />
   </Router>,
-  document.getElementById("root")
+  document.getElementById('root')
 );
 
 // If you want your app to work offline and load faster, you can change

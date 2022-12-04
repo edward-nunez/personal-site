@@ -1,59 +1,58 @@
-import React, { useState } from "react";
-import emailjs from "emailjs-com";
+import React, { useState } from 'react';
+import emailjs from 'emailjs-com';
 
-import Input from "../elements/Input";
-import InputFeedback from "../elements/InputFeedback";
-import ReCaptcha from "../elements/ReCaptcha";
+import { Input, InputFeedback, ReCaptcha } from '../elements';
 
 export default function ContactForm() {
+  const [reCaptchaValid, setreCaptchaValid] = useState(false);
   const [formData, setFormData] = useState({
     inputs: [
       {
-        elemType: "input",
-        type: "text",
-        id: "name",
+        elemType: 'input',
+        type: 'text',
+        id: 'name',
         required: true,
-        placeholder: "Name",
-        label: "Name",
+        placeholder: 'Name',
+        label: 'Name',
         valid: false,
-        errorMessage: "Please fill out this field.",
+        errorMessage: 'Please fill out this field.',
         touched: false,
-        value: "",
+        value: '',
       },
       {
-        elemType: "input",
-        type: "email",
-        id: "email",
+        elemType: 'input',
+        type: 'email',
+        id: 'email',
         required: true,
-        placeholder: "E-mail",
-        label: "E-mail",
+        placeholder: 'E-mail',
+        label: 'E-mail',
         valid: false,
         touched: false,
-        errorMessage: "Please fill out this field.",
-        value: "",
+        errorMessage: 'Please fill out this field.',
+        value: '',
       },
       {
-        elemType: "input",
-        type: "text",
-        id: "company",
+        elemType: 'input',
+        type: 'text',
+        id: 'company',
         required: false,
-        placeholder: "Company",
-        label: "Company (optional)",
+        placeholder: 'Company',
+        label: 'Company (optional)',
         valid: true,
         touched: false,
-        value: "",
+        value: '',
       },
       {
-        elemType: "textarea",
-        id: "message",
+        elemType: 'textarea',
+        id: 'message',
         required: true,
-        placeholder: "Message",
-        label: "Message",
+        placeholder: 'Message',
+        label: 'Message',
         valid: false,
-        errorMessage: "Please fill out this field.",
+        errorMessage: 'Please fill out this field.',
         touched: false,
         rows: 3,
-        value: "",
+        value: '',
       },
     ],
     reCaptcha: { touched: false, valid: false },
@@ -61,16 +60,20 @@ export default function ContactForm() {
     emailSent: false,
   });
 
-  const handleReCAPTCHA = (valid) => {
-    let newFormData = { ...formData };
-    newFormData.reCaptcha.valid = valid;
+  const updateValid = (valid) => {
+    setreCaptchaValid(valid);
+  };
+
+  const handleReCAPTCHA = () => {
+    const newFormData = { ...formData };
+    newFormData.reCaptcha.valid = reCaptchaValid;
     newFormData.reCaptcha.touched = true;
 
     setFormData(newFormData);
   };
 
   const handleInputEvent = (evt, index, touched) => {
-    let newFormData = { ...formData };
+    const newFormData = { ...formData };
 
     if (touched) {
       newFormData.inputs[index].touched = touched;
@@ -85,14 +88,16 @@ export default function ContactForm() {
 
   const handleValidity = () => {
     let allFieldsValid = true;
-    const newFormData = { ...formData };
+    const newFormData = formData.inputs.map((input) => {
+      const newInput = input;
 
-    newFormData.inputs.forEach((input) => {
-      if (input.valid === false) {
+      if (newInput.valid === false) {
         allFieldsValid = false;
       }
 
-      input.touched = true;
+      newInput.touched = true;
+
+      return newInput;
     });
 
     newFormData.allFieldsValid = allFieldsValid;
@@ -105,64 +110,48 @@ export default function ContactForm() {
 
     console.log(formData.reCaptcha.valid, formData.allFieldsValid);
     if (formData.reCaptcha.valid && formData.allFieldsValid) {
-      emailjs
-        .sendForm(
-          "edwardnnz_service",
-          "contact_form",
-          evt.target,
-          "user_907s5tO5hxVUSKyRsGi0U"
-        )
-        .then(
-          (result) => {
-            console.log(result.text);
-            setFormData({ ...formData, emailSent: true });
-          },
-          (error) => {
-            console.log(error.text);
-          }
-        );
+      emailjs.sendForm('edwardnnz_service', 'contact_form', evt.target, 'user_907s5tO5hxVUSKyRsGi0U').then(
+        (result) => {
+          console.log(result.text);
+          setFormData({ ...formData, emailSent: true });
+        },
+        (error) => {
+          console.log(error.text);
+        }
+      );
     }
   };
 
   const renderInputs = () =>
-    formData.inputs.map((input, index) => {
-      return (
-        <div className="mb-3" key={index}>
-          <Input
-            {...input}
-            index={index}
-            onChange={handleInputEvent}
-            onClick={handleInputEvent}
-          />
-          <InputFeedback
-            valid={input.valid}
-            touched={input.touched}
-            errorMessage={input.errorMessage}
-          />
-        </div>
-      );
-    });
+    formData.inputs.map((input, index) => (
+      <div className="mb-3" key={input.id}>
+        <Input
+          elemType={input.elemType}
+          type={input.type}
+          id={input.id}
+          placeholder={input.placeholder}
+          rows={input.rows}
+          required={input.required}
+          label={input.label}
+          index={index}
+          onChange={handleInputEvent}
+          onClick={handleInputEvent}
+        />
+        <InputFeedback valid={input.valid} touched={input.touched} errorMessage={input.errorMessage} />
+      </div>
+    ));
 
   return (
     <>
-      <div style={{ display: `${formData.emailSent ? "block" : "none"}` }}>
-        Email sent!
-      </div>
-      <form
-        onSubmit={handleSubmit}
-        style={{ display: `${formData.emailSent ? "none" : "block"}` }}
-        noValidate
-      >
+      <div style={{ display: `${formData.emailSent ? 'block' : 'none'}` }}>Email sent!</div>
+      <form onSubmit={handleSubmit} style={{ display: `${formData.emailSent ? 'none' : 'block'}` }} noValidate>
         {renderInputs()}
         <div className="mb-3">
-          <ReCaptcha onChange={handleReCAPTCHA} />
+          <ReCaptcha onChange={handleReCAPTCHA} updateValid={updateValid} />
           <div
             className="invalid-feedback"
             style={{
-              display:
-                !formData.reCaptcha.valid && formData.reCaptcha.touched
-                  ? "block"
-                  : "none",
+              display: !formData.reCaptcha.valid && formData.reCaptcha.touched ? 'block' : 'none',
             }}
           >
             Please complete ReCAPTCHA
