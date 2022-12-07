@@ -1,4 +1,4 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model } = require('mongoose');
 
 const projectSchema = new Schema(
   {
@@ -30,7 +30,7 @@ const projectSchema = new Schema(
     tags: [
       {
         type: Schema.Types.ObjectId,
-        ref: "tags",
+        ref: 'tags',
       },
     ],
     createdAt: {
@@ -44,7 +44,7 @@ const projectSchema = new Schema(
   },
   {
     toJSON: {
-      transform: function (doc, ret) {
+      transform(doc, ret) {
         ret.id = ret._id;
         delete ret._id;
       },
@@ -52,6 +52,6 @@ const projectSchema = new Schema(
   }
 );
 
-const projects = model("projects", projectSchema);
+const projects = model('projects', projectSchema);
 
 module.exports = projects;
