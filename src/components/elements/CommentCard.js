@@ -1,7 +1,6 @@
 import React from 'react';
 import { HandThumbsUp, HandThumbsDown } from 'react-bootstrap-icons';
-
-import { CommentType } from '../../utils/types';
+import PropTypes from 'prop-types';
 
 function timeSince(date) {
   const seconds = Math.floor((new Date() - Date.parse(date)) / 1000);
@@ -54,7 +53,15 @@ function CommentCard({ comment }) {
 }
 
 CommentCard.propTypes = {
-  comment: CommentType.isRequired,
+  comment: PropTypes.exact({
+    id: PropTypes.number,
+    author: PropTypes.string,
+    body: PropTypes.string,
+    upVotes: PropTypes.number,
+    downVotes: PropTypes.number,
+    createdAt: PropTypes.string,
+    updatedAt: PropTypes.string,
+  }).isRequired,
 };
 
 export default CommentCard;

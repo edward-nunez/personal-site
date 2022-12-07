@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
-import { ProjectType } from '../../utils/types';
+import PropTypes from 'prop-types';
 
 function ProjectCard({ project }) {
   return (
@@ -16,7 +15,7 @@ function ProjectCard({ project }) {
               },
             }}
           >
-            <img src={project.showcaseImage} className="img-fluid rounded-start" alt="..." />
+            <img src={project.titleImage} className="img-fluid rounded-start" alt="..." />
           </Link>
         </div>
         <div className="col-md-4">
@@ -61,7 +60,23 @@ function ProjectCard({ project }) {
 }
 
 ProjectCard.propTypes = {
-  project: ProjectType.isRequired,
+  project: PropTypes.exact({
+    id: PropTypes.number,
+    title: PropTypes.string,
+    titleImage: PropTypes.string,
+    description: PropTypes.string,
+    liveSite: PropTypes.string,
+    criteria: PropTypes.string,
+    results: PropTypes.string,
+    tags: PropTypes.arrayOf(
+      PropTypes.exact({
+        id: PropTypes.number,
+        name: PropTypes.string,
+      })
+    ),
+    createdAt: PropTypes.string,
+    updatedAt: PropTypes.string,
+  }).isRequired,
 };
 
 export default ProjectCard;
