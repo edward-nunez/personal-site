@@ -1,31 +1,31 @@
-import React from "react";
-import { Switch } from "react-router-dom";
+import React from 'react';
+import { Routes } from 'react-router-dom';
 
 // Layouts
-import LayoutDefault from "./layouts/LayoutDefault";
+import { DefaultLayout } from './components/layout';
 
 // Views
-import AppRoute from "./utils/AppRoute";
-import Home from "./views/Home";
-import NoMatch from "./views/NoMatch";
-import Portfolio from "./views/Portfolio";
-import Project from "./views/Project";
-import BlogPost from "./views/BlogPost";
-import About from "./views/About";
-import Contact from "./views/Contact";
+import AppRoute from './utils/AppRoute';
+import Home from './views/Home';
+import NoMatch from './views/NoMatch';
+import Portfolio from './views/Portfolio';
+import Project from './views/Project';
+import BlogPost from './views/BlogPost';
+import About from './views/About';
+import Contact from './views/Contact';
 
 function App() {
   return (
-    <Switch>
-      <AppRoute exact path="/" component={Home} layout={LayoutDefault} />
-      <AppRoute path="/portfolio/:id" component={Project} layout={LayoutDefault} />
-      <AppRoute path="/portfolio" component={Portfolio} layout={LayoutDefault} />
-      <AppRoute path="/blog/:id" component={BlogPost} layout={LayoutDefault} />
-      <AppRoute path="/about" component={About} layout={LayoutDefault} />
-      <AppRoute path="/contact" component={Contact} layout={LayoutDefault} />
-      <AppRoute exact path="/" component={Home} layout={LayoutDefault} />
-      <AppRoute component={NoMatch} layout={LayoutDefault} />
-    </Switch>
+    <Routes>
+      <AppRoute exact path="/" Component={Home} Layout={DefaultLayout} />
+      <AppRoute path="/portfolio/:id" Component={Project} Layout={DefaultLayout} />
+      <AppRoute path="/portfolio" Component={Portfolio} Layout={DefaultLayout} />
+      <AppRoute path="/blog/:id" Component={BlogPost} Layout={DefaultLayout} />
+      <AppRoute path="/about" Component={About} Layout={DefaultLayout} />
+      <AppRoute path="/contact" Component={Contact} Layout={DefaultLayout} />
+      <AppRoute exact path="/" Component={Home} Layout={DefaultLayout} />
+      <AppRoute Component={NoMatch} Layout={DefaultLayout} />
+    </Routes>
   );
 }
 
