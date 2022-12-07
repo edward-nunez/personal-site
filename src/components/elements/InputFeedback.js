@@ -1,18 +1,16 @@
-import React from "react";
+import React from 'react';
+import PropTypes from 'prop-types';
 
-export default function InputFeedback({ valid, touched, errorMessage }) {
+function InputFeedback({ valid, touched, errorMessage }) {
   return (
     <>
-      <div
-        className="valid-feedback"
-        style={{ display: valid && touched ? "block" : "none" }}
-      >
+      <div className="valid-feedback" style={{ display: valid && touched ? 'block' : 'none' }}>
         Looks good!
       </div>
       <div
         className="invalid-feedback"
         style={{
-          display: !valid && touched ? "block" : "none",
+          display: !valid && touched ? 'block' : 'none',
         }}
       >
         {errorMessage}
@@ -20,3 +18,11 @@ export default function InputFeedback({ valid, touched, errorMessage }) {
     </>
   );
 }
+
+InputFeedback.propTypes = {
+  valid: PropTypes.bool.isRequired,
+  touched: PropTypes.bool.isRequired,
+  errorMessage: PropTypes.string.isRequired,
+};
+
+export default InputFeedback;

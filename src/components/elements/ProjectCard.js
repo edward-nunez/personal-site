@@ -1,9 +1,9 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-export default function ProjectCard(props) {
-  const project = props.project;
+import { ProjectType } from '../../utils/types';
 
+function ProjectCard({ project }) {
   return (
     <div className="card mb-3 mx-auto">
       <div className="row g-0">
@@ -16,11 +16,7 @@ export default function ProjectCard(props) {
               },
             }}
           >
-            <img
-              src={project.showcaseImage}
-              className="img-fluid rounded-start"
-              alt="..."
-            />
+            <img src={project.showcaseImage} className="img-fluid rounded-start" alt="..." />
           </Link>
         </div>
         <div className="col-md-4">
@@ -40,8 +36,8 @@ export default function ProjectCard(props) {
             <p className="card-text">{project.description}</p>
             <p>
               <small className="text-muted">Tags </small>
-              {project.tags.map((tag, index) => (
-                <span key={index} className="badge bg-light text-dark">
+              {project.tags.map((tag) => (
+                <span key={tag.id} className="badge bg-light text-dark">
                   {tag.name}
                 </span>
               ))}
@@ -63,3 +59,9 @@ export default function ProjectCard(props) {
     </div>
   );
 }
+
+ProjectCard.propTypes = {
+  project: ProjectType.isRequired,
+};
+
+export default ProjectCard;
