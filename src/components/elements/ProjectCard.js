@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
@@ -10,12 +9,12 @@ function ProjectCard({ project }) {
           <Link
             to={{
               pathname: `/portfolio/${project.id}`,
-              state: {
-                projectData: project,
-              },
+            }}
+            state={{
+              projectData: project,
             }}
           >
-            <img src={project.titleImage} className="img-fluid rounded-start" alt="..." />
+            <img src={project.showcaseImage} className="img-fluid rounded-start" alt="..." />
           </Link>
         </div>
         <div className="col-md-4">
@@ -24,9 +23,9 @@ function ProjectCard({ project }) {
               <Link
                 to={{
                   pathname: `/portfolio/${project.id}`,
-                  state: {
-                    projectData: project,
-                  },
+                }}
+                state={{
+                  projectData: project,
                 }}
               >
                 {project.title}
@@ -44,9 +43,9 @@ function ProjectCard({ project }) {
             <Link
               to={{
                 pathname: `/portfolio/${project.id}`,
-                state: {
-                  projectData: project,
-                },
+              }}
+              state={{
+                projectData: project,
               }}
               className="btn btn-primary"
             >
@@ -61,16 +60,16 @@ function ProjectCard({ project }) {
 
 ProjectCard.propTypes = {
   project: PropTypes.exact({
-    id: PropTypes.number,
+    id: PropTypes.string,
     title: PropTypes.string,
-    titleImage: PropTypes.string,
+    showcaseImage: PropTypes.string,
     description: PropTypes.string,
     liveSite: PropTypes.string,
     criteria: PropTypes.string,
     results: PropTypes.string,
     tags: PropTypes.arrayOf(
       PropTypes.exact({
-        id: PropTypes.number,
+        id: PropTypes.string,
         name: PropTypes.string,
       })
     ),
