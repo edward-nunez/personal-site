@@ -1,17 +1,16 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 
-function InputLabel({ id, children }) {
+function InputLabel({ id, label }) {
   return (
     <label htmlFor={id} className="form-label">
-      {children}
+      {label}
     </label>
   );
 }
 
 InputLabel.propTypes = {
-  id: PropTypes.number.isRequired,
-  children: PropTypes.element.isRequired,
+  id: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
 };
 
 export default InputLabel;

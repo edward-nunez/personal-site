@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import InputLabel from './InputLabel';
@@ -30,7 +30,7 @@ function Input({ elemType, type, id, placeholder, rows, required, label, index, 
 
   return (
     <>
-      {label && <InputLabel id={id}>{label}</InputLabel>}
+      {label && <InputLabel id={id} label={label} />}
       <Element
         type={elemType !== 'textarea' ? type : null}
         className={`form-control ${isInvalid() ? 'is-invalid' : ''}`}
@@ -56,7 +56,7 @@ Input.propTypes = {
   required: PropTypes.bool,
   label: PropTypes.string.isRequired,
   index: PropTypes.number.isRequired,
-  valid: PropTypes.bool.isRequired,
+  valid: PropTypes.bool,
   onChange: PropTypes.func.isRequired,
   onClick: PropTypes.func.isRequired,
 };
@@ -64,6 +64,7 @@ Input.propTypes = {
 Input.defaultProps = {
   type: 'text',
   rows: 0,
+  valid: null,
   required: false,
 };
 
