@@ -1,11 +1,8 @@
-import React from 'react';
-import { Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
-// Layouts
-import { DefaultLayout } from './components/layout';
+import './App.scss';
 
 // Views
-import AppRoute from './utils/AppRoute';
 import Home from './views/Home';
 import NoMatch from './views/NoMatch';
 import Portfolio from './views/Portfolio';
@@ -14,18 +11,28 @@ import BlogPost from './views/BlogPost';
 import About from './views/About';
 import Contact from './views/Contact';
 
+import Header from './components/elements/Header';
+import Footer from './components/elements/Footer';
+
 function App() {
   return (
-    <Routes>
-      <AppRoute exact path="/" Component={Home} Layout={DefaultLayout} />
-      <AppRoute path="/portfolio/:id" Component={Project} Layout={DefaultLayout} />
-      <AppRoute path="/portfolio" Component={Portfolio} Layout={DefaultLayout} />
-      <AppRoute path="/blog/:id" Component={BlogPost} Layout={DefaultLayout} />
-      <AppRoute path="/about" Component={About} Layout={DefaultLayout} />
-      <AppRoute path="/contact" Component={Contact} Layout={DefaultLayout} />
-      <AppRoute exact path="/" Component={Home} Layout={DefaultLayout} />
-      <AppRoute Component={NoMatch} Layout={DefaultLayout} />
-    </Routes>
+    <div className="App">
+      <Header />
+      <main>
+        <div className="container">
+          <Routes>
+            <Route exact path="/" element={<Home />} />
+            <Route path="/portfolio/:id" element={<Project />} />
+            <Route path="/portfolio" element={<Portfolio />} />
+            <Route path="/blog/:id" element={<BlogPost />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="*" element={<NoMatch />} />
+          </Routes>
+        </div>
+      </main>
+      <Footer />
+    </div>
   );
 }
 
