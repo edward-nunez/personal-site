@@ -1,4 +1,3 @@
-import React from 'react';
 import { HandThumbsUp, HandThumbsDown, Bookmark, ShareFill, Twitter, Linkedin } from 'react-bootstrap-icons';
 
 import CommentCard from '../components/elements/CommentCard';
@@ -32,7 +31,7 @@ export default function BlogPost(props) {
           <div className="card-subtitle mb-2 text-muted">Dec 27, 2019</div>
         </div>
         <div className="col-12">
-          <img className="center-crop" src="../assets/img/template/stock-photo-3.jpg" alt="" />
+          <img className="center-crop" src="../img/template/stock-photo-3.jpg" alt="" />
         </div>
         <div className="col-12" style={{ marginTop: '30px' }}>
           <p>

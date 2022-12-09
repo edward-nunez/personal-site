@@ -1,4 +1,3 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 
 function InputFeedback({ valid, touched, errorMessage }) {
@@ -22,7 +21,11 @@ function InputFeedback({ valid, touched, errorMessage }) {
 InputFeedback.propTypes = {
   valid: PropTypes.bool.isRequired,
   touched: PropTypes.bool.isRequired,
-  errorMessage: PropTypes.string.isRequired,
+  errorMessage: PropTypes.string,
+};
+
+InputFeedback.defaultProps = {
+  errorMessage: null,
 };
 
 export default InputFeedback;

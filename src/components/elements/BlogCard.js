@@ -28,12 +28,42 @@ function BlogCard({ post }) {
 
 BlogCard.propTypes = {
   post: PropTypes.exact({
-    id: PropTypes.number,
+    id: PropTypes.string,
+    author: PropTypes.exact({
+      name: PropTypes.string,
+      email: PropTypes.string,
+    }),
     title: PropTypes.string,
     titleImage: PropTypes.string,
     subTitle: PropTypes.string,
+    body: PropTypes.string,
     createdAt: PropTypes.string,
     updatedAt: PropTypes.string,
+    upVotes: PropTypes.number,
+    downVotes: PropTypes.number,
+    tags: PropTypes.arrayOf(PropTypes.string),
+    comments: PropTypes.arrayOf(
+      PropTypes.exact({
+        id: PropTypes.string,
+        author: PropTypes.string,
+        createdAt: PropTypes.string,
+        updatedAt: PropTypes.string,
+        comment: PropTypes.string,
+        upVotes: PropTypes.number,
+        downVotes: PropTypes.number,
+        replies: PropTypes.arrayOf(
+          PropTypes.exact({
+            id: PropTypes.string,
+            author: PropTypes.string,
+            createdAt: PropTypes.string,
+            updatedAt: PropTypes.string,
+            comment: PropTypes.string,
+            upVotes: PropTypes.number,
+            downVotes: PropTypes.number,
+          })
+        ),
+      })
+    ),
   }).isRequired,
 };
 

@@ -1,4 +1,3 @@
-import React from 'react';
 import { HandThumbsUp, HandThumbsDown } from 'react-bootstrap-icons';
 import PropTypes from 'prop-types';
 
@@ -61,7 +60,11 @@ CommentCard.propTypes = {
     downVotes: PropTypes.number,
     createdAt: PropTypes.string,
     updatedAt: PropTypes.string,
-  }).isRequired,
+  }),
+};
+
+CommentCard.defaultProps = {
+  comment: {},
 };
 
 export default CommentCard;

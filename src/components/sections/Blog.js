@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
-import { BlogCard } from '../elements';
+import BlogCard from '../elements/BlogCard';
 import blogData from '../../utils/blogData.json';
 
 export default function Blog() {

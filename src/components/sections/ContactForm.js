@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import emailjs from 'emailjs-com';
 
-import { Input, InputFeedback, ReCaptcha } from '../elements';
+import Input from '../elements/Input';
+import InputFeedback from '../elements/InputFeedback';
+import ReCaptcha from '../elements/ReCaptcha';
 
 export default function ContactForm() {
   const [reCaptchaValid, setreCaptchaValid] = useState(false);

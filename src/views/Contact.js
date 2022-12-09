@@ -1,4 +1,3 @@
-import React from 'react';
 import ContactForm from '../components/sections/ContactForm';
 
 export default function Home() {
