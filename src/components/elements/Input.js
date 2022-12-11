@@ -3,21 +3,18 @@ import PropTypes from 'prop-types';
 
 import InputLabel from './InputLabel';
 
-/**
- * TODO
- */
-function Input({ elemType, type, id, placeholder, rows, required, label, index, valid, onChange, onClick }) {
+function Input({ elemType, type, id, placeholder, rows, required, label, index, valid, updateInputState }) {
   const Element = elemType === 'textarea' ? 'textarea' : 'input';
   const [touched, setTouched] = useState(false);
 
   const handleOnChange = (evt) => {
-    onChange(evt, index);
+    updateInputState(evt, index);
   };
 
   const handleOnClick = (evt) => {
     setTouched(true);
 
-    onClick(evt, index, true);
+    updateInputState(evt, index, true);
   };
 
   const isInvalid = () => {
@@ -57,8 +54,7 @@ Input.propTypes = {
   label: PropTypes.string.isRequired,
   index: PropTypes.number.isRequired,
   valid: PropTypes.bool,
-  onChange: PropTypes.func.isRequired,
-  onClick: PropTypes.func.isRequired,
+  updateInputState: PropTypes.func.isRequired,
 };
 
 Input.defaultProps = {
