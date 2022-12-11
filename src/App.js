@@ -1,4 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import './App.scss';
 
@@ -31,6 +33,7 @@ function App() {
           </Routes>
         </div>
       </main>
+      <ToastContainer />
       <Footer />
     </div>
   );
