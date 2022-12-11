@@ -1,12 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import emailjs from 'emailjs-com';
+import { toast } from 'react-toastify';
 
 import Input from '../elements/Input';
 import InputFeedback from '../elements/InputFeedback';
 import ReCaptcha from '../elements/ReCaptcha';
 
 export default function ContactForm() {
-  const [reCaptchaValid, setreCaptchaValid] = useState(false);
   const [formData, setFormData] = useState({
     inputs: [
       {
@@ -57,103 +57,174 @@ export default function ContactForm() {
         value: '',
       },
     ],
-    reCaptcha: { touched: false, valid: false },
-    allFieldsValid: false,
     emailSent: false,
   });
 
-  const updateValid = (valid) => {
-    setreCaptchaValid(valid);
+  const [reCaptchaData, setReCaptchaData] = useState({
+    touched: false,
+    valid: false,
+  });
+
+  const [formValid, setFormValid] = useState(false);
+
+  useEffect(() => {
+    const formValidation = () => {
+      let isFormValid = true;
+
+      formData.inputs.forEach((input) => {
+        if (input.valid === false) {
+          isFormValid = false;
+        }
+      });
+
+      if (!reCaptchaData.valid) {
+        isFormValid = false;
+      }
+
+      return isFormValid;
+    };
+
+    setFormValid(formValidation());
+  }, [formData, reCaptchaData]);
+
+  const updateReCaptchaState = (valid) => {
+    const newData = { valid, touched: true };
+
+    setReCaptchaData(newData);
   };
 
-  const handleReCAPTCHA = () => {
+  const updateInputState = (evt, index, touched) => {
     const newFormData = { ...formData };
-    newFormData.reCaptcha.valid = reCaptchaValid;
-    newFormData.reCaptcha.touched = true;
-
-    setFormData(newFormData);
-  };
-
-  const handleInputEvent = (evt, index, touched) => {
-    const newFormData = { ...formData };
+    newFormData.inputs[index].errorMessage = evt.target.validationMessage;
+    newFormData.inputs[index].valid = evt.target.validity.valid;
+    newFormData.inputs[index].value = evt.target.value;
 
     if (touched) {
       newFormData.inputs[index].touched = touched;
     }
 
-    newFormData.inputs[index].errorMessage = evt.target.validationMessage;
-    newFormData.inputs[index].valid = evt.target.validity.valid;
-    newFormData.inputs[index].value = evt.target.value;
-
-    setFormData(newFormData);
-  };
-
-  const handleValidity = () => {
-    let allFieldsValid = true;
-    const newFormData = formData.inputs.map((input) => {
-      const newInput = input;
-
-      if (newInput.valid === false) {
-        allFieldsValid = false;
-      }
-
-      newInput.touched = true;
-
-      return newInput;
-    });
-
-    newFormData.allFieldsValid = allFieldsValid;
-    setFormData(newFormData);
+    setFormData((oldFormData) => ({ ...oldFormData, ...newFormData }));
   };
 
   const handleSubmit = (evt) => {
     evt.preventDefault(); // Stops page from reloading when user presses Submit.
-    handleValidity();
 
-    console.log(formData.reCaptcha.valid, formData.allFieldsValid);
-    if (formData.reCaptcha.valid && formData.allFieldsValid) {
-      emailjs.sendForm('edwardnnz_service', 'contact_form', evt.target, 'user_907s5tO5hxVUSKyRsGi0U').then(
+    if (formValid) {
+      emailjs.sendForm('service_ccws3ss', 'contact_form', evt.target, 'user_907s5tO5hxVUSKyRsGi0U').then(
         (result) => {
-          console.log(result.text);
+          // Succesfull
+          toast.success('Email has been sent, thank you!', {
+            position: 'bottom-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'light',
+          });
+
           setFormData({ ...formData, emailSent: true });
         },
         (error) => {
-          console.log(error.text);
+          // Failed
+          toast.error('Failed to send email, please try again.', {
+            position: 'bottom-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'light',
+          });
         }
       );
     }
   };
 
-  const renderInputs = () =>
-    formData.inputs.map((input, index) => (
-      <div className="mb-3" key={input.id}>
-        <Input
-          elemType={input.elemType}
-          type={input.type}
-          id={input.id}
-          placeholder={input.placeholder}
-          rows={input.rows}
-          required={input.required}
-          label={input.label}
-          index={index}
-          onChange={handleInputEvent}
-          onClick={handleInputEvent}
-        />
-        <InputFeedback valid={input.valid} touched={input.touched} errorMessage={input.errorMessage} />
-      </div>
-    ));
-
   return (
     <>
       <div style={{ display: `${formData.emailSent ? 'block' : 'none'}` }}>Email sent!</div>
       <form onSubmit={handleSubmit} style={{ display: `${formData.emailSent ? 'none' : 'block'}` }} noValidate>
-        {renderInputs()}
+        <div className="mb-3" key={formData.inputs[0].id}>
+          <Input
+            elemType={formData.inputs[0].elemType}
+            type={formData.inputs[0].type}
+            id={formData.inputs[0].id}
+            placeholder={formData.inputs[0].placeholder}
+            rows={formData.inputs[0].rows}
+            required={formData.inputs[0].required}
+            label={formData.inputs[0].label}
+            index={0}
+            updateInputState={updateInputState}
+          />
+          <InputFeedback
+            valid={formData.inputs[0].valid}
+            touched={formData.inputs[0].touched}
+            errorMessage={formData.inputs[0].errorMessage}
+          />
+        </div>
+        <div className="mb-3" key={formData.inputs[1].id}>
+          <Input
+            elemType={formData.inputs[1].elemType}
+            type={formData.inputs[1].type}
+            id={formData.inputs[1].id}
+            placeholder={formData.inputs[1].placeholder}
+            rows={formData.inputs[1].rows}
+            required={formData.inputs[1].required}
+            label={formData.inputs[1].label}
+            index={1}
+            updateInputState={updateInputState}
+          />
+          <InputFeedback
+            valid={formData.inputs[1].valid}
+            touched={formData.inputs[1].touched}
+            errorMessage={formData.inputs[1].errorMessage}
+          />
+        </div>
+        <div className="mb-3" key={formData.inputs[2].id}>
+          <Input
+            elemType={formData.inputs[2].elemType}
+            type={formData.inputs[2].type}
+            id={formData.inputs[2].id}
+            placeholder={formData.inputs[2].placeholder}
+            rows={formData.inputs[2].rows}
+            required={formData.inputs[2].required}
+            label={formData.inputs[2].label}
+            index={2}
+            updateInputState={updateInputState}
+          />
+          <InputFeedback
+            valid={formData.inputs[2].valid}
+            touched={formData.inputs[2].touched}
+            errorMessage={formData.inputs[2].errorMessage}
+          />
+        </div>
+        <div className="mb-3" key={formData.inputs[3].id}>
+          <Input
+            elemType={formData.inputs[3].elemType}
+            type={formData.inputs[3].type}
+            id={formData.inputs[3].id}
+            placeholder={formData.inputs[3].placeholder}
+            rows={formData.inputs[3].rows}
+            required={formData.inputs[3].required}
+            label={formData.inputs[3].label}
+            index={3}
+            updateInputState={updateInputState}
+          />
+          <InputFeedback
+            valid={formData.inputs[3].valid}
+            touched={formData.inputs[3].touched}
+            errorMessage={formData.inputs[3].errorMessage}
+          />
+        </div>
         <div className="mb-3">
-          <ReCaptcha onChange={handleReCAPTCHA} updateValid={updateValid} />
+          <ReCaptcha updateReCaptchaState={updateReCaptchaState} />
           <div
             className="invalid-feedback"
             style={{
-              display: !formData.reCaptcha.valid && formData.reCaptcha.touched ? 'block' : 'none',
+              display: !reCaptchaData.valid && reCaptchaData.touched ? 'block' : 'none',
             }}
           >
             Please complete ReCAPTCHA
