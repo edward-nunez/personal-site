@@ -1,56 +1,70 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import moment from "moment";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import moment from 'moment';
+import PropTypes from 'prop-types';
 
-function timeSince(date) {
-  let seconds = Math.floor((new Date() - Date.parse(date)) / 1000);
-  let interval = seconds / 31536000;
+import timeSince from '../../utils/timeSince';
 
-  if (interval > 1) {
-    return Math.floor(interval) + " years";
-  }
-  interval = seconds / 2592000;
-  if (interval > 1) {
-    return Math.floor(interval) + " months";
-  }
-  interval = seconds / 86400;
-  if (interval > 1) {
-    return Math.floor(interval) + " days";
-  }
-  interval = seconds / 3600;
-  if (interval > 1) {
-    return Math.floor(interval) + " hours";
-  }
-  interval = seconds / 60;
-  if (interval > 1) {
-    return Math.floor(interval) + " minutes";
-  }
-  return Math.floor(seconds) + " seconds";
-}
-
-export default function BlogCard(props) {
+function BlogCard({ post }) {
   return (
-    <article className="card mb-4" style={{ border: "0px" }}>
-      <Link to={`/blog/${props.post.id}`}>
-        <img
-          className="center-crop"
-          src={props.post.titleImage}
-          style={{ padding: "0px 20px 0px 20px" }}
-          alt=""
-        />
+    <article className="card mb-4" style={{ border: '0px' }}>
+      <Link to={`/blog/${post.id}`}>
+        <img className="center-crop" src={post.titleImage} style={{ padding: '0px 20px 0px 20px' }} alt="" />
       </Link>
       <div className="card-body">
         <h5 className="card-title">
-          <Link to={`/blog/${props.post.id}`} className="card-link">
-            {props.post.title}
+          <Link to={`/blog/${post.id}`} className="card-link">
+            {post.title}
           </Link>
         </h5>
-        <div className="card-subtitle mb-2">{props.post.subTitle}</div>
+        <div className="card-subtitle mb-2">{post.subTitle}</div>
         <div className="card-meta text-muted">
-          {moment(props.post.createdAt).format("MMM DD, YYYY")} Last updated{" "}
-          {timeSince(props.post.updatedAt)} ago
+          {moment(post.createdAt).format('MMM DD, YYYY')} Last updated {timeSince(post.updatedAt)} ago
         </div>
       </div>
     </article>
   );
 }
+
+BlogCard.propTypes = {
+  post: PropTypes.exact({
+    id: PropTypes.string,
+    author: PropTypes.exact({
+      name: PropTypes.string,
+      email: PropTypes.string,
+    }),
+    title: PropTypes.string,
+    titleImage: PropTypes.string,
+    subTitle: PropTypes.string,
+    body: PropTypes.string,
+    createdAt: PropTypes.string,
+    updatedAt: PropTypes.string,
+    upVotes: PropTypes.number,
+    downVotes: PropTypes.number,
+    tags: PropTypes.arrayOf(PropTypes.string),
+    comments: PropTypes.arrayOf(
+      PropTypes.exact({
+        id: PropTypes.string,
+        author: PropTypes.string,
+        createdAt: PropTypes.string,
+        updatedAt: PropTypes.string,
+        comment: PropTypes.string,
+        upVotes: PropTypes.number,
+        downVotes: PropTypes.number,
+        replies: PropTypes.arrayOf(
+          PropTypes.exact({
+            id: PropTypes.string,
+            author: PropTypes.string,
+            createdAt: PropTypes.string,
+            updatedAt: PropTypes.string,
+            comment: PropTypes.string,
+            upVotes: PropTypes.number,
+            downVotes: PropTypes.number,
+          })
+        ),
+      })
+    ),
+  }).isRequired,
+};
+
+export default BlogCard;

@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 
-import BlogCard from "../elements/BlogCard";
-
-import blogPosts from "../../utils/blogposts.json";
+import BlogCard from '../elements/BlogCard';
+import blogData from '../../utils/blogData.json';
 
 export default function Blog() {
   const numberPerPage = 3;
@@ -10,7 +9,9 @@ export default function Blog() {
 
   useEffect(() => {
     const list = [];
-    for (let i = 0; i < Math.ceil(blogPosts.length / numberPerPage); i++) {
+
+    /* eslint no-plusplus: ["error", { "allowForLoopAfterthoughts": true }] */
+    for (let i = 0; i < Math.ceil(blogData.length / numberPerPage); i++) {
       list.push(i + 1);
     }
 
@@ -40,35 +41,26 @@ export default function Blog() {
   // }
 
   return (
-    <div className="col-md-9">
-      {blogPosts.map((post) => (
+    <div className="col-md-9 mx-auto">
+      {blogData.map((post) => (
         <BlogCard key={post.id} post={post} />
       ))}
-      <nav
-        className="col-12"
-        style={{ marginLeft: "20px" }}
-        aria-label="Page navigation example"
-      >
+      <nav className="col-12" style={{ marginLeft: '20px' }} aria-label="Page navigation example">
         <ul className="pagination">
-          <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
-            <button className="page-link" onClick={previousPage}>
+          <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+            <button type="button" className="page-link" onClick={previousPage}>
               Previous
             </button>
           </li>
           {pageNumbers.map((page) => (
-            <li
-              key={page}
-              className={`page-item ${currentPage === page ? "active" : ""}`}
-            >
-              <button className="page-link">{page}</button>
+            <li key={page} className={`page-item ${currentPage === page ? 'active' : ''}`}>
+              <button type="button" className="page-link">
+                {page}
+              </button>
             </li>
           ))}
-          <li
-            className={`page-item ${
-              currentPage === pageNumbers.length ? "disabled" : ""
-            }`}
-          >
-            <button className="page-link" onClick={nextPage}>
+          <li className={`page-item ${currentPage === pageNumbers.length ? 'disabled' : ''}`}>
+            <button type="button" className="page-link" onClick={nextPage}>
               Next
             </button>
           </li>

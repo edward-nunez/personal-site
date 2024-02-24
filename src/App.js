@@ -1,29 +1,41 @@
-import React from "react";
-import { Switch } from "react-router-dom";
+import { Route, Routes } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-// Layouts
-import LayoutDefault from "./layouts/LayoutDefault";
+import './App.scss';
 
 // Views
-import AppRoute from "./utils/AppRoute";
-import Home from "./views/Home";
-import NoMatch from "./views/NoMatch";
-import Work from "./views/Work";
-import BlogPost from "./views/BlogPost";
-import About from "./views/About";
-import Contact from "./views/Contact";
+import Home from './views/Home';
+import NoMatch from './views/NoMatch';
+import Portfolio from './views/Portfolio';
+import Project from './views/Project';
+import BlogPost from './views/BlogPost';
+import About from './views/About';
+import Contact from './views/Contact';
+
+import Header from './components/elements/Header';
+import Footer from './components/elements/Footer';
 
 function App() {
   return (
-    <Switch>
-      <AppRoute exact path="/" component={Home} layout={LayoutDefault} />
-      <AppRoute path="/work" component={Work} layout={LayoutDefault} />
-      <AppRoute path="/blog/:id" component={BlogPost} layout={LayoutDefault} />
-      <AppRoute path="/about" component={About} layout={LayoutDefault} />
-      <AppRoute path="/contact" component={Contact} layout={LayoutDefault} />
-      <AppRoute exact path="/" component={Home} layout={LayoutDefault} />
-      <AppRoute component={NoMatch} layout={LayoutDefault} />
-    </Switch>
+    <div className="App">
+      <Header />
+      <main>
+        <div className="container">
+          <Routes>
+            <Route exact path="/" element={<Home />} />
+            <Route path="/portfolio/:id" element={<Project />} />
+            <Route path="/portfolio" element={<Portfolio />} />
+            <Route path="/blog/:id" element={<BlogPost />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="*" element={<NoMatch />} />
+          </Routes>
+        </div>
+      </main>
+      <ToastContainer />
+      <Footer />
+    </div>
   );
 }
 

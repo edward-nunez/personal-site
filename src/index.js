@@ -1,25 +1,26 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { Router } from "react-router-dom";
-import { createBrowserHistory } from "history";
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
 
-import * as serviceWorker from "./serviceWorker";
+import 'bootstrap/dist/js/bootstrap.min';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-import "./assets/scss/style.scss";
-import "bootstrap/dist/js/bootstrap.min.js";
+import reportWebVitals from './reportWebVitals';
 
-import App from "./App";
+import App from './App';
 
-const history = createBrowserHistory();
+const root = ReactDOM.createRoot(document.getElementById('root'));
 
-ReactDOM.render(
-  <Router history={history}>
-    <App />
-  </Router>,
-  document.getElementById("root")
+root.render(
+  // https://reactjs.org/docs/strict-mode.html
+  <React.StrictMode>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </React.StrictMode>
 );
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.register({});
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals();

@@ -1,5 +1,3 @@
-import React from 'react';
-
 export default function Rose() {
   return (
     <svg
@@ -22,13 +20,7 @@ export default function Rose() {
             dur="6s"
             repeatCount="indefinite"
           />
-          <animate
-            attributeName="stroke-width"
-            values="0;4;4;4;0"
-            dur="6s"
-            repeatCount="indefinite"
-            begin="p1.begin"
-          />
+          <animate attributeName="stroke-width" values="0;4;4;4;0" dur="6s" repeatCount="indefinite" begin="p1.begin" />
         </path>
         <path id="r2">
           <animate
