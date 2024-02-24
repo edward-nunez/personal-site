@@ -1,0 +1,9 @@
+name: edwardnunez
+services:
+  - build_command: yarn build
+    environment_slug: node-js
+    github:
+      branch: main
+      deploy_on_push: true
+      repo: edward-nunez/edwardnunez
+    name: edwardnunez

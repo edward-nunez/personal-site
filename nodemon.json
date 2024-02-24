@@ -1,6 +1,8 @@
 {
-    "ignore": [
-      "client/*"
-    ]
+  "verbose": true,
+  "ignore": ["client/*", ".git", "node_modules/**/node_modules"],
+  "watch": ["server/"],
+  "env": {
+    "NODE_ENV": "development"
   }
-  
+}

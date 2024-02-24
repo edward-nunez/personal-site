@@ -1,10 +1,15 @@
 {
-  "name": "edwardnunez.io-web",
+  "name": "personal-site",
   "version": "1.0.0",
-  "main": "server.js",
-  "repository": "https://github.com/dotRollen/edwardnunez.io-web",
-  "author": "dotRollen <edwardnnz@gmail.com>",
-  "license": "ISC",
+  "description": "This is my personal site source for edwardnunez.io, a blog and portfolio of my latest activity.",
+  "main": "server/bin/www",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/edward-nunez/personal-site"
+  },
+  "author": "Edward Nunez <mail@edwardnunez.io>",
+  "proxy": "http://localhost:3000/",
+  "private": true,
   "scripts": {
     "start": "node server.js",
     "production": "npx pm2 start server.js",
