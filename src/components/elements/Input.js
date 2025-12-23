@@ -3,7 +3,18 @@ import PropTypes from 'prop-types';
 
 import InputLabel from './InputLabel';
 
-function Input({ elemType, type, id, placeholder, rows, required, label, index, valid, updateInputState }) {
+function Input({
+  elemType,
+  type = 'text',
+  id,
+  placeholder,
+  rows = 0,
+  required = false,
+  label,
+  index,
+  valid = null,
+  updateInputState,
+}) {
   const Element = elemType === 'textarea' ? 'textarea' : 'input';
   const [touched, setTouched] = useState(false);
 
@@ -55,13 +66,6 @@ Input.propTypes = {
   index: PropTypes.number.isRequired,
   valid: PropTypes.bool,
   updateInputState: PropTypes.func.isRequired,
-};
-
-Input.defaultProps = {
-  type: 'text',
-  rows: 0,
-  valid: null,
-  required: false,
 };
 
 export default Input;

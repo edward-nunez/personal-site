@@ -8,10 +8,6 @@ const cors = require('cors');
 
 const app = express();
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
-
 app.use(logger('dev'));
 app.use(
   cors({
@@ -30,18 +26,29 @@ app.use(require('./routes'));
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
+  // If this looks like a browser GET for an app route, serve the React app
+  if (req.method === 'GET' && req.accepts('html') && !req.path.startsWith('/api')) {
+    return res.sendFile(path.resolve(__dirname, './_static', 'index.html'));
+  }
   next(createError(404));
 });
 
 // error handler
 app.use((err, req, res, next) => {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  const status = err.status || 500;
+  res.status(status);
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+  // API clients expect JSON
+  if (req.path.startsWith('/api') || (req.accepts('json') && !req.accepts('html'))) {
+    return res.json({ message: err.message, error: req.app.get('env') === 'development' ? err : {} });
+  }
+
+  // For browser requests, send a simple text response (no view engine required)
+  if (req.app.get('env') === 'development') {
+    return res.type('txt').send(`${err.message}\n\n${err.stack}`);
+  }
+
+  return res.type('txt').send('Server Error');
 });
 
 module.exports = app;

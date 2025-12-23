@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import 'bootstrap/dist/js/bootstrap.min';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -11,12 +11,25 @@ import App from './App';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
+const router = createBrowserRouter(
+  [
+    {
+      path: '/*',
+      element: <App />,
+    },
+  ],
+  {
+    // Opt-in to upcoming v7 behaviors to silence future warnings
+    future: {
+      v7_startTransition: true,
+      v7_relativeSplatPath: true,
+    },
+  }
+);
+
 root.render(
-  // https://reactjs.org/docs/strict-mode.html
   <React.StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <RouterProvider router={router} />
   </React.StrictMode>
 );
 

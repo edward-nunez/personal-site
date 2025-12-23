@@ -39,7 +39,7 @@ hr.divider {
 
 /* Effect 1: Brackets */
 .link-spacing {
-  margin: "0px 20px";
+  margin: '0px 20px';
 }
 
 .cl-effect-1 a:hover {
@@ -57,7 +57,7 @@ hr.divider {
 
 .cl-effect-1 a::before {
   margin-right: 10px;
-  content: "{";
+  content: '{';
   -webkit-transform: translateX(20px);
   -moz-transform: translateX(20px);
   transform: translateX(20px);
@@ -65,7 +65,7 @@ hr.divider {
 
 .cl-effect-1 a::after {
   margin-left: 10px;
-  content: "}";
+  content: '}';
   -webkit-transform: translateX(-20px);
   -moz-transform: translateX(-20px);
   transform: translateX(-20px);
@@ -98,12 +98,12 @@ hr.divider {
 
 .active a::before {
   margin-right: 10px;
-  content: "[";
+  content: '[';
 }
 
 .active a::after {
   margin-left: 10px;
-  content: "]";
+  content: ']';
 }
 
 // Blog
