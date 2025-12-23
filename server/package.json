@@ -1,0 +1,25 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "This is the server for my personal site edwardnunez.io.",
+  "author": "Edward Nunez <mail@edwardnunez.io>",
+  "private": true,
+  "main": "server/bin/www",
+  "scritpts": {
+    "start": "pm2 start ./server/bin/www",
+    "dev": "nodemon ./bin/www",
+    "lint": "eslint .",
+    "server": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.3",
+    "mongoose": "^5.13.20",
+    "morgan": "^1.9.1",
+    "path": "^0.12.7",
+    "pm2": "^6.0.14"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}

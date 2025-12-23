@@ -3,7 +3,7 @@ import useAxios from 'axios-hooks';
 import ProjectCard from '../components/elements/ProjectCard';
 
 export default function Portfolio() {
-  const [{ data, loading, error }, refetch] = useAxios('http://localhost:3001/api/projects');
+  const [{ data, loading, error }, refetch] = useAxios('http://localhost:5000/api/v1/projects');
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error!</p>;

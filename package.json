@@ -2,83 +2,26 @@
   "name": "personal-site",
   "version": "1.0.0",
   "description": "This is my personal site source for edwardnunez.io, a blog and portfolio of my latest activity.",
-  "main": "server/bin/www",
+  "author": "Edward Nunez <mail@edwardnunez.io>",
+  "private": true,
+  "workspaces": [
+    "server",
+    "client"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/edward-nunez/personal-site"
   },
-  "author": "Edward Nunez <mail@edwardnunez.io>",
-  "proxy": "http://localhost:3000/",
-  "private": true,
   "scripts": {
-    "start": "node ./server/bin/www",
-    "production": "npx pm2 start ./server/bin/www",
-    "client": "react-scripts start",
-    "server": "nodemon ./server/bin/www",
-    "start-dev": "concurrently \"nodemon ./server/bin/www\" \"npm run client \"",
-    "lint": "eslint .",
-    "build": "react-scripts build",
-    "prune": "node scripts/yarn-prune.js",
-    "test-server": "echo \"Error: no test specified\" && exit 1",
-    "test-client": "react-scripts test",
-    "format": "prettier --write \"src/**/*.{js,jsx,css,scss,html,json,md}\""
-  },
-  "devDependencies": {
-    "@popperjs/core": "^2.9.2",
-    "@testing-library/jest-dom": "^5.14.1",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^14.4.3",
-    "axios": "^1.2.1",
-    "axios-hooks": "^4.0.0",
-    "bootstrap": "^5.2.2",
-    "emailjs-com": "^3.1.0",
-    "eslint": "^8.29.0",
-    "eslint-config-airbnb": "^19.0.0",
-    "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-config-react-app": "^7.0.1",
-    "eslint-plugin-import": "^2.25.3",
-    "eslint-plugin-jsx-a11y": "^6.5.1",
-    "eslint-plugin-prettier": "^4.2.1",
-    "eslint-plugin-react": "^7.27.0",
-    "moment": "^2.29.1",
-    "nodemon": "^2.0.15",
-    "prettier": "^2.8.1",
-    "react": "^18.2.0",
-    "react-bootstrap-icons": "^1.10.2",
-    "react-dom": "^18.3.1",
-    "react-ga": "^3.3.0",
-    "react-google-recaptcha": "^2.1.0",
-    "react-router-dom": "^7.11.0",
-    "react-scripts": "^5.0.1",
-    "react-toastify": "^9.1.1",
-    "sass": "^1.70.0",
-    "web-vitals": "^3.1.0"
-  },
-  "dependencies": {
-    "cookie-session": "^1.3.3",
-    "cors": "^2.8.5",
-    "csurf": "^1.10.0",
-    "express": "^4.17.3",
-    "forever": "^1.0.0",
-    "fs": "^0.0.1-security",
-    "helmet": "^3.21.0",
-    "keygrip": "^1.1.0",
-    "mongoose": "^5.13.20",
-    "morgan": "^1.9.1",
-    "path": "^0.12.7",
-    "pm2": "^3.5.1"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "dev:client": "npm run --workspaces client start",
+    "dev:server": "npm run --workspaces server start",
+    "lint:client": "npm run --workspaces client lint",
+    "lint:server": "npm run --workspaces server lint",
+    "build": "npm run --workspaces client build",
+    "test": "npm run test:client && npm run test:server",
+    "test:client": "npm run --workspaces client test",
+    "test:server": "echo \"Error: no test specified\" && exit 1",
+    "format:client": "npm run --workspaces client format",
+    "format:server": "echo \"Error: no format specified\" && exit 1"
   }
 }
