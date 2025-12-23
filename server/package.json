@@ -4,9 +4,9 @@
   "description": "This is the server for my personal site edwardnunez.io.",
   "author": "Edward Nunez <mail@edwardnunez.io>",
   "private": true,
-  "main": "server/bin/www",
-  "scritpts": {
-    "start": "pm2 start ./server/bin/www",
+  "main": "bin/www",
+  "scripts": {
+    "start": "pm2 start ./bin/www",
     "dev": "nodemon ./bin/www",
     "lint": "eslint .",
     "server": "echo \"Error: no test specified\" && exit 1"

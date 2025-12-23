@@ -5,23 +5,23 @@
   "author": "Edward Nunez <mail@edwardnunez.io>",
   "private": true,
   "workspaces": [
-    "server",
-    "client"
+    "server/",
+    "client/"
   ],
   "repository": {
     "type": "git",
     "url": "https://github.com/edward-nunez/personal-site"
   },
   "scripts": {
-    "dev:client": "npm run --workspaces client start",
-    "dev:server": "npm run --workspaces server start",
-    "lint:client": "npm run --workspaces client lint",
-    "lint:server": "npm run --workspaces server lint",
-    "build": "npm run --workspaces client build",
+    "dev:client": "npm --workspace=client run start",
+    "dev:server": "npm --workspace=server run start",
+    "lint:client": "npm --workspace=client run lint",
+    "lint:server": "npm --workspace=server run lint",
+    "build": "npm --workspace=client run build",
     "test": "npm run test:client && npm run test:server",
-    "test:client": "npm run --workspaces client test",
+    "test:client": "npm --workspace=client run test",
     "test:server": "echo \"Error: no test specified\" && exit 1",
-    "format:client": "npm run --workspaces client format",
+    "format:client": "npm --workspace=client run format",
     "format:server": "echo \"Error: no format specified\" && exit 1"
   }
 }
