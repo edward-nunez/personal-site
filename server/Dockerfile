@@ -1,4 +1,4 @@
-FROM node:12.10-alpine
+FROM node:24-alpine
 
 # Add and switch to user for application security
 RUN adduser -D -g /bin/bash edwardnunez.io-web
@@ -11,7 +11,7 @@ COPY --chown=edwardnunez.io-web . .
 
 RUN yarn installDeps && \
     yarn run build && \
-    yarn run prune && \ 
+    yarn run prune && \
     yarn cache clean
 
 # Set defaults for entrypoint and command string
