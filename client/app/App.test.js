@@ -8,7 +8,7 @@ test('renders app container', () => {
       <App />
     </MemoryRouter>
   );
-  expect(container.querySelector('.App')).toBeInTheDocument();
+  expect(screen.getByRole('main')).toBeInTheDocument();
 });
 
 // Old Test

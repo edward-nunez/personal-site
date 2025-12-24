@@ -4,30 +4,38 @@
   "description": "This is the client for my personal site edwardnunez.io.",
   "author": "Edward Nunez <mail@edwardnunez.io>",
   "private": true,
-  "proxy": "http://localhost:3000/",
+  "type": "module",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "build": "react-router build",
+    "dev": "react-router dev",
+    "start": "react-router-serve ./build/server/index.js",
+    "typecheck": "react-router typegen && tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "bootstrap": "^5.2.2",
-    "moment": "^2.29.1",
-    "react": "^19.0.0",
-    "react-bootstrap-icons": "^1.10.2",
-    "react-dom": "^19.0.0",
+    "bootstrap": "^5.3.8",
+    "@react-router/node": "7.10.1",
+    "@react-router/serve": "7.10.1",
+    "isbot": "^5.1.31",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "react-router": "7.10.1",
     "react-google-recaptcha": "^3.1.0",
-    "react-router-dom": "^6.14.1",
-    "react-scripts": "^5.0.1",
     "react-toastify": "^11.0.5",
-    "sass": "^1.70.0",
-    "server": "^1.0.0",
-    "web-vitals": "^3.1.0"
+    "sass": "^1.97.1"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^5.14.1",
-    "@testing-library/react": "^16.3.1"
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.1",
+    "@react-router/dev": "7.10.1",
+    "@tailwindcss/vite": "^4.1.13",
+    "@types/node": "^22",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "tailwindcss": "^4.1.13",
+    "typescript": "^5.9.2",
+    "vite": "^7.1.7",
+    "vite-tsconfig-paths": "^5.1.4"
   },
   "browserslist": {
     "production": [

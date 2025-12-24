@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import moment from 'moment';
+import formatDate from '../../utils/formatDate';
 import PropTypes from 'prop-types';
 
 import timeSince from '../../utils/timeSince';
@@ -9,7 +9,12 @@ function BlogCard({ post }) {
   return (
     <article className="card mb-4" style={{ border: '0px' }}>
       <Link to={`/blog/${post.id}`}>
-        <img className="center-crop" src={post.titleImage} style={{ padding: '0px 20px 0px 20px' }} alt="" />
+        <img
+          className="center-crop"
+          src={post.titleImage}
+          style={{ padding: '0px 20px 0px 20px' }}
+          alt={post.title}
+        />
       </Link>
       <div className="card-body">
         <h5 className="card-title">
@@ -19,7 +24,7 @@ function BlogCard({ post }) {
         </h5>
         <div className="card-subtitle mb-2">{post.subTitle}</div>
         <div className="card-meta text-muted">
-          {moment(post.createdAt).format('MMM DD, YYYY')} Last updated {timeSince(post.updatedAt)} ago
+          {formatDate(post.createdAt)} Last updated {timeSince(post.updatedAt)} ago
         </div>
       </div>
     </article>

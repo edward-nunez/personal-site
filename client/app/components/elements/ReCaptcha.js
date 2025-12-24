@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 
 import ReCAPTCHA from 'react-google-recaptcha';
 
+// Remove ReCAPTCHA component, no longer maintained
 function ReCaptcha({ updateReCaptchaState }) {
   const handleOnChange = (valid) => {
     if (valid !== null) {

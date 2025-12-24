@@ -1,5 +1,3 @@
-import { HandThumbsUp, HandThumbsDown, Bookmark, ShareFill, Twitter, Linkedin } from 'react-bootstrap-icons';
-
 import CommentCard from '../components/elements/CommentCard';
 
 import blogData from '../utils/blogData.json';
@@ -35,25 +33,17 @@ export default function BlogPost(props) {
         </div>
         <div className="col-12" style={{ marginTop: '30px' }}>
           <p>
-            Some quick example text to build on the card title and make up the bulk of the card&apos;s content. Some
-            quick example text to build on the card title and make up the bulk of the card&apos;s content. Some quick
-            example text to build on the card title and make up the bulk of the card&apos;s content.
+            Some quick example text to build on the card title and make up the bulk of the
+            card&apos;s content. Some quick example text to build on the card title and make up the
+            bulk of the card&apos;s content. Some quick example text to build on the card title and
+            make up the bulk of the card&apos;s content.
           </p>
         </div>
-        <div className="col-6">
-          <HandThumbsUp className="social-icon" /> 0 <HandThumbsDown className="social-icon" /> 0{' '}
-          <Bookmark className="social-icon" />{' '}
-        </div>
+        <div className="col-6">0 0 </div>
         <div className="col-6 text-right">
-          <a className="social-link" rel="noopener noreferrer" href="/#" target="_blank">
-            <ShareFill className="social-icon" />
-          </a>
-          <a className="social-link" rel="noopener noreferrer" href="/#" target="_blank">
-            <Twitter className="social-icon" />
-          </a>
-          <a className="social-link" rel="noopener noreferrer" href="/#" target="_blank">
-            <Linkedin className="social-icon" />
-          </a>
+          <a className="social-link" rel="noopener noreferrer" href="/#" target="_blank"></a>
+          <a className="social-link" rel="noopener noreferrer" href="/#" target="_blank"></a>
+          <a className="social-link" rel="noopener noreferrer" href="/#" target="_blank"></a>
         </div>
         <div className="col-6">
           <small className="text-muted">Tags </small>
@@ -66,7 +56,11 @@ export default function BlogPost(props) {
         </div>
         <div className="col-12">
           <div className="input-group">
-            <textarea className="form-control" aria-label="With textarea" style={{ width: '100%', height: '100px' }} />
+            <textarea
+              className="form-control"
+              aria-label="With textarea"
+              style={{ width: '100%', height: '100px' }}
+            />
           </div>
           <div style={{ marginTop: '5px' }}>
             <button type="button" className="btn btn-dark">

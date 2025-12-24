@@ -1,4 +1,3 @@
-import { HandThumbsUp, HandThumbsDown } from 'react-bootstrap-icons';
 import PropTypes from 'prop-types';
 
 function timeSince(date) {
@@ -39,8 +38,7 @@ function CommentCard({ comment }) {
             {comment.body}
           </div>
           <div className="card-text">
-            <HandThumbsUp className="social-icon" /> {comment.upVotes} <HandThumbsDown className="social-icon" />{' '}
-            {comment.downVotes}{' '}
+            {comment.upVotes} {comment.downVotes}{' '}
             <button type="button" className="btn btn-outline-dark" style={{ border: 'none' }}>
               REPLY
             </button>
