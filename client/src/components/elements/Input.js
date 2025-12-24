@@ -68,4 +68,10 @@ Input.propTypes = {
   updateInputState: PropTypes.func.isRequired,
 };
 
+Input.defaultProps = {
+  type: 'text',
+  rows: 0,
+  required: false,
+  valid: null,
+};
 export default Input;

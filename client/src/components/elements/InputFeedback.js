@@ -24,4 +24,8 @@ InputFeedback.propTypes = {
   errorMessage: PropTypes.string,
 };
 
+InputFeedback.defaultProps = {
+  errorMessage: null,
+};
+
 export default InputFeedback;

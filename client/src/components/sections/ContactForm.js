@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import emailjs from 'emailjs-com';
 import { toast } from 'react-toastify';
 
 import Input from '../elements/Input';
@@ -110,36 +109,30 @@ export default function ContactForm() {
     evt.preventDefault(); // Stops page from reloading when user presses Submit.
 
     if (formValid) {
-      emailjs.sendForm('service_ccws3ss', 'contact_form', evt.target, 'user_907s5tO5hxVUSKyRsGi0U').then(
-        (result) => {
-          // Succesfull
-          toast.success('Email has been sent, thank you!', {
-            position: 'bottom-right',
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: 'light',
-          });
+      // Succesfull
+      toast.success('Email has been sent, thank you!', {
+        position: 'bottom-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+      });
 
-          setFormData({ ...formData, emailSent: true });
-        },
-        (error) => {
-          // Failed
-          toast.error('Failed to send email, please try again.', {
-            position: 'bottom-right',
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: 'light',
-          });
-        }
-      );
+      // toast.error('Failed to send email, please try again.', {
+      //   position: 'bottom-right',
+      //   autoClose: 5000,
+      //   hideProgressBar: false,
+      //   closeOnClick: true,
+      //   pauseOnHover: true,
+      //   draggable: true,
+      //   progress: undefined,
+      //   theme: 'light',
+      // });
+
+      setFormData({ ...formData, emailSent: true });
     }
   };
 
