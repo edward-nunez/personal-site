@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: personal-site-postgres
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
+      POSTGRES_DB: personal_site
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - personal-site-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d personal_site"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: .
+      dockerfile: ./packages/backend/Dockerfile
+    container_name: personal-site-backend
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: development
+      DATABASE_URL: postgresql://admin:admin123@postgres:5432/personal_site?schema=public
+      CORS_ORIGIN: http://localhost:5173
+      JWT_SECRET: dev-secret-change-in-production
+      JWT_EXPIRES_IN: 7d
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./packages/backend/src:/app/src
+    networks:
+      - personal-site-network
+
+  frontend:
+    build:
+      context: .
+      dockerfile: ./packages/frontend/Dockerfile
+    container_name: personal-site-frontend
+    ports:
+      - "5173:5173"
+    environment:
+      VITE_API_BASE_URL: http://localhost:3000
+    depends_on:
+      - backend
+    volumes:
+      - ./packages/frontend/src:/app/src
+    networks:
+      - personal-site-network
+
+volumes:
+  postgres_data:
+
+networks:
+  personal-site-network:
+    driver: bridge

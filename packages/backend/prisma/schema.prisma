@@ -1,0 +1,140 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Experience {
+  id            Int      @id @default(autoincrement())
+  company       String
+  role          String
+  startDate     DateTime
+  endDate       DateTime?
+  description   String?  @db.Text
+  achievements  String[] @default([])
+  skills        String[] @default([])
+  technologies  String[] @default([])
+  location      String?
+  employmentType String? // Full-time, Contract, etc.
+  featured      Boolean  @default(false)
+  order         Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([startDate])
+  @@index([featured])
+  @@map("experiences")
+}
+
+model Project {
+  id              Int       @id @default(autoincrement())
+  title           String
+  slug            String    @unique
+  description     String    @db.Text
+  shortDescription String?
+  technologies    String[]  @default([])
+  category        String    // Web, Mobile, Game, DevOps, etc.
+  tags            String[]  @default([])
+  githubUrl       String?
+  liveUrl         String?
+  godotWebExport  String?   // URL to Godot web export
+  images          String[]  @default([])
+  featured        Boolean   @default(false)
+  status          String    @default("completed") // completed, in-progress, archived
+  startDate       DateTime?
+  endDate         DateTime?
+  order           Int       @default(0)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([slug])
+  @@index([category])
+  @@index([featured])
+  @@map("projects")
+}
+
+model BlogPost {
+  id          Int      @id @default(autoincrement())
+  title       String
+  slug        String   @unique
+  content     String   @db.Text
+  excerpt     String?  @db.Text
+  category    String   // Godot Development, DevOps, Cloud Architecture, etc.
+  tags        String[] @default([])
+  coverImage  String?
+  published   Boolean  @default(false)
+  publishedAt DateTime?
+  featured    Boolean  @default(false)
+  views       Int      @default(0)
+  readTime    Int?     // Estimated read time in minutes
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([slug])
+  @@index([category])
+  @@index([published])
+  @@index([publishedAt])
+  @@index([featured])
+  @@map("blog_posts")
+}
+
+model ContactSubmission {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String
+  subject   String?
+  message   String   @db.Text
+  read      Boolean  @default(false)
+  notes     String?  @db.Text // Admin notes
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([read])
+  @@index([createdAt])
+  @@map("contact_submissions")
+}
+
+model ConsultationSubmission {
+  id          Int      @id @default(autoincrement())
+  name        String
+  email       String
+  company     String?
+  serviceType String   // DevSecOps, Cloud Architecture, Full-Stack Development, etc.
+  budget      String?  // Budget range
+  timeline    String?  // Desired timeline
+  description String   @db.Text
+  read        Boolean  @default(false)
+  notes       String?  @db.Text // Admin notes
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([read])
+  @@index([createdAt])
+  @@map("consultation_submissions")
+}
+
+model AdminUser {
+  id             Int      @id @default(autoincrement())
+  username       String   @unique
+  email          String   @unique
+  hashedPassword String
+  firstName      String?
+  lastName       String?
+  active         Boolean  @default(true)
+  lastLoginAt    DateTime?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([username])
+  @@index([email])
+  @@map("admin_users")
+}
