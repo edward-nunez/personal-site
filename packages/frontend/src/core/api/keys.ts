@@ -21,9 +21,25 @@ export const queryKeys = {
     results: (query: string) => ['search', query] as const,
   },
   admin: {
+    experiences: {
+      all: ['admin', 'experiences'] as const,
+      detail: (id: string) => ['admin', 'experiences', id] as const,
+    },
+    projects: {
+      all: ['admin', 'projects'] as const,
+      detail: (id: string) => ['admin', 'projects', id] as const,
+    },
+    blog: {
+      all: ['admin', 'blog'] as const,
+      detail: (id: string) => ['admin', 'blog', id] as const,
+    },
     submissions: {
       contacts: ['admin', 'contacts'] as const,
       consultations: ['admin', 'consultations'] as const,
     },
+    dashboard: {
+      stats: ['admin', 'dashboard', 'stats'] as const,
+    },
+    user: ['admin', 'user'] as const,
   },
 } as const;

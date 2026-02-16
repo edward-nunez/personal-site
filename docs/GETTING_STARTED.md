@@ -6,6 +6,7 @@ This guide will help you set up your development environment and get the applica
 - [System Requirements](#system-requirements)
 - [Local Development Setup](#local-development-setup)
 - [Docker Setup](#docker-setup)
+- [Frontend Theme & Styling](#frontend-theme--styling)
 - [Verify Installation](#verify-installation)
 - [First Steps](#first-steps)
 - [Troubleshooting](#troubleshooting)
@@ -167,7 +168,83 @@ docker-compose up -d            # Start other services
 
 ---
 
-## Verify Installation
+## Frontend Theme & Styling
+
+### Theme System Overview
+
+The frontend uses a **CSS-based design token system** with **class-based dark mode**:
+
+- **Light Mode** (Default): CSS variables in `:root`
+- **Dark Mode**: CSS variables overridden in `.dark` class (toggled on `<html>` element)
+- **Toggle**: Saved to `localStorage` via Zustand store
+- **Tailwind**: v4 with `@custom-variant` for `.dark` class support
+
+### Design Tokens
+
+All theme colors are defined in `packages/frontend/src/design-system/styles/globals.css`:
+
+**Light Mode** (`:root`):
+```css
+--color-bg: #FFFFFF;
+--color-fg: #111827;           /* Near-black text */
+--color-fg-secondary: #4B5563; /* Dark gray */
+--color-bg-tertiary: #F3F4F6;  /* Light gray for inputs */
+```
+
+**Dark Mode** (`.dark`):
+```css
+--color-bg: #0A0A0A;
+--color-fg: #FAFAFA;           /* Near-white text */
+--color-fg-secondary: #A1A1A1; /* Light gray */
+--color-bg-tertiary: #1A1A1A;  /* Dark gray for inputs */
+```
+
+### Input Fields in Dark Mode
+
+Inputs automatically get a **light background with dark text** in dark mode for readability:
+```css
+.dark input,
+.dark textarea,
+.dark select {
+  background-color: #F3F4F6;  /* Light gray background */
+  color: #111827;              /* Black text */
+}
+```
+
+Icons inside inputs use the `.input-icon` class for consistent dark color in dark mode.
+
+### Common Tailwind Classes
+
+Use these theme-aware classes throughout the app:
+
+| Class | Light | Dark |
+|-------|-------|------|
+| `text-fg` | #111827 | #FAFAFA |
+| `text-fg-secondary` | #4B5563 | #A1A1A1 |
+| `bg-bg` | #FFFFFF | #0A0A0A |
+| `border-border` | #E5E7EB | #262626 |
+
+**No need for `dark:` prefix** — CSS variables handle the switching automatically.
+
+### Modal Backdrop
+
+Modals use different backdrops for each mode:
+- **Light Mode**: `bg-white/80` (white wash) so black elements contrast with page background
+- **Dark Mode**: `bg-black/80` (dark overlay) for traditional modal appearance
+
+### Testing Dark Mode Locally
+
+```bash
+# Open DevTools Console in browser and run:
+# Toggle dark mode
+document.documentElement.classList.toggle('dark');
+
+# Or programmatically
+document.documentElement.classList.add('dark');      # Enable
+document.documentElement.classList.remove('dark');   # Disable
+```
+
+---
 
 ### Health Checks
 
@@ -356,4 +433,4 @@ npm run test:backend
 
 ---
 
-**Last Updated**: February 2026
+**Last Updated**: February 16, 2026 - Phase 2 Complete with Theme/Styling Refinements

@@ -36,11 +36,8 @@ export function BlogContent({ content }: BlogContentProps) {
             node: _node,
             inline,
             ...props
-          }: {
-            node?: unknown;
-            inline?: boolean;
-            [key: string]: unknown;
-          }) =>
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          }: any) =>
             inline ? (
               <code
                 className="px-1.5 py-0.5 rounded bg-bg-tertiary text-accent font-mono text-sm"

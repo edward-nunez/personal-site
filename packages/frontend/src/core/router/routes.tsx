@@ -53,24 +53,28 @@ const SearchResultsPage = lazy(() =>
   import('@/features/search').then((m) => ({ default: m.SearchResultsPage }))
 );
 
-/* ─── Admin pages (stubs for now) ─── */
-function PlaceholderPage({ title }: { title: string }) {
-  return (
-    <main className="flex-1 flex items-center justify-center py-20">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold tracking-tight text-fg mb-4">{title}</h1>
-        <p className="text-fg-muted">This page is under construction.</p>
-      </div>
-    </main>
-  );
-}
-
-const AdminLogin = () => <PlaceholderPage title="Admin Login" />;
-const AdminDashboard = () => <PlaceholderPage title="Admin Dashboard" />;
-const AdminExperience = () => <PlaceholderPage title="Manage Experience" />;
-const AdminProjects = () => <PlaceholderPage title="Manage Projects" />;
-const AdminBlog = () => <PlaceholderPage title="Manage Blog" />;
-const AdminSubmissions = () => <PlaceholderPage title="Submissions" />;
+/* ─── Admin pages ─── */
+const AdminLoginPage = lazy(() =>
+  import('@/features/admin').then((m) => ({ default: m.AdminLoginPage }))
+);
+const AdminDashboardPage = lazy(() =>
+  import('@/features/admin').then((m) => ({ default: m.AdminDashboardPage }))
+);
+const AdminExperiencePage = lazy(() =>
+  import('@/features/admin').then((m) => ({ default: m.AdminExperiencePage }))
+);
+const AdminProjectsPage = lazy(() =>
+  import('@/features/admin').then((m) => ({ default: m.AdminProjectsPage }))
+);
+const AdminBlogPage = lazy(() =>
+  import('@/features/admin').then((m) => ({ default: m.AdminBlogPage }))
+);
+const AdminSubmissionsPage = lazy(() =>
+  import('@/features/admin').then((m) => ({ default: m.AdminSubmissionsPage }))
+);
+const AdminLayout = lazy(() =>
+  import('@/features/admin').then((m) => ({ default: m.AdminLayout }))
+);
 
 /* ─── Not Found ─── */
 function NotFound() {
@@ -114,26 +118,26 @@ export const router = createBrowserRouter([
   {
     path: 'admin/login',
     element: (
-      <Layout>
-        <AdminLogin />
-      </Layout>
+      <Suspense fallback={<PageLoader />}>
+        <AdminLoginPage />
+      </Suspense>
     ),
   },
   {
     path: 'admin',
     element: (
       <ProtectedRoute>
-        <Layout>
-          <Outlet />
-        </Layout>
+        <Suspense fallback={<PageLoader />}>
+          <AdminLayout />
+        </Suspense>
       </ProtectedRoute>
     ),
     children: [
-      { index: true, element: <AdminDashboard /> },
-      { path: 'experience', element: <AdminExperience /> },
-      { path: 'projects', element: <AdminProjects /> },
-      { path: 'blog', element: <AdminBlog /> },
-      { path: 'submissions', element: <AdminSubmissions /> },
+      { index: true, element: <AdminDashboardPage /> },
+      { path: 'experience', element: <AdminExperiencePage /> },
+      { path: 'projects', element: <AdminProjectsPage /> },
+      { path: 'blog', element: <AdminBlogPage /> },
+      { path: 'submissions', element: <AdminSubmissionsPage /> },
     ],
   },
 ]);
