@@ -20,7 +20,7 @@ export interface IAdminUserRepository {
    * Find admin user by ID
    * @param id Admin user ID
    */
-  findById(id: number): Promise<AdminUser | null>;
+  findById(id: string): Promise<AdminUser | null>;
 
   /**
    * Find admin user by username
@@ -50,13 +50,13 @@ export interface IAdminUserRepository {
    * Delete admin user by ID
    * @param id Admin user ID
    */
-  delete(id: number): Promise<boolean>;
+  delete(id: string): Promise<boolean>;
 
   /**
    * Update last login timestamp
    * @param id Admin user ID
    */
-  updateLastLogin(id: number): Promise<void>;
+  updateLastLogin(id: string): Promise<void>;
 
   /**
    * Count total admin users

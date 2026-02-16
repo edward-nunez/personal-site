@@ -3,7 +3,7 @@
  * Represents an administrative user with access to the backend
  */
 export interface AdminUser {
-  id: number;
+  id: string;
   username: string;
   email: string;
   hashedPassword: string;
@@ -31,7 +31,7 @@ export interface CreateAdminUserInput {
  * DTO for updating admin user
  */
 export interface UpdateAdminUserInput {
-  id: number;
+  id: string;
   username?: string;
   email?: string;
   password?: string; // Plain text - will be hashed
@@ -44,7 +44,7 @@ export interface UpdateAdminUserInput {
  * Admin user without sensitive data (for responses)
  */
 export interface SafeAdminUser {
-  id: number;
+  id: string;
   username: string;
   email: string;
   firstName?: string | null;

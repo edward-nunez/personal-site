@@ -3,7 +3,7 @@
  * Represents a professional work experience or role
  */
 export interface Experience {
-  id: number;
+  id: string;
   company: string;
   role: string;
   startDate: Date;
@@ -42,7 +42,7 @@ export interface CreateExperienceInput {
  * DTO for updating experience (all fields optional except id)
  */
 export interface UpdateExperienceInput {
-  id: number;
+  id: string;
   company?: string;
   role?: string;
   startDate?: Date;

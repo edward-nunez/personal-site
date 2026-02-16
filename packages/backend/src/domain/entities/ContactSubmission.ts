@@ -3,7 +3,7 @@
  * Represents a contact form submission
  */
 export interface ContactSubmission {
-  id: number;
+  id: string;
   name: string;
   email: string;
   subject?: string | null;
@@ -28,7 +28,7 @@ export interface CreateContactSubmissionInput {
  * DTO for updating contact submission (admin only - mark as read, add notes)
  */
 export interface UpdateContactSubmissionInput {
-  id: number;
+  id: string;
   read?: boolean;
   notes?: string | null;
 }

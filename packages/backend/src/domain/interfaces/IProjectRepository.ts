@@ -21,7 +21,7 @@ export interface IProjectRepository {
    * Find project by ID
    * @param id Project ID
    */
-  findById(id: number): Promise<Project | null>;
+  findById(id: string): Promise<Project | null>;
 
   /**
    * Find project by slug
@@ -63,7 +63,7 @@ export interface IProjectRepository {
    * Delete project by ID
    * @param id Project ID
    */
-  delete(id: number): Promise<boolean>;
+  delete(id: string): Promise<boolean>;
 
   /**
    * Get all unique categories

@@ -62,10 +62,10 @@ This project has **comprehensive documentation** for every audience:
 │  - Presentation Layer (HTTP API)                         │
 │         http://localhost:3000/api                        │
 └────────────────┬────────────────────────────────────────┘
-                 │ Prisma ORM
+                 │ Drizzle ORM
                  ▼
 ┌─────────────────────────────────────────┐
-│       PostgreSQL 16 Database            │
+│       PostgreSQL 18 Database            │
 │           localhost:5432                │
 └─────────────────────────────────────────┘
 ```
@@ -78,7 +78,7 @@ This project has **comprehensive documentation** for every audience:
 - ✅ **Type-Safe** - Full TypeScript with strict mode, no `any` types
 - ✅ **RESTful API** - Well-documented endpoints with OpenAPI-standards
 - ✅ **Monorepo** - Backend, frontend, and Helm charts in one repo using npm workspaces
-- ✅ **PostgreSQL + Prisma** - Type-safe ORM with migrations
+- ✅ **PostgreSQL + Drizzle** - Type-safe SQL query builder with migrations
 - ✅ **Authentication** - JWT-based auth with secure token handling
 - ✅ **Testing** - Jest (backend), Vitest + Playwright E2E (frontend)
 - ✅ **Docker & Kubernetes** - Production-ready deployment with Helm
@@ -150,7 +150,7 @@ personal-site-v2/
 | Layer | Technology |
 |-------|-----------|
 | **Frontend** | React 19, Vite, TypeScript, TailwindCSS, TanStack Query |
-| **Backend** | Express.js, TypeScript, Prisma ORM, PostgreSQL 16 |
+| **Backend** | Express.js, TypeScript, Drizzle ORM, PostgreSQL 18 |
 | **Testing** | Jest, Vitest, Playwright, React Testing Library |
 | **Quality** | ESLint, Prettier, Husky (pre-commit hooks) |
 | **Deployment** | Docker, Kubernetes, Helm, docker-compose |
@@ -218,7 +218,7 @@ PORT=3001 npm run dev:backend
 **Database connection error?**
 ```bash
 # Make sure PostgreSQL is running (Docker Compose or local)
-npm run prisma:migrate -w packages/backend
+npm run drizzle:migrate -w packages/backend
 ```
 
 **Can't access API from frontend?**

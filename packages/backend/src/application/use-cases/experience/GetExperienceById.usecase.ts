@@ -8,7 +8,7 @@ import { NotFoundError } from '../../../shared/errors/index.js';
 export class GetExperienceByIdUseCase {
   constructor(private experienceRepository: IExperienceRepository) {}
 
-  async execute(id: number): Promise<Experience> {
+  async execute(id: string): Promise<Experience> {
     const experience = await this.experienceRepository.findById(id);
 
     if (!experience) {

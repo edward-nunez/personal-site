@@ -7,7 +7,7 @@ import config from '../../../configs/index.js';
 export interface LoginResult {
   token: string;
   user: {
-    id: number;
+    id: string;
     username: string;
     email: string;
   };

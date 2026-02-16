@@ -4,7 +4,7 @@ import { UnauthorizedError } from '../../shared/errors/index.js';
 
 // Extend Express Request to include user
 export interface AuthenticatedUser {
-  id: number;
+  id: string;
   username: string;
   email: string;
 }

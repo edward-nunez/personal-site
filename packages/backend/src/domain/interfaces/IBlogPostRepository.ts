@@ -24,7 +24,7 @@ export interface IBlogPostRepository {
    * Find blog post by ID
    * @param id Blog post ID
    */
-  findById(id: number): Promise<BlogPost | null>;
+  findById(id: string): Promise<BlogPost | null>;
 
   /**
    * Find blog post by slug
@@ -66,13 +66,13 @@ export interface IBlogPostRepository {
    * Delete blog post by ID
    * @param id Blog post ID
    */
-  delete(id: number): Promise<boolean>;
+  delete(id: string): Promise<boolean>;
 
   /**
    * Increment view count
    * @param id Blog post ID
    */
-  incrementViews(id: number): Promise<void>;
+  incrementViews(id: string): Promise<void>;
 
   /**
    * Get all unique categories

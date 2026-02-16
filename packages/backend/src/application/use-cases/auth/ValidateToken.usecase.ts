@@ -3,7 +3,7 @@ import { UnauthorizedError } from '../../../shared/errors/index.js';
 import config from '../../../configs/index.js';
 
 export interface TokenPayload {
-  id: number;
+  id: string;
   username: string;
   email: string;
 }

@@ -3,7 +3,7 @@
  * Represents a portfolio project or work sample
  */
 export interface Project {
-  id: number;
+  id: string;
   title: string;
   slug: string;
   description: string;
@@ -50,7 +50,7 @@ export interface CreateProjectInput {
  * DTO for updating project
  */
 export interface UpdateProjectInput {
-  id: number;
+  id: string;
   title?: string;
   slug?: string;
   description?: string;

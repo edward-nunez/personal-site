@@ -25,7 +25,7 @@ export interface IExperienceRepository {
    * @param id Experience ID
    * @returns Experience or null if not found
    */
-  findById(id: number): Promise<Experience | null>;
+  findById(id: string): Promise<Experience | null>;
 
   /**
    * Find experiences by technology/skill
@@ -52,7 +52,7 @@ export interface IExperienceRepository {
    * @param id Experience ID
    * @returns True if deleted, false if not found
    */
-  delete(id: number): Promise<boolean>;
+  delete(id: string): Promise<boolean>;
 
   /**
    * Count total experiences

@@ -7,7 +7,7 @@ import { NotFoundError } from '../../../shared/errors/index.js';
 export class DeleteExperienceUseCase {
   constructor(private experienceRepository: IExperienceRepository) {}
 
-  async execute(id: number): Promise<void> {
+  async execute(id: string): Promise<void> {
     const deleted = await this.experienceRepository.delete(id);
 
     if (!deleted) {

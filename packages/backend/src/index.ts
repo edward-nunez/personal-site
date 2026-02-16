@@ -2,7 +2,7 @@ import './configs/index.js'; // Load dotenv once for runtime
 import express, { Express } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
-import PrismaService from './infrastructure/persistence/prismaClient.js';
+import DbService from './infrastructure/persistence/db.js';
 import apiRoutes from './routes/index.js';
 import { errorHandler } from './presentation/middleware/errorHandler.middleware.js';
 import { apiLimiter } from './presentation/middleware/rateLimiter.middleware.js';
@@ -32,7 +32,7 @@ app.get('/health', (_req, res) => {
 });
 
 app.get('/ready', async (_req, res) => {
-  const dbHealthy = await PrismaService.healthCheck();
+  const dbHealthy = await DbService.healthCheck();
   res.status(dbHealthy ? 200 : 503).json({
     status: dbHealthy ? 'ready' : 'degraded',
     database: dbHealthy ? 'connected' : 'disconnected',
@@ -49,7 +49,7 @@ app.use(errorHandler);
 const startServer = async (): Promise<void> => {
   try {
     // Connect to database
-    await PrismaService.connect();
+    await DbService.connect();
 
     app.listen(port, () => {
       logger.info('🚀 Server started successfully');

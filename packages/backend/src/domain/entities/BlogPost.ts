@@ -3,7 +3,7 @@
  * Represents a blog article or post
  */
 export interface BlogPost {
-  id: number;
+  id: string;
   title: string;
   slug: string;
   content: string;
@@ -41,7 +41,7 @@ export interface CreateBlogPostInput {
  * DTO for updating blog post
  */
 export interface UpdateBlogPostInput {
-  id: number;
+  id: string;
   title?: string;
   slug?: string;
   content?: string;

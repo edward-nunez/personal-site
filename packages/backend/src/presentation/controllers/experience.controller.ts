@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { PrismaExperienceRepository } from '../../infrastructure/repositories/PrismaExperienceRepository.js';
+import { DrizzleExperienceRepository } from '../../infrastructure/repositories/DrizzleExperienceRepository.js';
 import {
   GetAllExperiencesUseCase,
   GetExperienceByIdUseCase,
@@ -17,7 +17,7 @@ import {
  * Handles HTTP requests for Experience resources
  */
 export class ExperienceController {
-  private repository = new PrismaExperienceRepository();
+  private repository = new DrizzleExperienceRepository();
 
   /**
    * GET /api/experiences
@@ -50,7 +50,7 @@ export class ExperienceController {
    */
   async getById(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const id = parseInt(String(req.params.id), 10);
+      const id = String(req.params.id);
       const useCase = new GetExperienceByIdUseCase(this.repository);
 
       const experience = await useCase.execute(id);
@@ -97,7 +97,7 @@ export class ExperienceController {
    */
   async update(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const id = parseInt(String(req.params.id), 10);
+      const id = String(req.params.id);
       const validatedData = UpdateExperienceSchema.parse(req.body);
       const useCase = new UpdateExperienceUseCase(this.repository);
 
@@ -125,7 +125,7 @@ export class ExperienceController {
    */
   async delete(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const id = parseInt(String(req.params.id), 10);
+      const id = String(req.params.id);
       const useCase = new DeleteExperienceUseCase(this.repository);
 
       await useCase.execute(id);

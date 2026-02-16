@@ -3,7 +3,7 @@
  * Represents a consultation request form submission
  */
 export interface ConsultationSubmission {
-  id: number;
+  id: string;
   name: string;
   email: string;
   company?: string | null;
@@ -34,7 +34,7 @@ export interface CreateConsultationSubmissionInput {
  * DTO for updating consultation submission (admin only)
  */
 export interface UpdateConsultationSubmissionInput {
-  id: number;
+  id: string;
   read?: boolean;
   notes?: string | null;
 }

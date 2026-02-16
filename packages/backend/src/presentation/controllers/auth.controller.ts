@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { PrismaAdminUserRepository } from '../../infrastructure/repositories/PrismaAdminUserRepository.js';
+import { DrizzleAdminUserRepository } from '../../infrastructure/repositories/DrizzleAdminUserRepository.js';
 import { LoginUseCase } from '../../application/use-cases/auth/index.js';
 import { LoginSchema } from '../../application/dtos/auth.dto.js';
 
@@ -8,7 +8,7 @@ import { LoginSchema } from '../../application/dtos/auth.dto.js';
  * Handles authentication and authorization
  */
 export class AuthController {
-  private repository = new PrismaAdminUserRepository();
+  private repository = new DrizzleAdminUserRepository();
 
   /**
    * POST /api/auth/login

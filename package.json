@@ -25,11 +25,11 @@
     "format:frontend": "npm run format -w packages/frontend",
     "format:check": "npm run format:check --workspaces",
     "test:frontend:ui": "npm run test:ui -w packages/frontend",
-    "prisma:generate": "npm run prisma:generate -w packages/backend",
-    "prisma:migrate": "npm run prisma:migrate -w packages/backend",
-    "prisma:studio": "npm run prisma:studio -w packages/backend",
-    "prisma:push": "npm run prisma:push -w packages/backend",
-    "prisma:seed": "npm run prisma:seed -w packages/backend",
+    "drizzle:generate": "npm run drizzle:generate -w packages/backend",
+    "drizzle:migrate": "npm run drizzle:migrate -w packages/backend",
+    "drizzle:push": "npm run drizzle:push -w packages/backend",
+    "drizzle:studio": "npm run drizzle:studio -w packages/backend",
+    "drizzle:seed": "npm run drizzle:seed -w packages/backend",
     "prepare": "husky install"
   },
   "devDependencies": {

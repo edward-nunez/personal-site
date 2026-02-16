@@ -25,7 +25,7 @@ export interface IContactSubmissionRepository {
    * Find contact submission by ID
    * @param id Submission ID
    */
-  findById(id: number): Promise<ContactSubmission | null>;
+  findById(id: string): Promise<ContactSubmission | null>;
 
   /**
    * Create new contact submission
@@ -43,7 +43,7 @@ export interface IContactSubmissionRepository {
    * Delete contact submission by ID
    * @param id Submission ID
    */
-  delete(id: number): Promise<boolean>;
+  delete(id: string): Promise<boolean>;
 
   /**
    * Count total submissions

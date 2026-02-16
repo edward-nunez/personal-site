@@ -26,7 +26,7 @@ export interface IConsultationSubmissionRepository {
    * Find consultation submission by ID
    * @param id Submission ID
    */
-  findById(id: number): Promise<ConsultationSubmission | null>;
+  findById(id: string): Promise<ConsultationSubmission | null>;
 
   /**
    * Create new consultation submission
@@ -44,7 +44,7 @@ export interface IConsultationSubmissionRepository {
    * Delete consultation submission by ID
    * @param id Submission ID
    */
-  delete(id: number): Promise<boolean>;
+  delete(id: string): Promise<boolean>;
 
   /**
    * Count total submissions
