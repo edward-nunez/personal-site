@@ -1,1 +1,0 @@
-export { ConsultationForm } from './ConsultationForm';

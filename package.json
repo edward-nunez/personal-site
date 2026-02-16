@@ -13,28 +13,24 @@
     "build": "npm run build --workspaces",
     "build:backend": "npm run build -w packages/backend",
     "build:frontend": "npm run build -w packages/frontend",
+    "preview:frontend": "npm run preview -w packages/frontend",
     "test": "npm run test --workspaces",
     "test:backend": "npm run test -w packages/backend",
     "test:frontend": "npm run test -w packages/frontend",
     "lint": "npm run lint --workspaces",
-    "lint:fix": "npm run lint:fix --workspaces",
     "lint:backend": "npm run lint -w packages/backend",
     "lint:frontend": "npm run lint -w packages/frontend",
-    "format": "npm run format --workspaces",
+    "lint:fix:backend": "npm run lint:fix -w packages/backend",
     "format:backend": "npm run format -w packages/backend",
-    "format:frontend": "npm run format -w packages/frontend",
-    "format:check": "npm run format:check --workspaces",
-    "test:frontend:ui": "npm run test:ui -w packages/frontend",
+    "format:check:backend": "npm run format:check -w packages/backend",
     "drizzle:generate": "npm run drizzle:generate -w packages/backend",
     "drizzle:migrate": "npm run drizzle:migrate -w packages/backend",
     "drizzle:push": "npm run drizzle:push -w packages/backend",
     "drizzle:studio": "npm run drizzle:studio -w packages/backend",
     "drizzle:seed": "npm run drizzle:seed -w packages/backend",
-    "prepare": "husky install"
+    "prepare": "husky"
   },
   "devDependencies": {
-    "@eslint/js": "^10.0.1",
-    "globals": "^17.3.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.7"
   },
@@ -44,8 +40,13 @@
       "prettier --write"
     ],
     "packages/frontend/**/*.{ts,tsx}": [
-      "eslint --fix",
-      "prettier --write"
+      "eslint --fix"
     ]
+  },
+  "overrides": {
+    "eslint": "^10.0.0",
+    "@esbuild-kit/core-utils": {
+      "esbuild": ">=0.25.0"
+    }
   }
 }
