@@ -42,6 +42,15 @@ app.get('/ready', async (_req, res) => {
 // API routes
 app.use('/api', apiRoutes);
 
+// 404 handler for unmatched routes (must come after all routes)
+app.use((_req, res) => {
+  res.status(404).json({
+    success: false,
+    error: 'Route not found',
+    message: 'The requested endpoint does not exist',
+  });
+});
+
 // Error handling middleware (must be last)
 app.use(errorHandler);
 

@@ -1,12 +1,13 @@
 import { Router } from 'express';
-import { ExperienceController } from '../controllers/experience.controller.js';
+import { BlogController } from '../controllers/blog.controller.js';
 import { authMiddleware } from '../middleware/auth.middleware.js';
 
 const router = Router();
-const controller = new ExperienceController();
+const controller = new BlogController();
 
 // Public routes
 router.get('/', (req, res, next) => controller.getAll(req, res, next));
+router.get('/slug/:slug', (req, res, next) => controller.getBySlug(req, res, next));
 router.get('/:id', (req, res, next) => controller.getById(req, res, next));
 
 // Protected routes (require authentication)
@@ -21,6 +22,15 @@ router.all('/', (req, res) => {
     error: 'Method Not Allowed',
     message: `${req.method} is not supported on this endpoint`,
     allowedMethods: ['GET', 'POST'],
+  });
+});
+
+router.all('/slug/:slug', (req, res) => {
+  res.status(405).json({
+    success: false,
+    error: 'Method Not Allowed',
+    message: `${req.method} is not supported on this endpoint`,
+    allowedMethods: ['GET'],
   });
 });
 
