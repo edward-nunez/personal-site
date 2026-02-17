@@ -5,9 +5,7 @@ const Footer = () => {
         <p className="font-mono text-xs text-muted-foreground">
           © 2026 — Edward Nunez, built with ☕
         </p>
-        <p className="font-mono text-xs text-muted-foreground">
-          &lt;/END_OF_FILE&gt;
-        </p>
+        <p className="font-mono text-xs text-muted-foreground">&lt;/END_OF_FILE&gt;</p>
       </div>
     </footer>
   );

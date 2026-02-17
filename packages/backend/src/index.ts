@@ -14,9 +14,13 @@ const port = config.port;
 
 // Middleware
 app.use(helmet());
+const corsOrigins = config.corsOrigin
+  .split(',')
+  .map((o) => o.trim())
+  .filter(Boolean);
 app.use(
   cors({
-    origin: config.corsOrigin,
+    origin: corsOrigins.length > 1 ? corsOrigins : (corsOrigins[0] ?? true),
     credentials: true,
   })
 );

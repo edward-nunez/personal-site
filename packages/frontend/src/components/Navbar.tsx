@@ -1,63 +1,124 @@
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Link, useLocation } from "react-router-dom";
-import { useTheme } from "@/components/ThemeProvider";
-import AskAIModal from "@/components/AskAIModal";
-
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Link, useLocation } from 'react-router-dom';
+import { useTheme } from '@/components/ThemeProvider';
+import AskAIModal from '@/components/AskAIModal';
 
 const navLinks = [
-  { label: "ABOUT", hash: "#about" },
-  { label: "EXPERIENCE", hash: "#experience" },
-  { label: "BUILDS", hash: "#projects" },
-  { label: "TOOLKIT", hash: "#skills" },
-  { label: "NOTES", hash: "#blog" },
-  { label: "CONTACT", hash: "#contact" },
+  { label: 'ABOUT', hash: '#about' },
+  { label: 'EXPERIENCE', hash: '#experience' },
+  { label: 'BUILDS', hash: '#projects' },
+  { label: 'TOOLKIT', hash: '#skills' },
+  { label: 'NOTES', hash: '#blog' },
+  { label: 'CONSULT', hash: '/consultation', isRoute: true },
+  { label: 'CONTACT', hash: '#contact' },
 ];
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isAIOpen, setIsAIOpen] = useState(false);
   const location = useLocation();
-  const isHome = location.pathname === "/";
+  const isHome = location.pathname === '/';
   const { theme, toggleTheme } = useTheme();
 
-  const getHref = (hash: string) => (isHome ? hash : `/${hash}`);
+  const getHref = (link: (typeof navLinks)[0]) => {
+    if (link.isRoute) return link.hash;
+    return isHome ? link.hash : `/${link.hash}`;
+  };
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-sm border-b-[3px] border-foreground">
       <div className="container mx-auto px-6 lg:px-12 flex items-center justify-between h-16">
         <Link to="/" className="font-mono text-sm font-bold tracking-wider flex items-center">
-          <svg className="h-6 w-auto inline-block align-middle text-foreground" viewBox="0 0 117 99" version="1.1" xmlns="http://www.w3.org/2000/svg" style={{fillRule:"evenodd",clipRule:"evenodd",strokeLinejoin:"round",strokeMiterlimit:2}}>
+          <svg
+            className="h-6 w-auto inline-block align-middle text-foreground"
+            viewBox="0 0 117 99"
+            version="1.1"
+            xmlns="http://www.w3.org/2000/svg"
+            style={{
+              fillRule: 'evenodd',
+              clipRule: 'evenodd',
+              strokeLinejoin: 'round',
+              strokeMiterlimit: 2,
+            }}
+          >
             <g id="left" transform="matrix(1,0,0,1,64.3375,24.6516)" fill="currentColor">
-              <path d="M0,2.593C-1.289,3.773 -3.609,5.896 -6.306,8.364C-11.934,2.694 -17.552,-3.223 -23.447,-8.848C-33.725,-18.654 -49.762,-13.896 -52.999,-0.146C-54.412,5.858 -52.785,11.181 -48.551,15.577C-47.051,17.134 -45.04,18.197 -43.333,19.435C-46.437,22.803 -48.566,25.112 -50.644,27.365C-61.328,19.514 -65.555,8.187 -62.515,-3.689C-59.74,-14.531 -50.67,-22.311 -38.606,-23.873C-31.66,-24.772 -24.752,-23.475 -19.696,-18.749C-12.692,-12.199 -6.609,-4.665 0,2.593" style={{fillRule:"nonzero"}}/>
+              <path
+                d="M0,2.593C-1.289,3.773 -3.609,5.896 -6.306,8.364C-11.934,2.694 -17.552,-3.223 -23.447,-8.848C-33.725,-18.654 -49.762,-13.896 -52.999,-0.146C-54.412,5.858 -52.785,11.181 -48.551,15.577C-47.051,17.134 -45.04,18.197 -43.333,19.435C-46.437,22.803 -48.566,25.112 -50.644,27.365C-61.328,19.514 -65.555,8.187 -62.515,-3.689C-59.74,-14.531 -50.67,-22.311 -38.606,-23.873C-31.66,-24.772 -24.752,-23.475 -19.696,-18.749C-12.692,-12.199 -6.609,-4.665 0,2.593"
+                style={{ fillRule: 'nonzero' }}
+              />
             </g>
             <g id="right" transform="matrix(1,0,0,1,103.666,-1.27757)" fill="currentColor">
-              <path d="M0,53.489C-2.519,51.051 -4.702,48.937 -8.409,45.348C-6.202,43.921 -3.883,42.979 -2.331,41.32C4.314,34.218 3.917,23.601 -2.999,16.915C-9.969,10.176 -20.326,10.217 -27.403,17.09C-28.847,18.493 -30.03,20.164 -31.429,21.825C-34.232,18.872 -36.401,16.589 -38.746,14.118C-31.308,4.975 -21.978,0 -9.8,2.414C1.576,4.67 8.955,11.649 11.744,22.885C14.88,35.524 9.883,45.342 0,53.489" style={{fillRule:"nonzero"}}/>
+              <path
+                d="M0,53.489C-2.519,51.051 -4.702,48.937 -8.409,45.348C-6.202,43.921 -3.883,42.979 -2.331,41.32C4.314,34.218 3.917,23.601 -2.999,16.915C-9.969,10.176 -20.326,10.217 -27.403,17.09C-28.847,18.493 -30.03,20.164 -31.429,21.825C-34.232,18.872 -36.401,16.589 -38.746,14.118C-31.308,4.975 -21.978,0 -9.8,2.414C1.576,4.67 8.955,11.649 11.744,22.885C14.88,35.524 9.883,45.342 0,53.489"
+                style={{ fillRule: 'nonzero' }}
+              />
             </g>
             <g id="left-arrow" transform="matrix(1,0,0,1,53.8732,40.3462)">
-              <path d="M0,36.207C-3.378,39.564 -5.744,41.915 -7.731,43.891C-16.557,35.065 -25.3,26.321 -33.657,17.964C-25.52,9.824 -16.708,1.01 -8.018,-7.684C-6.16,-5.886 -3.681,-3.484 -0.764,-0.66C-6.954,5.166 -13.299,11.14 -19.698,17.164C-12.836,23.798 -6.576,29.85 0,36.207" style={{fill:"hsl(var(--background))",fillRule:"nonzero",stroke:"hsl(var(--foreground))",strokeWidth:"1.5px"}}/>
+              <path
+                d="M0,36.207C-3.378,39.564 -5.744,41.915 -7.731,43.891C-16.557,35.065 -25.3,26.321 -33.657,17.964C-25.52,9.824 -16.708,1.01 -8.018,-7.684C-6.16,-5.886 -3.681,-3.484 -0.764,-0.66C-6.954,5.166 -13.299,11.14 -19.698,17.164C-12.836,23.798 -6.576,29.85 0,36.207"
+                style={{
+                  fill: 'hsl(var(--background))',
+                  fillRule: 'nonzero',
+                  stroke: 'hsl(var(--foreground))',
+                  strokeWidth: '1.5px',
+                }}
+              />
             </g>
             <g id="right-arrow" transform="matrix(1,0,0,1,83.8517,57.8943)">
-              <path d="M0,0.904C-7.426,-6.227 -13.716,-12.266 -20.061,-18.359C-17.131,-21.088 -14.598,-23.448 -12.342,-25.549C-3.749,-16.952 4.987,-8.214 13.356,0.157C4.991,8.546 -3.727,17.288 -12.866,26.453C-14.478,24.438 -16.62,21.761 -18.75,19.099C-13.205,13.718 -6.971,7.669 0,0.904" style={{fill:"hsl(var(--background))",fillRule:"nonzero",stroke:"hsl(var(--foreground))",strokeWidth:"1.5px"}}/>
+              <path
+                d="M0,0.904C-7.426,-6.227 -13.716,-12.266 -20.061,-18.359C-17.131,-21.088 -14.598,-23.448 -12.342,-25.549C-3.749,-16.952 4.987,-8.214 13.356,0.157C4.991,8.546 -3.727,17.288 -12.866,26.453C-14.478,24.438 -16.62,21.761 -18.75,19.099C-13.205,13.718 -6.971,7.669 0,0.904"
+                style={{
+                  fill: 'hsl(var(--background))',
+                  fillRule: 'nonzero',
+                  stroke: 'hsl(var(--foreground))',
+                  strokeWidth: '1.5px',
+                }}
+              />
             </g>
-            <g id="bottom" transform="matrix(1,0,0,1,58.4581,88.3699)" fill="currentColor" stroke="currentColor">
-              <path d="M0,8.444L-8.752,3.672L-8.995,0.421L-0.486,5.3L8.267,0L8.509,3.251L0,8.444Z" style={{fillRule:"nonzero",strokeWidth:"2px",strokeLinejoin:"miter",strokeMiterlimit:4}}/>
+            <g
+              id="bottom"
+              transform="matrix(1,0,0,1,58.4581,88.3699)"
+              fill="currentColor"
+              stroke="currentColor"
+            >
+              <path
+                d="M0,8.444L-8.752,3.672L-8.995,0.421L-0.486,5.3L8.267,0L8.509,3.251L0,8.444Z"
+                style={{
+                  fillRule: 'nonzero',
+                  strokeWidth: '2px',
+                  strokeLinejoin: 'miter',
+                  strokeMiterlimit: 4,
+                }}
+              />
             </g>
           </svg>
-          <span className="ml-1 leading-none">ARCH<span className="text-accent">/</span>ENG</span>
+          <span className="ml-1 leading-none">
+            ARCH<span className="text-accent">/</span>ENG
+          </span>
         </Link>
 
         {/* Desktop links */}
         <div className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <a
-              key={link.hash}
-              href={getHref(link.hash)}
-              className="font-mono text-xs tracking-widest text-muted-foreground hover:text-foreground transition-colors"
-            >
-              {link.label}
-            </a>
-          ))}
+          {navLinks.map((link) =>
+            link.isRoute ? (
+              <Link
+                key={link.hash}
+                to={link.hash}
+                className="font-mono text-xs tracking-widest text-accent hover:text-foreground transition-colors font-bold"
+              >
+                {link.label}
+              </Link>
+            ) : (
+              <a
+                key={link.hash}
+                href={getHref(link)}
+                className="font-mono text-xs tracking-widest text-muted-foreground hover:text-foreground transition-colors"
+              >
+                {link.label}
+              </a>
+            )
+          )}
         </div>
 
         <div className="flex items-center gap-4">
@@ -75,7 +136,7 @@ const Navbar = () => {
             className="font-mono text-xs tracking-widest text-muted-foreground hover:text-foreground transition-colors"
             aria-label="Toggle theme"
           >
-            {theme === "light" ? "[◐ DARK]" : "[◑ LIGHT]"}
+            {theme === 'light' ? '[◐ DARK]' : '[◑ LIGHT]'}
           </button>
 
           {/* Mobile toggle */}
@@ -84,7 +145,7 @@ const Navbar = () => {
             className="md:hidden font-mono text-sm"
             aria-label="Toggle menu"
           >
-            {isOpen ? "[✕]" : "[≡]"}
+            {isOpen ? '[✕]' : '[≡]'}
           </button>
         </div>
       </div>
@@ -94,21 +155,32 @@ const Navbar = () => {
         {isOpen && (
           <motion.div
             initial={{ height: 0 }}
-            animate={{ height: "auto" }}
+            animate={{ height: 'auto' }}
             exit={{ height: 0 }}
             className="md:hidden overflow-hidden border-t-[3px] border-foreground bg-background"
           >
             <div className="px-6 py-4 space-y-4">
-              {navLinks.map((link) => (
-                <a
-                  key={link.hash}
-                  href={getHref(link.hash)}
-                  onClick={() => setIsOpen(false)}
-                  className="block font-mono text-sm tracking-widest text-foreground"
-                >
-                  {link.label}
-                </a>
-              ))}
+              {navLinks.map((link) =>
+                link.isRoute ? (
+                  <Link
+                    key={link.hash}
+                    to={link.hash}
+                    onClick={() => setIsOpen(false)}
+                    className="block font-mono text-sm tracking-widest text-accent font-bold"
+                  >
+                    {link.label}
+                  </Link>
+                ) : (
+                  <a
+                    key={link.hash}
+                    href={getHref(link)}
+                    onClick={() => setIsOpen(false)}
+                    className="block font-mono text-sm tracking-widest text-foreground"
+                  >
+                    {link.label}
+                  </a>
+                )
+              )}
             </div>
           </motion.div>
         )}

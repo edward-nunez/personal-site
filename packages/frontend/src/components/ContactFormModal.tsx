@@ -1,16 +1,23 @@
-import { useState } from "react";
-import { createPortal } from "react-dom";
-import { motion, AnimatePresence } from "framer-motion";
-import { z } from "zod";
+import { useState } from 'react';
+import { createPortal } from 'react-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import { z } from 'zod';
+import type { CreateContactSubmissionRequest } from '@/types';
+import { submitContact } from '@/lib/submissions-api';
 
 const contactSchema = z.object({
-  name: z.string().trim().min(1, "Name is required").max(100, "Name must be under 100 characters"),
-  email: z.string().trim().email("Invalid email address").max(255, "Email must be under 255 characters"),
-  subject: z.string().trim().max(150, "Subject must be under 150 characters").optional().default(""),
-  message: z.string().trim().min(1, "Message is required").max(1000, "Message must be under 1000 characters"),
+  name: z.string().trim().min(1, 'Name is required').max(200),
+  email: z.string().trim().email('Invalid email address').max(200),
+  subject: z.string().trim().max(200).nullable().optional().default(''),
+  message: z.string().trim().min(1, 'Message is required').max(5000),
 });
 
-type ContactForm = { name: string; email: string; subject: string; message: string };
+const emptyForm: CreateContactSubmissionRequest = {
+  name: '',
+  email: '',
+  subject: '',
+  message: '',
+};
 
 interface ContactFormModalProps {
   isOpen: boolean;
@@ -18,44 +25,61 @@ interface ContactFormModalProps {
 }
 
 const ContactFormModal = ({ isOpen, onClose }: ContactFormModalProps) => {
-  const [form, setForm] = useState<ContactForm>({ name: "", email: "", subject: "", message: "" });
-  const [errors, setErrors] = useState<Partial<Record<keyof ContactForm, string>>>({});
+  const [form, setForm] = useState<CreateContactSubmissionRequest>(emptyForm);
+  const [errors, setErrors] = useState<
+    Partial<Record<keyof CreateContactSubmissionRequest, string>>
+  >({});
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
-  const handleChange = (field: keyof ContactForm, value: string) => {
+  const handleChange = (field: keyof CreateContactSubmissionRequest, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }));
     if (errors[field]) {
       setErrors((prev) => ({ ...prev, [field]: undefined }));
     }
+    setSubmitError(null);
   };
 
-  const handleSubmit = () => {
+  const openMailtoFallback = (data: CreateContactSubmissionRequest) => {
+    const subjectLine = data.subject ? data.subject : `Contact from ${data.name}`;
+    const subject = encodeURIComponent(subjectLine);
+    const body = encodeURIComponent(`Name: ${data.name}\nEmail: ${data.email}\n\n${data.message}`);
+    window.location.href = `mailto:hello@example.com?subject=${subject}&body=${body}`;
+    setSubmitted(true);
+  };
+
+  const handleSubmit = async () => {
     const result = contactSchema.safeParse(form);
     if (!result.success) {
-      const fieldErrors: Partial<Record<keyof ContactForm, string>> = {};
+      const fieldErrors: Partial<Record<keyof CreateContactSubmissionRequest, string>> = {};
       result.error.issues.forEach((issue) => {
-        const field = issue.path[0] as keyof ContactForm;
+        const field = issue.path[0] as keyof CreateContactSubmissionRequest;
         if (!fieldErrors[field]) fieldErrors[field] = issue.message;
       });
       setErrors(fieldErrors);
       return;
     }
 
-    const subjectLine = result.data.subject
-      ? result.data.subject
-      : `Contact from ${result.data.name}`;
-    const subject = encodeURIComponent(subjectLine);
-    const body = encodeURIComponent(
-      `Name: ${result.data.name}\nEmail: ${result.data.email}\n\n${result.data.message}`
-    );
-    window.location.href = `mailto:hello@example.com?subject=${subject}&body=${body}`;
-    setSubmitted(true);
+    setSubmitting(true);
+    setSubmitError(null);
+    try {
+      await submitContact(result.data);
+      setSubmitted(true);
+    } catch (err) {
+      setSubmitError(
+        err instanceof Error ? err.message : 'Failed to send. Try again or use email.'
+      );
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleClose = () => {
-    setForm({ name: "", email: "", subject: "", message: "" });
+    setForm(emptyForm);
     setErrors({});
     setSubmitted(false);
+    setSubmitError(null);
     onClose();
   };
 
@@ -69,18 +93,18 @@ const ContactFormModal = ({ isOpen, onClose }: ContactFormModalProps) => {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
           style={{
-            position: "fixed",
+            position: 'fixed',
             inset: 0,
             zIndex: 50,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
           }}
         >
           {/* Backdrop */}
           <div
             onClick={handleClose}
-            style={{ position: "absolute", inset: 0 }}
+            style={{ position: 'absolute', inset: 0 }}
             className="bg-foreground/20 backdrop-blur-sm"
           />
 
@@ -91,10 +115,10 @@ const ContactFormModal = ({ isOpen, onClose }: ContactFormModalProps) => {
             exit={{ scale: 0.95 }}
             transition={{ duration: 0.2 }}
             style={{
-              position: "relative",
+              position: 'relative',
               zIndex: 1,
-              width: "min(480px, calc(100vw - 2rem))",
-              maxHeight: "calc(100vh - 4rem)",
+              width: 'min(480px, calc(100vw - 2rem))',
+              maxHeight: 'calc(100vh - 4rem)',
             }}
             className="flex flex-col manga-panel-thick bg-background overflow-hidden"
           >
@@ -114,12 +138,10 @@ const ContactFormModal = ({ isOpen, onClose }: ContactFormModalProps) => {
 
             {submitted ? (
               <div className="p-8 text-center space-y-4">
-                <span className="text-4xl">📬</span>
-                <p className="font-mono text-sm text-foreground font-bold">
-                  EMAIL CLIENT OPENED
-                </p>
+                <span className="text-4xl">✓</span>
+                <p className="font-mono text-sm text-foreground font-bold">MESSAGE SENT</p>
                 <p className="text-sm text-muted-foreground">
-                  Your message has been pre-filled in your email client. Hit send to complete!
+                  Thanks for reaching out. I&apos;ll get back to you soon.
                 </p>
                 <button
                   onClick={handleClose}
@@ -134,11 +156,13 @@ const ContactFormModal = ({ isOpen, onClose }: ContactFormModalProps) => {
                 <div className="p-5 space-y-4">
                   {/* Name */}
                   <div className="space-y-1">
-                    <label className="font-mono text-xs text-muted-foreground tracking-wider">NAME</label>
+                    <label className="font-mono text-xs text-muted-foreground tracking-wider">
+                      NAME
+                    </label>
                     <input
                       type="text"
                       value={form.name}
-                      onChange={(e) => handleChange("name", e.target.value)}
+                      onChange={(e) => handleChange('name', e.target.value)}
                       placeholder="Your name"
                       maxLength={100}
                       className="w-full bg-card manga-panel px-3 py-2 text-sm font-mono text-foreground placeholder:text-muted-foreground focus:outline-none"
@@ -150,11 +174,13 @@ const ContactFormModal = ({ isOpen, onClose }: ContactFormModalProps) => {
 
                   {/* Email */}
                   <div className="space-y-1">
-                    <label className="font-mono text-xs text-muted-foreground tracking-wider">EMAIL</label>
+                    <label className="font-mono text-xs text-muted-foreground tracking-wider">
+                      EMAIL
+                    </label>
                     <input
                       type="email"
                       value={form.email}
-                      onChange={(e) => handleChange("email", e.target.value)}
+                      onChange={(e) => handleChange('email', e.target.value)}
                       placeholder="you@example.com"
                       maxLength={255}
                       className="w-full bg-card manga-panel px-3 py-2 text-sm font-mono text-foreground placeholder:text-muted-foreground focus:outline-none"
@@ -166,25 +192,29 @@ const ContactFormModal = ({ isOpen, onClose }: ContactFormModalProps) => {
 
                   {/* Subject (optional) */}
                   <div className="space-y-1">
-                    <label className="font-mono text-xs text-muted-foreground tracking-wider">SUBJECT <span className="text-muted-foreground/60">(optional)</span></label>
+                    <label className="font-mono text-xs text-muted-foreground tracking-wider">
+                      SUBJECT <span className="text-muted-foreground/60">(optional)</span>
+                    </label>
                     <input
                       type="text"
                       value={form.subject}
-                      onChange={(e) => handleChange("subject", e.target.value)}
+                      onChange={(e) => handleChange('subject', e.target.value)}
                       placeholder="What's this about?"
-                      maxLength={150}
+                      maxLength={200}
                       className="w-full bg-card manga-panel px-3 py-2 text-sm font-mono text-foreground placeholder:text-muted-foreground focus:outline-none"
                     />
                   </div>
 
                   {/* Message */}
                   <div className="space-y-1">
-                    <label className="font-mono text-xs text-muted-foreground tracking-wider">MESSAGE</label>
+                    <label className="font-mono text-xs text-muted-foreground tracking-wider">
+                      MESSAGE
+                    </label>
                     <textarea
                       value={form.message}
-                      onChange={(e) => handleChange("message", e.target.value)}
+                      onChange={(e) => handleChange('message', e.target.value)}
                       placeholder="What's on your mind?"
-                      maxLength={1000}
+                      maxLength={5000}
                       rows={5}
                       className="w-full bg-card manga-panel px-3 py-2 text-sm font-mono text-foreground placeholder:text-muted-foreground focus:outline-none resize-none"
                     />
@@ -195,20 +225,38 @@ const ContactFormModal = ({ isOpen, onClose }: ContactFormModalProps) => {
                         <span />
                       )}
                       <span className="font-mono text-[10px] text-muted-foreground">
-                        {form.message.length}/1000
+                        {form.message.length}/5000
                       </span>
                     </div>
                   </div>
                 </div>
 
                 {/* Footer */}
-                <div className="border-t-[3px] border-foreground p-4 flex justify-end">
-                  <button
-                    onClick={handleSubmit}
-                    className="manga-panel bg-accent text-accent-foreground px-6 py-2 font-mono text-xs font-bold tracking-wider hover:manga-shadow-accent hover:-translate-x-[2px] hover:-translate-y-[2px] transition-all duration-150"
-                  >
-                    SEND( )
-                  </button>
+                <div className="border-t-[3px] border-foreground p-4 space-y-2">
+                  {submitError && (
+                    <p className="font-mono text-xs text-destructive mb-2">{submitError}</p>
+                  )}
+                  <div className="flex justify-end gap-2">
+                    {submitError && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const result = contactSchema.safeParse(form);
+                          if (result.success) openMailtoFallback(result.data);
+                        }}
+                        className="manga-panel bg-card text-card-foreground px-4 py-2 font-mono text-xs font-bold tracking-wider hover:manga-shadow transition-all duration-150"
+                      >
+                        OPEN EMAIL INSTEAD
+                      </button>
+                    )}
+                    <button
+                      onClick={handleSubmit}
+                      disabled={submitting}
+                      className="manga-panel bg-accent text-accent-foreground px-6 py-2 font-mono text-xs font-bold tracking-wider hover:manga-shadow-accent hover:-translate-x-[2px] hover:-translate-y-[2px] transition-all duration-150 disabled:opacity-50 disabled:pointer-events-none"
+                    >
+                      {submitting ? 'SENDING…' : 'SEND( )'}
+                    </button>
+                  </div>
                 </div>
               </>
             )}

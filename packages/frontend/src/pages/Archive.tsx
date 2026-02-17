@@ -1,21 +1,29 @@
-import { useState, useMemo, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { motion } from "framer-motion";
-import { projects } from "@/data/projects";
-import { blogPosts } from "@/data/blogPosts";
-import Navbar from "@/components/Navbar";
+import { useState, useMemo, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import Navbar from '@/components/Navbar';
+import { projectStatusDisplay } from '@/utils/formatters';
+import { useBlogPosts } from '@/hooks/useBlog';
+import { useProjects } from '@/hooks/useProjects';
 
-type Tab = "projects" | "blog";
+type Tab = 'projects' | 'blog';
 const ITEMS_PER_PAGE = 4;
 
 const Archive = () => {
   const location = useLocation();
-  const initialTab = location.hash === "#blog" ? "blog" : "projects";
+  const initialTab = location.hash === '#blog' ? 'blog' : 'projects';
   const [activeTab, setActiveTab] = useState<Tab>(initialTab);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
   const [selectedTech, setSelectedTech] = useState<string | null>(null);
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [page, setPage] = useState(1);
+
+  const { posts: blogPostsFromApi, isLoading: blogLoading, isError: blogError } = useBlogPosts();
+  const {
+    projects: projectsFromApi,
+    isLoading: projectsLoading,
+    isError: projectsError,
+  } = useProjects();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -26,48 +34,45 @@ const Archive = () => {
     setPage(1);
   }, [activeTab, search, selectedTech, selectedTag]);
 
-  // All unique tech tags from projects
+  // All unique tech tags from projects (from API)
   const allTech = useMemo(
-    () => [...new Set(projects.flatMap((p) => p.tech))].sort(),
-    []
+    () => [...new Set(projectsFromApi.flatMap((p) => p.technologies))].sort(),
+    [projectsFromApi]
   );
 
-  // All unique tags from blog posts
+  // All unique tags from blog posts (from API)
   const allBlogTags = useMemo(
-    () => [...new Set(blogPosts.flatMap((p) => p.tags))].sort(),
-    []
+    () => [...new Set(blogPostsFromApi.flatMap((p) => p.tags))].sort(),
+    [blogPostsFromApi]
   );
 
-  // Filtered projects
+  // Filtered projects (from API)
   const filteredProjects = useMemo(() => {
-    return projects.filter((p) => {
+    return projectsFromApi.filter((p) => {
       const matchesSearch =
         !search ||
         p.title.toLowerCase().includes(search.toLowerCase()) ||
         p.description.toLowerCase().includes(search.toLowerCase());
-      const matchesTech = !selectedTech || p.tech.includes(selectedTech);
+      const matchesTech = !selectedTech || p.technologies.includes(selectedTech);
       return matchesSearch && matchesTech;
     });
-  }, [search, selectedTech]);
+  }, [projectsFromApi, search, selectedTech]);
 
-  // Filtered blog posts
+  // Filtered blog posts (from API)
   const filteredPosts = useMemo(() => {
-    return blogPosts.filter((p) => {
+    return blogPostsFromApi.filter((p) => {
       const matchesSearch =
         !search ||
         p.title.toLowerCase().includes(search.toLowerCase()) ||
-        p.excerpt.toLowerCase().includes(search.toLowerCase());
+        (p.excerpt ?? '').toLowerCase().includes(search.toLowerCase());
       const matchesTag = !selectedTag || p.tags.includes(selectedTag);
       return matchesSearch && matchesTag;
     });
-  }, [search, selectedTag]);
+  }, [blogPostsFromApi, search, selectedTag]);
 
-  const currentItems = activeTab === "projects" ? filteredProjects : filteredPosts;
+  const currentItems = activeTab === 'projects' ? filteredProjects : filteredPosts;
   const totalPages = Math.max(1, Math.ceil(currentItems.length / ITEMS_PER_PAGE));
-  const paginatedItems = currentItems.slice(
-    (page - 1) * ITEMS_PER_PAGE,
-    page * ITEMS_PER_PAGE
-  );
+  const paginatedItems = currentItems.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE);
 
   return (
     <>
@@ -106,21 +111,29 @@ const Archive = () => {
           {/* Tab switcher */}
           <div className="flex gap-0 mb-8">
             <button
-              onClick={() => { setActiveTab("projects"); setSelectedTag(null); }}
+              onClick={() => {
+                setActiveTab('projects');
+                setSelectedTag(null);
+              }}
               className={`font-mono text-sm px-6 py-3 border-[3px] border-foreground transition-colors
-                ${activeTab === "projects"
-                  ? "bg-foreground text-background font-bold"
-                  : "bg-card text-card-foreground hover:bg-secondary"
+                ${
+                  activeTab === 'projects'
+                    ? 'bg-foreground text-background font-bold'
+                    : 'bg-card text-card-foreground hover:bg-secondary'
                 }`}
             >
               BUILDS ({filteredProjects.length})
             </button>
             <button
-              onClick={() => { setActiveTab("blog"); setSelectedTech(null); }}
+              onClick={() => {
+                setActiveTab('blog');
+                setSelectedTech(null);
+              }}
               className={`font-mono text-sm px-6 py-3 border-[3px] border-l-0 border-foreground transition-colors
-                ${activeTab === "blog"
-                  ? "bg-foreground text-background font-bold"
-                  : "bg-card text-card-foreground hover:bg-secondary"
+                ${
+                  activeTab === 'blog'
+                    ? 'bg-foreground text-background font-bold'
+                    : 'bg-card text-card-foreground hover:bg-secondary'
                 }`}
             >
               NOTES ({filteredPosts.length})
@@ -133,7 +146,7 @@ const Archive = () => {
             <div className="manga-panel bg-card flex-1">
               <input
                 type="text"
-                placeholder={activeTab === "projects" ? "Search builds..." : "Search notes..."}
+                placeholder={activeTab === 'projects' ? 'Search builds...' : 'Search notes...'}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 className="w-full bg-transparent px-4 py-3 font-mono text-sm text-foreground placeholder:text-muted-foreground focus:outline-none"
@@ -143,12 +156,12 @@ const Archive = () => {
             {/* Filter chips */}
             <div className="flex flex-wrap gap-2 items-center">
               <span className="font-mono text-xs text-muted-foreground mr-1">FILTER:</span>
-              {activeTab === "projects" ? (
+              {activeTab === 'projects' ? (
                 <>
                   <button
                     onClick={() => setSelectedTech(null)}
                     className={`font-mono text-xs px-3 py-1.5 border border-border transition-colors
-                      ${!selectedTech ? "bg-accent text-accent-foreground border-accent" : "bg-secondary text-secondary-foreground hover:bg-muted"}`}
+                      ${!selectedTech ? 'bg-accent text-accent-foreground border-accent' : 'bg-secondary text-secondary-foreground hover:bg-muted'}`}
                   >
                     ALL
                   </button>
@@ -157,7 +170,7 @@ const Archive = () => {
                       key={t}
                       onClick={() => setSelectedTech(selectedTech === t ? null : t)}
                       className={`font-mono text-xs px-3 py-1.5 border border-border transition-colors
-                        ${selectedTech === t ? "bg-accent text-accent-foreground border-accent" : "bg-secondary text-secondary-foreground hover:bg-muted"}`}
+                        ${selectedTech === t ? 'bg-accent text-accent-foreground border-accent' : 'bg-secondary text-secondary-foreground hover:bg-muted'}`}
                     >
                       {t}
                     </button>
@@ -168,7 +181,7 @@ const Archive = () => {
                   <button
                     onClick={() => setSelectedTag(null)}
                     className={`font-mono text-xs px-3 py-1.5 border border-border transition-colors
-                      ${!selectedTag ? "bg-accent text-accent-foreground border-accent" : "bg-secondary text-secondary-foreground hover:bg-muted"}`}
+                      ${!selectedTag ? 'bg-accent text-accent-foreground border-accent' : 'bg-secondary text-secondary-foreground hover:bg-muted'}`}
                   >
                     ALL
                   </button>
@@ -177,7 +190,7 @@ const Archive = () => {
                       key={t}
                       onClick={() => setSelectedTag(selectedTag === t ? null : t)}
                       className={`font-mono text-xs px-3 py-1.5 border border-border transition-colors
-                        ${selectedTag === t ? "bg-accent text-accent-foreground border-accent" : "bg-secondary text-secondary-foreground hover:bg-muted"}`}
+                        ${selectedTag === t ? 'bg-accent text-accent-foreground border-accent' : 'bg-secondary text-secondary-foreground hover:bg-muted'}`}
                     >
                       {t}
                     </button>
@@ -189,12 +202,26 @@ const Archive = () => {
 
           {/* Results */}
           <div className="space-y-4">
-            {paginatedItems.length === 0 ? (
-              <div className="manga-panel bg-card p-12 text-center">
-                <p className="font-mono text-sm text-muted-foreground">No results found. Try a different search or filter.</p>
+            {activeTab === 'projects' && projectsLoading ? (
+              <div className="font-mono text-sm text-muted-foreground py-8">
+                Loading projects...
               </div>
-            ) : activeTab === "projects" ? (
-              (paginatedItems as typeof projects).map((project, i) => (
+            ) : activeTab === 'projects' && projectsError ? (
+              <div className="font-mono text-sm text-destructive py-8">
+                Failed to load projects.
+              </div>
+            ) : activeTab === 'blog' && blogLoading ? (
+              <div className="font-mono text-sm text-muted-foreground py-8">Loading posts...</div>
+            ) : activeTab === 'blog' && blogError ? (
+              <div className="font-mono text-sm text-destructive py-8">Failed to load posts.</div>
+            ) : paginatedItems.length === 0 ? (
+              <div className="manga-panel bg-card p-12 text-center">
+                <p className="font-mono text-sm text-muted-foreground">
+                  No results found. Try a different search or filter.
+                </p>
+              </div>
+            ) : activeTab === 'projects' ? (
+              (paginatedItems as typeof filteredProjects).map((project, i) => (
                 <motion.div
                   key={project.slug}
                   initial={{ opacity: 0, y: 20 }}
@@ -209,11 +236,18 @@ const Archive = () => {
                     <div className="flex flex-col md:flex-row">
                       {/* Cover thumbnail */}
                       <div className="h-36 md:h-auto md:w-40 overflow-hidden border-b md:border-b-0 md:border-r-[3px] border-foreground shrink-0">
-                        {project.coverImage ? (
-                          <img src={project.coverImage} alt={project.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+                        {(project.coverImage ?? project.images[0]) ? (
+                          <img
+                            src={project.coverImage ?? project.images[0]}
+                            alt={project.title}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            loading="lazy"
+                          />
                         ) : (
                           <div className="w-full h-full bg-secondary halftone flex items-center justify-center min-h-[9rem]">
-                            <span className="font-mono text-xs text-muted-foreground">NO COVER</span>
+                            <span className="font-mono text-xs text-muted-foreground">
+                              NO COVER
+                            </span>
                           </div>
                         )}
                       </div>
@@ -226,15 +260,20 @@ const Archive = () => {
                             <h3 className="text-xl font-bold text-card-foreground group-hover:text-accent transition-colors">
                               {project.title}
                             </h3>
-                            <p className="text-muted-foreground text-sm max-w-lg">{project.description}</p>
+                            <p className="text-muted-foreground text-sm max-w-lg">
+                              {project.description}
+                            </p>
                           </div>
                           <div className="flex items-center gap-3 self-start shrink-0">
-                            <span className={`font-mono text-xs px-3 py-1 manga-panel whitespace-nowrap
-                              ${project.status === "ONGOING"
-                                ? "bg-accent text-accent-foreground border-accent"
-                                : "bg-secondary text-secondary-foreground"}`}
+                            <span
+                              className={`font-mono text-xs px-3 py-1 manga-panel whitespace-nowrap
+                              ${
+                                project.status === 'in-progress'
+                                  ? 'bg-accent text-accent-foreground border-accent'
+                                  : 'bg-secondary text-secondary-foreground'
+                              }`}
                             >
-                              {project.status}
+                              {projectStatusDisplay(project.status)}
                             </span>
                             <span className="font-mono text-xs text-accent font-bold group-hover:translate-x-1 transition-transform">
                               →
@@ -242,8 +281,11 @@ const Archive = () => {
                           </div>
                         </div>
                         <div className="flex flex-wrap gap-2 mt-3">
-                          {project.tech.map((t) => (
-                            <span key={t} className="font-mono text-xs px-2 py-0.5 bg-secondary text-secondary-foreground border border-border">
+                          {project.technologies.map((t) => (
+                            <span
+                              key={t}
+                              className="font-mono text-xs px-2 py-0.5 bg-secondary text-secondary-foreground border border-border"
+                            >
                               {t}
                             </span>
                           ))}
@@ -254,7 +296,7 @@ const Archive = () => {
                 </motion.div>
               ))
             ) : (
-              (paginatedItems as typeof blogPosts).map((post, i) => (
+              (paginatedItems as typeof filteredPosts).map((post, i) => (
                 <motion.div
                   key={post.slug}
                   initial={{ opacity: 0, y: 20 }}
@@ -270,30 +312,46 @@ const Archive = () => {
                       {/* Cover thumbnail */}
                       <div className="h-36 md:h-auto md:w-40 overflow-hidden border-b md:border-b-0 md:border-r-[3px] border-foreground shrink-0">
                         {post.coverImage ? (
-                          <img src={post.coverImage} alt={post.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+                          <img
+                            src={post.coverImage}
+                            alt={post.title}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            loading="lazy"
+                          />
                         ) : (
                           <div className="w-full h-full bg-secondary halftone flex items-center justify-center min-h-[9rem]">
-                            <span className="font-mono text-xs text-muted-foreground">NO COVER</span>
+                            <span className="font-mono text-xs text-muted-foreground">
+                              NO COVER
+                            </span>
                           </div>
                         )}
                       </div>
                       <div className="halftone p-4 md:p-6 md:w-20 flex items-center justify-center border-b md:border-b-0 md:border-r-[3px] border-foreground">
-                        <span className="font-mono text-sm font-bold">{post.volume}</span>
+                        <span className="font-mono text-sm font-bold">{post.volume ?? ''}</span>
                       </div>
                       <div className="flex-1 p-6">
                         <div className="flex items-center gap-3 mb-2">
-                          <span className="font-mono text-xs text-muted-foreground">{post.date}</span>
+                          <span className="font-mono text-xs text-muted-foreground">
+                            {post.date}
+                          </span>
                           <span className="font-mono text-xs text-muted-foreground">·</span>
-                          <span className="font-mono text-xs text-muted-foreground">{post.readTime} read</span>
+                          <span className="font-mono text-xs text-muted-foreground">
+                            {post.readTime} read
+                          </span>
                         </div>
                         <h3 className="text-xl font-bold text-card-foreground group-hover:text-accent transition-colors mb-2">
                           {post.title}
                         </h3>
-                        <p className="text-muted-foreground text-sm max-w-lg mb-3">{post.excerpt}</p>
+                        <p className="text-muted-foreground text-sm max-w-lg mb-3">
+                          {post.excerpt ?? ''}
+                        </p>
                         <div className="flex items-center justify-between">
                           <div className="flex gap-2">
                             {post.tags.map((tag) => (
-                              <span key={tag} className="font-mono text-xs px-2 py-0.5 bg-secondary text-secondary-foreground border border-border">
+                              <span
+                                key={tag}
+                                className="font-mono text-xs px-2 py-0.5 bg-secondary text-secondary-foreground border border-border"
+                              >
                                 {tag}
                               </span>
                             ))}
@@ -325,9 +383,10 @@ const Archive = () => {
                   key={n}
                   onClick={() => setPage(n)}
                   className={`font-mono text-xs w-9 h-9 manga-panel transition-colors
-                    ${n === page
-                      ? "bg-foreground text-background font-bold"
-                      : "bg-card text-card-foreground hover:bg-secondary"
+                    ${
+                      n === page
+                        ? 'bg-foreground text-background font-bold'
+                        : 'bg-card text-card-foreground hover:bg-secondary'
                     }`}
                 >
                   {n}

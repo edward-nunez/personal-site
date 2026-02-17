@@ -9,7 +9,12 @@ const AnimatedLogo = ({ className }: AnimatedLogoProps) => {
       viewBox="-2 -2 121 103"
       version="1.1"
       xmlns="http://www.w3.org/2000/svg"
-      style={{ fillRule: "evenodd", clipRule: "evenodd", strokeLinejoin: "round", strokeMiterlimit: 2 }}
+      style={{
+        fillRule: 'evenodd',
+        clipRule: 'evenodd',
+        strokeLinejoin: 'round',
+        strokeMiterlimit: 2,
+      }}
     >
       {/* CSS for trace animation */}
       <style>{`
@@ -57,17 +62,36 @@ const AnimatedLogo = ({ className }: AnimatedLogoProps) => {
 
       {/* Left arrow - static */}
       <g id="left-arrow" transform="matrix(1,0,0,1,53.8732,40.3462)">
-        <path d="M0,36.207C-3.378,39.564 -5.744,41.915 -7.731,43.891C-16.557,35.065 -25.3,26.321 -33.657,17.964C-25.52,9.824 -16.708,1.01 -8.018,-7.684C-6.16,-5.886 -3.681,-3.484 -0.764,-0.66C-6.954,5.166 -13.299,11.14 -19.698,17.164C-12.836,23.798 -6.576,29.85 0,36.207" style={{ fill: "white", fillRule: "nonzero", stroke: "black", strokeWidth: "1.5px" }} />
+        <path
+          d="M0,36.207C-3.378,39.564 -5.744,41.915 -7.731,43.891C-16.557,35.065 -25.3,26.321 -33.657,17.964C-25.52,9.824 -16.708,1.01 -8.018,-7.684C-6.16,-5.886 -3.681,-3.484 -0.764,-0.66C-6.954,5.166 -13.299,11.14 -19.698,17.164C-12.836,23.798 -6.576,29.85 0,36.207"
+          style={{ fill: 'white', fillRule: 'nonzero', stroke: 'black', strokeWidth: '1.5px' }}
+        />
       </g>
 
       {/* Right arrow - static */}
       <g id="right-arrow" transform="matrix(1,0,0,1,83.8517,57.8943)">
-        <path d="M0,0.904C-7.426,-6.227 -13.716,-12.266 -20.061,-18.359C-17.131,-21.088 -14.598,-23.448 -12.342,-25.549C-3.749,-16.952 4.987,-8.214 13.356,0.157C4.991,8.546 -3.727,17.288 -12.866,26.453C-14.478,24.438 -16.62,21.761 -18.75,19.099C-13.205,13.718 -6.971,7.669 0,0.904" style={{ fill: "white", fillRule: "nonzero", stroke: "black", strokeWidth: "1.5px" }} />
+        <path
+          d="M0,0.904C-7.426,-6.227 -13.716,-12.266 -20.061,-18.359C-17.131,-21.088 -14.598,-23.448 -12.342,-25.549C-3.749,-16.952 4.987,-8.214 13.356,0.157C4.991,8.546 -3.727,17.288 -12.866,26.453C-14.478,24.438 -16.62,21.761 -18.75,19.099C-13.205,13.718 -6.971,7.669 0,0.904"
+          style={{ fill: 'white', fillRule: 'nonzero', stroke: 'black', strokeWidth: '1.5px' }}
+        />
       </g>
 
       {/* Bottom chevron - static */}
-      <g id="bottom" transform="matrix(1,0,0,1,58.4581,88.3699)" fill="currentColor" stroke="currentColor">
-        <path d="M0,8.444L-8.752,3.672L-8.995,0.421L-0.486,5.3L8.267,0L8.509,3.251L0,8.444Z" style={{ fillRule: "nonzero", strokeWidth: "2px", strokeLinejoin: "miter", strokeMiterlimit: 4 }} />
+      <g
+        id="bottom"
+        transform="matrix(1,0,0,1,58.4581,88.3699)"
+        fill="currentColor"
+        stroke="currentColor"
+      >
+        <path
+          d="M0,8.444L-8.752,3.672L-8.995,0.421L-0.486,5.3L8.267,0L8.509,3.251L0,8.444Z"
+          style={{
+            fillRule: 'nonzero',
+            strokeWidth: '2px',
+            strokeLinejoin: 'miter',
+            strokeMiterlimit: 4,
+          }}
+        />
       </g>
     </svg>
   );

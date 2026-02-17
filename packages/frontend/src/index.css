@@ -13,28 +13,20 @@
   --color-ring: hsl(var(--ring));
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
-
   --color-primary: hsl(var(--primary));
   --color-primary-foreground: hsl(var(--primary-foreground));
-
   --color-secondary: hsl(var(--secondary));
   --color-secondary-foreground: hsl(var(--secondary-foreground));
-
-  --color-destructive: hsl(var(--destructive));
-  --color-destructive-foreground: hsl(var(--destructive-foreground));
-
   --color-muted: hsl(var(--muted));
   --color-muted-foreground: hsl(var(--muted-foreground));
-
   --color-accent: hsl(var(--accent));
   --color-accent-foreground: hsl(var(--accent-foreground));
-
-  --color-popover: hsl(var(--popover));
-  --color-popover-foreground: hsl(var(--popover-foreground));
-
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
   --color-card: hsl(var(--card));
   --color-card-foreground: hsl(var(--card-foreground));
-
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
   --color-sidebar: hsl(var(--sidebar-background));
   --color-sidebar-foreground: hsl(var(--sidebar-foreground));
   --color-sidebar-primary: hsl(var(--sidebar-primary));
@@ -43,44 +35,33 @@
   --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
   --color-sidebar-border: hsl(var(--sidebar-border));
   --color-sidebar-ring: hsl(var(--sidebar-ring));
-
-  --radius-lg: var(--radius);
-  --radius-md: calc(var(--radius) - 2px);
+  --font-display: var(--font-display);
+  --font-mono: var(--font-mono);
   --radius-sm: calc(var(--radius) - 4px);
-
-  --font-display: 'Space Grotesk', sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
-
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
   --animate-accordion-down: accordion-down 0.2s ease-out;
   --animate-accordion-up: accordion-up 0.2s ease-out;
-  --animate-panel-reveal: panel-reveal 0.6s ease-out forwards;
-  --animate-slide-in-right: slide-in-right 0.5s ease-out forwards;
-  --animate-ink-spread: ink-spread 0.8s ease-out forwards;
+  --animate-collapsible-down: collapsible-down 0.2s ease-out;
+  --animate-collapsible-up: collapsible-up 0.2s ease-out;
 }
 
 @keyframes accordion-down {
   from { height: 0; }
   to { height: var(--radix-accordion-content-height); }
 }
-
 @keyframes accordion-up {
   from { height: var(--radix-accordion-content-height); }
   to { height: 0; }
 }
-
-@keyframes panel-reveal {
-  from { opacity: 0; transform: translateY(30px) scale(0.95); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+@keyframes collapsible-down {
+  from { height: 0; }
+  to { height: var(--radix-collapsible-content-height); }
 }
-
-@keyframes slide-in-right {
-  from { opacity: 0; transform: translateX(60px); }
-  to { opacity: 1; transform: translateX(0); }
-}
-
-@keyframes ink-spread {
-  from { width: 0%; }
-  to { width: 100%; }
+@keyframes collapsible-up {
+  from { height: var(--radix-collapsible-content-height); }
+  to { height: 0; }
 }
 
 :root {
@@ -198,7 +179,7 @@
   overflow: hidden;
 }
 
-.speed-lines {
+@utility speed-lines {
   background: repeating-linear-gradient(
     90deg,
     transparent,
@@ -208,34 +189,34 @@
   );
 }
 
-.halftone {
+@utility halftone {
   background-image: radial-gradient(circle, hsl(var(--foreground) / 0.12) 1px, transparent 1px);
   background-size: 8px 8px;
 }
 
-.halftone-fine {
+@utility halftone-fine {
   background-image: radial-gradient(circle, hsl(var(--foreground) / 0.08) 0.5px, transparent 0.5px);
   background-size: 4px 4px;
 }
 
-.text-stroke {
+@utility text-stroke {
   -webkit-text-stroke: 2px hsl(var(--foreground));
   color: transparent;
 }
 
-.manga-shadow {
+@utility manga-shadow {
   box-shadow: 6px 6px 0px hsl(var(--foreground));
 }
 
-.manga-shadow-accent {
+@utility manga-shadow-accent {
   box-shadow: 6px 6px 0px hsl(var(--accent));
 }
 
-.manga-shadow-sm {
+@utility manga-shadow-sm {
   box-shadow: 3px 3px 0px hsl(var(--foreground));
 }
 
-.tread-pattern {
+@utility tread-pattern {
   background-image: repeating-linear-gradient(
     -45deg,
     transparent,
@@ -245,7 +226,7 @@
   );
 }
 
-.chain-links {
+@utility chain-links {
   background-image:
     radial-gradient(ellipse 3px 6px at center, hsl(var(--foreground) / 0.08) 50%, transparent 50%);
   background-size: 10px 14px;

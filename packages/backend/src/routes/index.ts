@@ -5,6 +5,7 @@ import projectRoutes from '../presentation/routes/project.routes.js';
 import blogRoutes from '../presentation/routes/blog.routes.js';
 import contactRoutes from '../presentation/routes/contact.routes.js';
 import consultationRoutes from '../presentation/routes/consultation.routes.js';
+import toolkitRoutes from '../presentation/routes/toolkit.routes.js';
 
 const router = Router();
 
@@ -15,5 +16,6 @@ router.use('/projects', projectRoutes);
 router.use('/blog', blogRoutes);
 router.use('/contact', contactRoutes);
 router.use('/consultation', consultationRoutes);
+router.use('/toolkit', toolkitRoutes);
 
 export default router;

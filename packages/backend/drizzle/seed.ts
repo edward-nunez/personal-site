@@ -9,6 +9,7 @@ import {
   blogPosts,
   contactSubmissions,
   consultationSubmissions,
+  toolkitCategories,
 } from '../src/infrastructure/persistence/schema.js';
 
 const connectionString = process.env.DATABASE_URL;
@@ -84,6 +85,50 @@ async function main() {
     })
     .returning();
   console.log(`✅ Experiences created: ${experience1.company}, ${experience2.company}`);
+
+  // Toolkit categories for TOOL_KIT section (strong, moderate, gaps — 5 items each)
+  await db
+    .insert(toolkitCategories)
+    .values([
+      {
+        slug: 'strong',
+        title: 'STRONG',
+        items: [
+          'System Design & Architecture',
+          'Event-Driven Systems',
+          'Distributed Computing',
+          'API Design & Integration',
+          'Observability & Monitoring',
+        ],
+        order: 0,
+      },
+      {
+        slug: 'moderate',
+        title: 'MODERATE',
+        items: [
+          'Cloud Infrastructure',
+          'Team Leadership',
+          'Data Modeling & Pipelines',
+          'Developer Tooling',
+          'Performance Optimization',
+        ],
+        order: 1,
+      },
+      {
+        slug: 'gaps',
+        title: 'GAPS — Honest Audit',
+        items: [
+          'Machine Learning / AI',
+          'Mobile-Native Development',
+          'Security Engineering',
+          'Data Science & Analytics',
+          'Embedded Systems',
+        ],
+        order: 2,
+      },
+    ])
+    .onConflictDoNothing({ target: toolkitCategories.slug });
+  console.log('✅ Toolkit categories created (strong, moderate, gaps)');
 
   // Create sample projects
   const [project1] = await db

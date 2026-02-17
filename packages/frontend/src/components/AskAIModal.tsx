@@ -1,9 +1,9 @@
-import { useState, useRef, useEffect } from "react";
-import { createPortal } from "react-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface Message {
-  role: "user" | "assistant";
+  role: 'user' | 'assistant';
   content: string;
 }
 
@@ -13,7 +13,7 @@ const MOCK_RESPONSES: Record<string, string> = {
   skills:
     "My primary toolkit includes Go and TypeScript for backend services, React for frontend, Kafka for event streaming, PostgreSQL and TimescaleDB for data, Docker/Terraform for infrastructure, and Prometheus/Grafana for observability. I'm also proficient in Rust, GraphQL, and gRPC.",
   projects:
-    "My notable projects include: a distributed event platform (Kafka + Go, 2M msgs/day), a fleet telemetry system (MQTT + TimescaleDB, 3K vehicles), a trail mapping app (React Native + Mapbox), an infra-as-code CLI toolkit (Rust + Terraform), an API gateway with rate limiting (Go + Redis), and an enterprise design system (React + Storybook, 60+ components).",
+    'My notable projects include: a distributed event platform (Kafka + Go, 2M msgs/day), a fleet telemetry system (MQTT + TimescaleDB, 3K vehicles), a trail mapping app (React Native + Mapbox), an infra-as-code CLI toolkit (Rust + Terraform), an API gateway with rate limiting (Go + Redis), and an enterprise design system (React + Storybook, 60+ components).',
   architecture:
     "I specialize in event-driven architectures, microservice decomposition, and distributed systems design. I'm a strong advocate for starting with well-structured monoliths and extracting services along natural domain boundaries only when scaling needs justify the complexity.",
   leadership:
@@ -26,17 +26,42 @@ const MOCK_RESPONSES: Record<string, string> = {
 
 function getMockResponse(input: string): string {
   const lower = input.toLowerCase();
-  if (lower.includes("experience") || lower.includes("background") || lower.includes("years"))
+  if (lower.includes('experience') || lower.includes('background') || lower.includes('years'))
     return MOCK_RESPONSES.experience;
-  if (lower.includes("skill") || lower.includes("tech") || lower.includes("stack") || lower.includes("language"))
+  if (
+    lower.includes('skill') ||
+    lower.includes('tech') ||
+    lower.includes('stack') ||
+    lower.includes('language')
+  )
     return MOCK_RESPONSES.skills;
-  if (lower.includes("project") || lower.includes("built") || lower.includes("portfolio") || lower.includes("work"))
+  if (
+    lower.includes('project') ||
+    lower.includes('built') ||
+    lower.includes('portfolio') ||
+    lower.includes('work')
+  )
     return MOCK_RESPONSES.projects;
-  if (lower.includes("architect") || lower.includes("design") || lower.includes("system") || lower.includes("approach"))
+  if (
+    lower.includes('architect') ||
+    lower.includes('design') ||
+    lower.includes('system') ||
+    lower.includes('approach')
+  )
     return MOCK_RESPONSES.architecture;
-  if (lower.includes("lead") || lower.includes("team") || lower.includes("manage") || lower.includes("mentor"))
+  if (
+    lower.includes('lead') ||
+    lower.includes('team') ||
+    lower.includes('manage') ||
+    lower.includes('mentor')
+  )
     return MOCK_RESPONSES.leadership;
-  if (lower.includes("educat") || lower.includes("degree") || lower.includes("learn") || lower.includes("study"))
+  if (
+    lower.includes('educat') ||
+    lower.includes('degree') ||
+    lower.includes('learn') ||
+    lower.includes('study')
+  )
     return MOCK_RESPONSES.education;
   return MOCK_RESPONSES.default;
 }
@@ -49,31 +74,34 @@ interface AskAIModalProps {
 const AskAIModal = ({ isOpen, onClose }: AskAIModalProps) => {
   const [messages, setMessages] = useState<Message[]>([
     {
-      role: "assistant",
+      role: 'assistant',
       content:
         "Hey! I'm the AI assistant for this portfolio. Ask me anything about experience, skills, projects, or architecture philosophy. What would you like to know?",
     },
   ]);
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isTyping]);
 
   const handleSend = () => {
     if (!input.trim() || isTyping) return;
-    const userMsg: Message = { role: "user", content: input.trim() };
+    const userMsg: Message = { role: 'user', content: input.trim() };
     setMessages((prev) => [...prev, userMsg]);
-    setInput("");
+    setInput('');
     setIsTyping(true);
 
-    setTimeout(() => {
-      const response = getMockResponse(userMsg.content);
-      setMessages((prev) => [...prev, { role: "assistant", content: response }]);
-      setIsTyping(false);
-    }, 800 + Math.random() * 600);
+    setTimeout(
+      () => {
+        const response = getMockResponse(userMsg.content);
+        setMessages((prev) => [...prev, { role: 'assistant', content: response }]);
+        setIsTyping(false);
+      },
+      800 + Math.random() * 600
+    );
   };
 
   return createPortal(
@@ -86,18 +114,18 @@ const AskAIModal = ({ isOpen, onClose }: AskAIModalProps) => {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
           style={{
-            position: "fixed",
+            position: 'fixed',
             inset: 0,
             zIndex: 50,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
           }}
         >
           {/* Backdrop */}
           <div
             onClick={onClose}
-            style={{ position: "absolute", inset: 0 }}
+            style={{ position: 'absolute', inset: 0 }}
             className="bg-foreground/20 backdrop-blur-sm"
           />
 
@@ -108,10 +136,10 @@ const AskAIModal = ({ isOpen, onClose }: AskAIModalProps) => {
             exit={{ scale: 0.95 }}
             transition={{ duration: 0.2 }}
             style={{
-              position: "relative",
+              position: 'relative',
               zIndex: 1,
-              width: "min(480px, calc(100vw - 2rem))",
-              height: "min(720px, calc(100vh - 4rem))",
+              width: 'min(480px, calc(100vw - 2rem))',
+              height: 'min(720px, calc(100vh - 4rem))',
             }}
             className="flex flex-col manga-panel-thick bg-background overflow-hidden"
           >
@@ -137,13 +165,13 @@ const AskAIModal = ({ isOpen, onClose }: AskAIModalProps) => {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.2 }}
-                  className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
+                  className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
                   <div
                     className={`max-w-[85%] px-4 py-3 text-sm leading-relaxed ${
-                      msg.role === "user"
-                        ? "bg-accent text-accent-foreground manga-panel"
-                        : "bg-secondary text-secondary-foreground manga-panel"
+                      msg.role === 'user'
+                        ? 'bg-accent text-accent-foreground manga-panel'
+                        : 'bg-secondary text-secondary-foreground manga-panel'
                     }`}
                   >
                     {msg.content}
@@ -168,7 +196,7 @@ const AskAIModal = ({ isOpen, onClose }: AskAIModalProps) => {
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  onKeyDown={(e) => e.key === "Enter" && handleSend()}
+                  onKeyDown={(e) => e.key === 'Enter' && handleSend()}
                   placeholder="Ask about experience, skills, projects..."
                   className="flex-1 bg-card manga-panel px-3 py-2 text-sm font-mono text-foreground placeholder:text-muted-foreground focus:outline-none"
                 />

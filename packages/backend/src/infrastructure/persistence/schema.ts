@@ -133,6 +133,27 @@ export const consultationSubmissions = pgTable(
   ]
 );
 
+/**
+ * Toolkit categories for the TOOL_KIT section (strong, moderate, gaps).
+ * Exactly 3 records; each has up to 5 skill items.
+ */
+export const toolkitCategories = pgTable(
+  'toolkit_categories',
+  {
+    id: uuid('id').defaultRandom().primaryKey(),
+    slug: text('slug').notNull().unique(), // 'strong' | 'moderate' | 'gaps'
+    title: text('title').notNull(),
+    items: text('items').array().notNull().default([]), // max 5
+    order: integer('order').notNull().default(0),
+    createdAt: timestamp('created_at', { mode: 'date' }).notNull().defaultNow(),
+    updatedAt: timestamp('updated_at', { mode: 'date' }).notNull().defaultNow(),
+  },
+  (table) => [
+    uniqueIndex('toolkit_categories_slug_idx').on(table.slug),
+    index('toolkit_categories_order_idx').on(table.order),
+  ]
+);
+
 export const adminUsers = pgTable(
   'admin_users',
   {

@@ -8,6 +8,13 @@
       "when": 1771214491556,
       "tag": "0000_abnormal_piledriver",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1771288710994,
+      "tag": "0001_parched_selene",
+      "breakpoints": true
     }
   ]
 }

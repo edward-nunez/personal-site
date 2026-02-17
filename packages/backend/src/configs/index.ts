@@ -13,8 +13,8 @@ export const config = {
   isDevOrTest: nodeEnv === 'development' || nodeEnv === 'test',
   databaseUrl: process.env.DATABASE_URL || '',
 
-  // CORS
-  corsOrigin: process.env.CORS_ORIGIN || 'http://localhost:5173',
+  // CORS: comma-separated list of origins, or single origin. Default allows common dev ports.
+  corsOrigin: process.env.CORS_ORIGIN || 'http://localhost:5173,http://localhost:8080',
 
   // JWT
   jwtSecret: process.env.JWT_SECRET || 'your-secret-key-change-in-production',
