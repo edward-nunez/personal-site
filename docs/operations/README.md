@@ -1,4 +1,4 @@
-# ⚙️ Operations & Deployment
+# Operations & Deployment
 
 Documentation for deploying, running, and maintaining the application in production. Infrastructure teams and DevOps engineers should start here.
 
@@ -6,8 +6,8 @@ Documentation for deploying, running, and maintaining the application in product
 
 | Document | Purpose |
 |----------|---------|
-| [Deployment](./DEPLOYMENT.md) | 🚀 Step-by-step deployment procedures, Kubernetes setup, and CI/CD configuration |
-| [Operations](./OPERATIONS.md) | 📊 Running the application, monitoring, scaling, and troubleshooting in production |
+| [Deployment](./DEPLOYMENT.md) | Step-by-step deployment procedures, Kubernetes setup, and CI/CD configuration |
+| [Operations](./OPERATIONS.md) | Running the application, monitoring, scaling, and troubleshooting in production |
 
 ## When to Use This Section
 

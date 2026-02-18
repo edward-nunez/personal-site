@@ -1,29 +1,28 @@
 # Frontend Observability Guide
 
-## 📌 Overview
 
 The React frontend automatically tracks JavaScript errors, performance metrics, network requests, and records user sessions. Session replay captures user interactions with privacy-first text obfuscation by default, making it safe for production.
 
 ### What's Tracked
 
-✅ **Automatic**:
-- JavaScript errors and exceptions
-- React component errors
-- Promise rejections
-- Console warnings/errors
-- Performance metrics (Web Vitals: LCP, FCP, CLS, INP, TTB, FID)
-- Network requests/responses
-- Page navigation
-- User interactions (clicks, typing, scrolling)
+- **Automatic** (tracked automatically):
+  - JavaScript errors and exceptions
+  - React component errors
+  - Promise rejections
+  - Console warnings/errors
+  - Performance metrics (Web Vitals: LCP, FCP, CLS, INP, TTB, FID)
+  - Network requests/responses
+  - Page navigation
+  - User interactions (clicks, typing, scrolling)
 
-✅ **Manual (via utility functions)**:
-- Custom errors
-- API call failures
-- Validation errors
-- Authorization errors
-- Performance issues
+- **Manual** (via utility functions):
+  - Custom errors
+  - API call failures
+  - Validation errors
+  - Authorization errors
+  - Performance issues
 
-## 🛠️ Setup Steps
+## Setup Steps
 
 ### Step 1: Install Dependencies
 
@@ -88,13 +87,13 @@ throw new Error('Test observability integration');
 
 Check **LaunchDarkly Dashboard → Observe → Errors** - error should appear within 30 seconds.
 
-## ⚙️ Configuration
+## Configuration
 
 ### Environment-Based Settings
 
 | Setting | Development | Staging | Production |
 |---------|-------------|---------|-----------|
-| Error Tracking | ✅ 100% | ✅ 100% | ✅ 100% |
+| Error Tracking | 100% | 100% | 100% |
 | Network Recording | Full | Headers | Headers |
 | Tracing | Enabled | Enabled | Disabled |
 | Session Replay | Enabled | Enabled | Enabled |
@@ -108,23 +107,23 @@ Check **LaunchDarkly Dashboard → Observe → Errors** - error should appear wi
 
 | Level | Text Fields | Passwords | PII | Use Case |
 |-------|-------------|-----------|-----|----------|
-| `strict` | ✅ Obscured | ✅ Blocked | ✅ Redacted | Production (RECOMMENDED) |
-| `default` | ⚠️ Visible | ✅ Blocked | ⚠️ Pattern-matched | Testing |
-| `none` | ❌ Visible | ❌ Visible | ❌ Visible | Dev only, with consent |
+| `strict` | Obscured | Blocked | Redacted | Production (RECOMMENDED) |
+| `default` | Visible | Blocked | Pattern-matched | Testing |
+| `none` | Visible | Visible | Visible | Dev only, with consent |
 
 **Recommendation**: Use `strict` (default) in all environments, especially production.
 
-## 📚 Environment Variables Reference
+## Environment Variables Reference
 
 | Variable | Required | Example | Purpose |
 |----------|----------|---------|---------|
-| `VITE_LD_SDK_KEY` | ✅ Yes | `abc123def456` | Client-side ID for LaunchDarkly |
-| `VITE_API_ENV` | ✅ Yes | `production` | Environment identifier |
-| `VITE_SESSION_REPLAY_PRIVACY` | ❌ No | `strict` | Privacy level for session recording |
-| `VITE_API_BASE_URL` | ✅ Yes | `http://localhost:3000` | Backend URL for request correlation |
-| `VITE_LOG_LEVEL` | ❌ No | `info` | Console log verbosity |
+| `VITE_LD_SDK_KEY` | Yes | `abc123def456` | Client-side ID for LaunchDarkly |
+| `VITE_API_ENV` | Yes | `production` | Environment identifier |
+| `VITE_SESSION_REPLAY_PRIVACY` | No | `strict` | Privacy level for session recording |
+| `VITE_API_BASE_URL` | Yes | `http://localhost:3000` | Backend URL for request correlation |
+| `VITE_LOG_LEVEL` | No | `info` | Console log verbosity |
 
-## 💻 Usage Examples
+## Usage Examples
 
 ### Automatic Error Tracking
 
@@ -135,7 +134,7 @@ Errors are automatically captured without code changes:
 function MyComponent() {
   return (
     <button onClick={() => {
-      throw new Error('Oops!'); // ✅ Auto-tracked
+      throw new Error('Oops!'); // Auto-tracked
     }}>
       Click me
     </button>
@@ -282,7 +281,7 @@ async function slowDataProcessing(largeDataset: any[]) {
 }
 ```
 
-## 📊 Viewing Data in Dashboard
+## Viewing Data in Dashboard
 
 ### Access Errors
 
@@ -359,7 +358,7 @@ interface ErrorContext {
 | `trackAuthorizationError(action, context)` | Permissions | `trackAuthorizationError('edit')` |
 | `trackPerformanceIssue(message, duration, context)` | Slow operations | `trackPerformanceIssue('Slow', 5000)` |
 
-## ⚠️ Common Issues & Solutions
+## Common Issues & Solutions
 
 ### Errors Not Appearing?
 
@@ -442,16 +441,16 @@ Observability plugins are designed for minimal overhead:
 ### Data Collection
 
 Observability collects:
-- ✅ JavaScript errors and stack traces
-- ✅ Performance metrics
-- ✅ Session recordings (with privacy obfuscation)
-- ✅ HTTP metadata (headers, status codes)
+- JavaScript errors and stack traces
+- Performance metrics
+- Session recordings (with privacy obfuscation)
+- HTTP metadata (headers, status codes)
 
 Observability does NOT collect:
-- ❌ Request/response bodies
-- ❌ Passwords or auth tokens
-- ❌ Credit card numbers
-- ❌ PII (with strict mode enabled)
+- No Request/response bodies
+- No Passwords or auth tokens
+- No Credit card numbers
+- No PII (with strict mode enabled)
 
 ### Compliance Modes
 
@@ -473,7 +472,7 @@ Observability does NOT collect:
 | `src/components/FeatureFlagsProvider.tsx` | Provider initialization |
 | `index.html` | CSP headers configuration |
 
-## 🚀 Production Deployment Checklist
+## Production Deployment Checklist
 
 - [ ] `VITE_LD_SDK_KEY` set to production client-side ID
 - [ ] `VITE_API_ENV` set to `production`
@@ -485,7 +484,7 @@ Observability does NOT collect:
 - [ ] Alerts configured for error spikes
 - [ ] Team trained on dashboard usage
 
-## 🔗 Related Documentation
+## Related Documentation
 
 - [Feature Flags](../FEATURE_FLAGS.md)
 - [Testing](../TESTING.md)
@@ -500,5 +499,5 @@ Observability does NOT collect:
 
 ---
 
-**Status**: ✅ Frontend observability fully integrated  
+**Status**:  Frontend observability fully integrated  
 **Last Updated**: February 18, 2026

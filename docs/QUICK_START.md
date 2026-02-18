@@ -1,10 +1,10 @@
-# ⚡ Quick Start Guide
+# Quick Start Guide
 
 Welcome to **personal-site-v2**! This guide gets you running in minutes. Choose your path below based on your primary role.
 
 ---
 
-## 🎯 Choose Your Path
+## Choose Your Path
 
 - **Backend Developer?** → [Backend Quick Start](#-backend-developers-expressjs--clean-architecture)
 - **Frontend Developer?** → [Frontend Quick Start](#-frontend-developers-react--vite)
@@ -12,7 +12,7 @@ Welcome to **personal-site-v2**! This guide gets you running in minutes. Choose 
 
 ---
 
-## 🔧 Backend Developers (Express.js + Clean Architecture)
+## Backend Developers (Express.js + Clean Architecture)
 
 ### Setup in 3 Steps
 
@@ -39,12 +39,12 @@ Welcome to **personal-site-v2**! This guide gets you running in minutes. Choose 
 ### Most Common Next Action
 Run tests and explore the API: `npm run test:backend` then visit `http://localhost:3000/health`
 
-### 📚 Detailed Guide
+### Detailed Guide
 See [guides/FEATURE_DEVELOPMENT.md](./guides/FEATURE_DEVELOPMENT.md) for Clean Architecture patterns, repository interfaces, and use case implementations.
 
 ---
 
-## ⚛️ Frontend Developers (React + Vite)
+## Frontend Developers (React + Vite)
 
 ### Setup in 3 Steps
 
@@ -68,12 +68,12 @@ See [guides/FEATURE_DEVELOPMENT.md](./guides/FEATURE_DEVELOPMENT.md) for Clean A
 ### Most Common Next Action
 Explore components in `src/design-system/` and run tests: `npm test -w packages/frontend`
 
-### 📚 Detailed Guide
+### Detailed Guide
 See [architecture/ARCHITECTURE.md](./architecture/ARCHITECTURE.md) for component structure, TanStack Query patterns, and styling with TailwindCSS v4.
 
 ---
 
-## 🐳 DevOps/Infrastructure (Docker/Kubernetes)
+## DevOps/Infrastructure (Docker/Kubernetes)
 
 ### Setup in 3 Steps
 
@@ -98,12 +98,12 @@ See [architecture/ARCHITECTURE.md](./architecture/ARCHITECTURE.md) for component
 ### Most Common Next Action
 Check logs: `docker-compose logs -f backend` or view Helm values: `helm/values.yaml`
 
-### 📚 Detailed Guide
+### Detailed Guide
 See [operations/DEPLOYMENT.md](./operations/DEPLOYMENT.md) for Kubernetes configuration, environment variables, and scaling.
 
 ---
 
-## 🔗 What's Next?
+## What's Next?
 
 - **Project Overview** → [SUMMARY.md](./SUMMARY.md)
 - **Full Architecture** → [architecture/ARCHITECTURE.md](./architecture/ARCHITECTURE.md)
@@ -113,11 +113,11 @@ See [operations/DEPLOYMENT.md](./operations/DEPLOYMENT.md) for Kubernetes config
 
 ---
 
-## 💡 Pro Tips
+## Pro Tips
 
 - **Run everything locally:** `npm run dev` (starts backend + frontend)
 - **See all available commands:** `npm run` in root or package directories
 - **Database GUI:** `npm run drizzle:studio -w packages/backend`
 - **Git hooks:** Husky auto-formats on commit (ESLint + Prettier)
 
-**Happy coding!** 🚀
+**Happy coding!**

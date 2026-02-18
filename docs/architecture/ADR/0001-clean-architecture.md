@@ -56,17 +56,17 @@ Dependencies flow **inward only** - Presentation → Application → Domain ← 
 ## Consequences
 
 ### Positive
-- ✅ Business logic is highly testable (unit tests don't need database)
-- ✅ Easy to add new endpoints (follow established pattern)
-- ✅ Easy to understand codebase organization (where to find code)
-- ✅ Framework agnostic (could swap Express → Fastify)
-- ✅ Clear dependency direction prevents circular dependencies
+-  Business logic is highly testable (unit tests don't need database)
+-  Easy to add new endpoints (follow established pattern)
+-  Easy to understand codebase organization (where to find code)
+-  Framework agnostic (could swap Express → Fastify)
+-  Clear dependency direction prevents circular dependencies
 
 ### Negative
-- ⚠️ More files and folders (7+ layers instead of 1-2 in simple projects)
-- ⚠️ Initial setup is more complex
-- ⚠️ May feel like overkill for very small projects
-- ⚠️ Requires discipline from team to maintain boundaries
+-  More files and folders (7+ layers instead of 1-2 in simple projects)
+-  Initial setup is more complex
+-  May feel like overkill for very small projects
+-  Requires discipline from team to maintain boundaries
 
 ## Alternatives Considered
 

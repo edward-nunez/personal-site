@@ -22,42 +22,42 @@ This project uses **LaunchDarkly** for feature flag management across both front
 When LaunchDarkly is unreachable, the system uses **maturity-based defaults** instead of failing closed. This ensures production resilience while maintaining safety for incomplete features.
 
 ### Tier 1: STABLE (Production-Ready)
-**Fallback Default**: ✅ **ON** (in all environments)
+**Fallback Default**: **ON** (in all environments)
 
 Features that are fully implemented, tested, and safe for production users.
 
 | Flag Key | Description | Fallback (Prod) | Fallback (Dev) |
 |----------|-------------|-----------------|----------------|
-| `blog-system` | Blog posts & archive functionality | ✅ ON | ✅ ON |
-| `consultation-page` | Service inquiry form page | ✅ ON | ✅ ON |
-| `consultation-form` | Contact form modal | ✅ ON | ✅ ON |
-| `theme-toggle` | Dark/light mode toggle | ✅ ON | ✅ ON |
-| `project-details` | Detailed project display pages | ✅ ON | ✅ ON |
-| `framer-motion-animations` | Animation rendering | ✅ ON | ✅ ON |
-| `image-lazy-loading` | Image optimization | ✅ ON | ✅ ON |
+| `blog-system` | Blog posts & archive functionality | ON | ON |
+| `consultation-page` | Service inquiry form page | ON | ON |
+| `consultation-form` | Contact form modal | ON | ON |
+| `theme-toggle` | Dark/light mode toggle | ON | ON |
+| `project-details` | Detailed project display pages | ON | ON |
+| `framer-motion-animations` | Animation rendering | ON | ON |
+| `image-lazy-loading` | Image optimization | ON | ON |
 
 ### Tier 2: BETA (Incomplete/In Development)
-**Fallback Default**: ❌ **OFF** in prod, ✅ **ON** in dev
+**Fallback Default**: **OFF** in prod, **ON** in dev
 
 Features not ready for production but needed for development/testing.
 
 | Flag Key | Description | Fallback (Prod) | Fallback (Dev) |
 |----------|-------------|-----------------|----------------|
-| `ask-ai` | Mock AI chatbot (client-side demo) | ❌ OFF | ✅ ON |
-| `fit-check` | Job description analysis (client-side demo) | ❌ OFF | ✅ ON |
-| `advanced-job-analysis` | Real AI-powered analysis (future) | ❌ OFF | ❌ OFF |
+| `ask-ai` | Mock AI chatbot (client-side demo) | OFF | ON |
+| `fit-check` | Job description analysis (client-side demo) | OFF | ON |
+| `advanced-job-analysis` | Real AI-powered analysis (future) | OFF | OFF |
 
 ### Tier 3: EXPERIMENTAL (A/B Testing/Controlled Rollout)
-**Fallback Default**: ❌ **OFF** (requires LaunchDarkly for control)
+**Fallback Default**: **OFF** (requires LaunchDarkly for control)
 
 Features ready for testing but requiring targeting/segmentation rules.
 
 | Flag Key | Description | Fallback (Prod) | Fallback (Dev) |
 |----------|-------------|-----------------|----------------|
-| `modal-animations-v2` | A/B test new animation styles | ❌ OFF | ❌ OFF |
-| `contact-form-extended-fields` | Test different field combinations | ❌ OFF | ❌ OFF |
-| `skill-categories-display-v2` | Alternative display layout | ❌ OFF | ❌ OFF |
-| `blog-archive-page` | Historical posts access | ✅ ON | ✅ ON |
+| `modal-animations-v2` | A/B test new animation styles | OFF | OFF |
+| `contact-form-extended-fields` | Test different field combinations | OFF | OFF |
+| `skill-categories-display-v2` | Alternative display layout | OFF | OFF |
+| `blog-archive-page` | Historical posts access | ON | ON |
 
 ## Configuration
 
@@ -180,9 +180,9 @@ Remove flag from code once universally enabled
 User visits site → LaunchDarkly fails to connect
 → Fallback to maturity-based defaults
 → Result:
-  ✅ Blog, Consultation, Theme Toggle: Still work (Tier 1)
-  ❌ Ask AI, Fit Check: Hidden (Tier 2 beta)
-  ❌ A/B Tests: Hidden (Tier 3)
+  - Blog, Consultation, Theme Toggle: Still work (Tier 1)
+ - Ask AI, Fit Check: Hidden (Tier 2 beta)
+ - A/B Tests: Hidden (Tier 3)
 → Site remains functional with core features
 ```
 
@@ -200,9 +200,9 @@ User visits site → LaunchDarkly connects successfully
 Developer runs npm run dev → LaunchDarkly unreachable locally
 → Fallback to maturity-based defaults
 → Result:
-  ✅ All Tier 1 (stable) features: ON
-  ✅ All Tier 2 (beta) features: ON (ask-ai, fit-check available)
-  ❌ Tier 3 (experimental) features: OFF
+  - All Tier 1 (stable) features: ON
+  - All Tier 2 (beta) features: ON (ask-ai, fit-check available)
+ - Tier 3 (experimental) features: OFF
 → Developer can work on all implemented features
 ```
 

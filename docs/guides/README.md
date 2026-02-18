@@ -1,4 +1,4 @@
-# 📚 Developer Guides
+# Developer Guides
 
 Welcome to the guides section! Here you'll find step-by-step tutorials to help you get up to speed and contribute effectively to the project.
 
@@ -6,9 +6,9 @@ Welcome to the guides section! Here you'll find step-by-step tutorials to help y
 
 | Guide | Time | Description |
 |-------|------|-------------|
-| [Getting Started](./GETTING_STARTED.md) | 15 min | 🚀 Set up your development environment and run the project locally |
+| [Getting Started](./GETTING_STARTED.md) | 15 min | Set up your development environment and run the project locally |
 | [Feature Development](./FEATURE_DEVELOPMENT.md) | 30 min | ✨ Learn how to add new features following our architecture patterns |
-| [Testing](./TESTING.md) | 25 min | ✅ Write and run tests (unit, integration, E2E) |
+| [Testing](./TESTING.md) | 25 min |  Write and run tests (unit, integration, E2E) |
 
 ## Suggested Learning Path
 

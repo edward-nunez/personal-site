@@ -1,4 +1,4 @@
-# 🏗️ Architecture & Design Decisions
+# Architecture & Design Decisions
 
 Understanding our system design and the decisions that shaped it. This section documents both the current architecture and the reasoning behind major decisions.
 

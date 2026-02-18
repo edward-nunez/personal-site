@@ -281,7 +281,7 @@ curl http://localhost:3000/api/experiences
 # }
 ```
 
-If you get a 200 response with valid JSON, everything is working! ✅
+If you get a 200 response with valid JSON, everything is working! 
 
 ---
 
@@ -439,7 +439,7 @@ npm run test:backend
 
 ## Next Steps
 
-✅ **Once you're up and running:**
+ **Once you're up and running:**
 - Read [Architecture Guide](./ARCHITECTURE.md) to understand the codebase organization
 - Check [Feature Development Guide](./FEATURE_DEVELOPMENT.md) to see how to add new features
 - Review [API Reference](./API_REFERENCE.md) for available endpoints

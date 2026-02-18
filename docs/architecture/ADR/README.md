@@ -38,7 +38,7 @@ Other options and why they were rejected.
 | ID | Title | Status |
 |----|----|--------|
 | [001](./0001-clean-architecture.md) | Use Clean Architecture pattern | Accepted |
-| [002](./0002-postgresql-prisma.md) | Use PostgreSQL with Prisma ORM | ⚠️ Superseded (see ADR-003) |
+| [002](./0002-postgresql-prisma.md) | Use PostgreSQL with Prisma ORM |  Superseded (see ADR-003) |
 | [003](./0003-drizzle-orm-migration.md) | Migrate from Prisma ORM to Drizzle ORM | Accepted |
 | (more as needed) | ... | Proposed/Accepted |
 

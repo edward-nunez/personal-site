@@ -205,7 +205,7 @@ postgresql:
   enabled: true
   replicas: 1
   user: "admin"
-  password: "changeme"  # ⚠️ Use secrets!
+  password: "changeme"  # Use secrets instead!
   database: "personal_site"
 ```
 

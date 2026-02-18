@@ -1,18 +1,18 @@
-# 📊 Observability & Monitoring
+# Observability & Monitoring
 
 Guides for implementing monitoring, error tracking, metrics, and session replay. Understand what's happening in your code and application.
 
 ## Choose Your Guide
 
 **Frontend Developer?**
-- 👁️ [Frontend Observability](./FRONTEND.md) — Error tracking, metrics, and session replay in React
+- [Frontend Observability](./FRONTEND.md) — Error tracking, metrics, and session replay in React
 
 **Backend Developer?**
-- 📈 [Backend Observability](./BACKEND.md) — Error tracking and monitoring in Node.js/Express
+- [Backend Observability](./BACKEND.md) — Error tracking and monitoring in Node.js/Express
 
 **Need Help?**
-- 🔧 [Troubleshooting](./TROUBLESHOOTING.md) — Solutions to common observability problems
-- 📖 [Overview](./OVERVIEW.md) — What is observability and why it matters?
+- [Troubleshooting](./TROUBLESHOOTING.md) — Solutions to common observability problems
+- [Overview](./OVERVIEW.md) — What is observability and why it matters?
 
 ## Why Observability Matters
 

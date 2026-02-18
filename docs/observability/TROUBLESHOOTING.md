@@ -1,8 +1,8 @@
 # Observability Troubleshooting Guide
 
-## 🔧 Common Issues & Solutions
+## Common Issues & Solutions
 
-### 🚨 Observability Not Initializing
+### Observability Not Initializing
 
 #### Symptoms
 - No messages in logs like `[Observability] Initialized`
@@ -70,7 +70,7 @@ Frontend - check browser console:
 
 ---
 
-### ❌ Errors Not Appearing in LaunchDarkly
+### Errors Not Appearing in LaunchDarkly
 
 #### Symptoms
 - Errors triggered locally but don't appear in LaunchDarkly dashboard
@@ -119,7 +119,7 @@ done
 Middleware must be added **before** routes:
 
 ```typescript
-// ✅ CORRECT ORDER
+// CORRECT ORDER
 app.use(express.json());
 app.use(errorTrackingMiddleware);  // ← Must be early
 app.use('/api', routes);
@@ -134,11 +134,11 @@ app.use(expressErrorHandler);      // ← Must be last
 Errors during application startup may not appear:
 
 ```typescript
-// ❌ Error during import (before SDK init)
+// Error during import (before SDK init)
 import express from 'express';
 throw new Error('This won\'t be tracked');
 
-// ✅ Error after all imports (SDK already initialized)
+// Error after all imports (SDK already initialized)
 app.get('/api/test', (req, res) => {
   throw new Error('This will be tracked');
 });
@@ -165,7 +165,7 @@ Copy SDK key directly from dashboard (don't type manually):
 
 ---
 
-### 📊 Performance Issues / High Latency
+### Performance Issues / High Latency
 
 #### Symptoms
 - Application runs slowly after adding observability
@@ -181,7 +181,7 @@ Tracing can be expensive. In production, it should be off:
 ```typescript
 // packages/backend/src/infrastructure/feature-flags/observability.ts
 // Look for this setting:
-const tracingEnabled = env !== 'production'; // ✅ Should disable for prod
+const tracingEnabled = env !== 'production'; // Should disable for prod
 ```
 
 If tracing is enabled in production, disable it.
@@ -193,7 +193,7 @@ High error rates + 100% sampling = many requests to LaunchDarkly.
 ```typescript
 // Should be different for environments:
 const samplingRate = env === 'production' ? 0.1 : 1.0;
-// 0.1 = 10% sampling in production ✅
+// 0.1 = 10% sampling in production
 // 1.0 = 100% sampling (only for development)
 ```
 
@@ -238,10 +238,10 @@ VITE_SESSION_REPLAY_PRIVACY=default
 Don't just `throw new Error()`. Use the provided tracking functions:
 
 ```typescript
-// ❌ Wrong - no context
+// Wrong - no context
 throw new Error('Something failed');
 
-// ✅ Correct - includes context
+// Correct - includes context
 import { trackError } from '../shared/utils/errorTracking.js';
 
 trackError(error, {
@@ -293,7 +293,7 @@ trackError(error, { requestId: req.id });
 
 ---
 
-### 🌐 CORS / CSP Headers Blocking Observability
+### CORS / CSP Headers Blocking Observability
 
 #### Symptoms
 - Browser console shows CSP violations
@@ -307,7 +307,7 @@ trackError(error, { requestId: req.id });
 File: `packages/frontend/index.html`
 
 ```html
-<!-- ✅ CORRECT - allows LaunchDarkly observability -->
+<!-- CORRECT - allows LaunchDarkly observability -->
 <meta
   http-equiv="Content-Security-Policy"
   content="
@@ -384,8 +384,8 @@ LaunchDarkly dashboard → Observe → Session Replays → Billing:
 **Check 4: Verify Privacy Setting Isn't Preventing Recording**
 
 ```bash
-# strict = recording obfuscated ✅
-# none = requires explicit user consent ⚠️
+# strict = recording obfuscated
+# none = requires explicit user consent
 VITE_SESSION_REPLAY_PRIVACY=strict
 ```
 
@@ -547,7 +547,7 @@ If you've followed all steps above and still have issues:
 
 ---
 
-## 🎯 Quick Reference: Problem → Solution Map
+## Quick Reference: Problem → Solution Map
 
 | Problem | First Check | Solution |
 |---------|------------|----------|
@@ -561,7 +561,7 @@ If you've followed all steps above and still have issues:
 
 ---
 
-## 🔗 Related Documentation
+## Related Documentation
 
 - [Backend Setup](BACKEND.md) - Detailed backend configuration
 - [Frontend Setup](FRONTEND.md) - Detailed frontend configuration
@@ -570,5 +570,5 @@ If you've followed all steps above and still have issues:
 
 ---
 
-**Status**: ✅ Troubleshooting guide complete  
+**Status**: Troubleshooting guide complete  
 **Last Updated**: February 18, 2026

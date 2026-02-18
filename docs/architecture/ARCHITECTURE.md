@@ -652,7 +652,7 @@ const { data: experiences, isLoading } = useQuery({
 
 ## Design Decisions & Trade-offs
 
-### ✅ Why Clean Architecture?
+###  Why Clean Architecture?
 
 | Aspect | Benefit |
 |--------|---------|

@@ -31,8 +31,8 @@ The API uses **JWT (JSON Web Tokens)** for authentication:
 ### Login
 
 **Endpoint**: `POST /auth/login`  
-**Public**: ✅ Yes (no auth required)  
-**Rate Limited**: ✅ Yes (5 requests per 15 minutes)
+**Public**: Yes (no auth required)  
+**Rate Limited**: Yes (5 requests per 15 minutes)
 
 **Request**
 ```bash
@@ -47,8 +47,8 @@ curl -X POST http://localhost:3000/api/auth/login \
 **Request Body**
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| email | string | ✅ | Admin email address |
-| password | string | ✅ | Admin password |
+| email | string | Yes | Admin email address |
+| password | string | Yes | Admin password |
 
 **Response** (201 Created)
 ```json
@@ -89,8 +89,8 @@ curl -X POST http://localhost:3000/api/auth/login \
 ### Get Current User
 
 **Endpoint**: `GET /auth/me`  
-**Public**: ❌ No (requires authentication)  
-**Rate Limited**: ✅ Yes
+**Public**: No (requires authentication)  
+**Rate Limited**: Yes
 
 **Request**
 ```bash
@@ -128,8 +128,8 @@ Endpoints for managing professional work experiences.
 ### Get All Experiences
 
 **Endpoint**: `GET /experiences`  
-**Public**: ✅ Yes  
-**Rate Limited**: ✅ Yes
+**Public**: Yes  
+**Rate Limited**: Yes
 
 **Request** (with optional filters)
 ```bash
@@ -187,8 +187,8 @@ curl http://localhost:3000/api/experiences?orderBy=startDate&orderDirection=desc
 ### Get Experience by ID
 
 **Endpoint**: `GET /experiences/:id`  
-**Public**: ✅ Yes  
-**Rate Limited**: ✅ Yes
+**Public**: Yes  
+**Rate Limited**: Yes
 
 **Request**
 ```bash
@@ -198,7 +198,7 @@ curl http://localhost:3000/api/experiences/1
 **URL Parameters**
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| id | integer | ✅ | Numeric experience ID |
+| id | integer | Yes | Numeric experience ID |
 
 **Response** (200 OK)
 ```json
@@ -241,9 +241,9 @@ curl http://localhost:3000/api/experiences/1
 ### Create Experience
 
 **Endpoint**: `POST /experiences`  
-**Public**: ❌ No (admin only)  
-**Rate Limited**: ✅ Yes  
-**Requires Auth**: ✅ Yes
+**Public**: No No (admin only)  
+**Rate Limited**: Yes  
+**Requires Auth**: Yes
 
 **Request**
 ```bash
@@ -269,18 +269,18 @@ curl -X POST http://localhost:3000/api/experiences \
 **Request Body**
 | Field | Type | Required | Constraints | Description |
 |-------|------|----------|-------------|-------------|
-| company | string | ✅ | Max 200 chars | Company name |
-| role | string | ✅ | Max 200 chars | Job title |
-| startDate | string\|date | ✅ | ISO 8601 format | Employment start date |
-| endDate | string\|date | ❌ | ISO 8601 format or null | Employment end date (null = current) |
-| description | string | ❌ | Max 5000 chars | Job description |
-| location | string | ❌ | Max 200 chars | Work location |
-| employmentType | string | ❌ | Max 100 chars | E.g., "Full-time", "Contract" |
-| achievements | array[string] | ❌ | Default: [] | List of achievements |
-| skills | array[string] | ❌ | Default: [] | List of skills used |
-| technologies | array[string] | ❌ | Default: [] | List of technologies used |
-| featured | boolean | ❌ | Default: false | Show on homepage |
-| order | integer | ❌ | Default: 0 | Display order (lower first) |
+| company | string | Yes | Max 200 chars | Company name |
+| role | string | Yes | Max 200 chars | Job title |
+| startDate | string\|date | Yes | ISO 8601 format | Employment start date |
+| endDate | string\|date | No | ISO 8601 format or null | Employment end date (null = current) |
+| description | string | No | Max 5000 chars | Job description |
+| location | string | No | Max 200 chars | Work location |
+| employmentType | string | No | Max 100 chars | E.g., "Full-time", "Contract" |
+| achievements | array[string] | No | Default: [] | List of achievements |
+| skills | array[string] | No | Default: [] | List of skills used |
+| technologies | array[string] | No | Default: [] | List of technologies used |
+| featured | boolean | No | Default: false | Show on homepage |
+| order | integer | No | Default: 0 | Display order (lower first) |
 
 **Response** (201 Created)
 ```json
@@ -330,9 +330,9 @@ curl -X POST http://localhost:3000/api/experiences \
 ### Update Experience
 
 **Endpoint**: `PUT /experiences/:id`  
-**Public**: ❌ No (admin only)  
-**Rate Limited**: ✅ Yes  
-**Requires Auth**: ✅ Yes
+**Public**: No No (admin only)  
+**Rate Limited**: Yes  
+**Requires Auth**: Yes
 
 **Request**
 ```bash
@@ -348,7 +348,7 @@ curl -X PUT http://localhost:3000/api/experiences/1 \
 **URL Parameters**
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| id | integer | ✅ | Numeric experience ID |
+| id | integer | Yes | Numeric experience ID |
 
 **Request Body**
 
@@ -416,9 +416,9 @@ All fields are optional. Only include fields you want to update:
 ### Delete Experience
 
 **Endpoint**: `DELETE /experiences/:id`  
-**Public**: ❌ No (admin only)  
-**Rate Limited**: ✅ Yes  
-**Requires Auth**: ✅ Yes
+**Public**: No No (admin only)  
+**Rate Limited**: Yes  
+**Requires Auth**: Yes
 
 **Request**
 ```bash
@@ -429,7 +429,7 @@ curl -X DELETE http://localhost:3000/api/experiences/1 \
 **URL Parameters**
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| id | integer | ✅ | Numeric experience ID |
+| id | integer | Yes | Numeric experience ID |
 
 **Response** (200 OK)
 ```json
@@ -462,7 +462,7 @@ curl -X DELETE http://localhost:3000/api/experiences/1 \
 
 All API responses follow a consistent format:
 
-#### ✅ Success Response
+#### Success Response
 ```json
 {
   "success": true,
@@ -472,7 +472,7 @@ All API responses follow a consistent format:
 }
 ```
 
-#### ❌ Error Response
+#### Error Response
 ```json
 {
   "success": false,

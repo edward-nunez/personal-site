@@ -54,15 +54,15 @@ We will **migrate from Prisma ORM to Drizzle ORM** while keeping PostgreSQL as t
 
 | Feature | Prisma | Drizzle | Winner |
 |---------|--------|---------|--------|
-| Type Safety | ✅ Excellent | ✅ Excellent | Tie |
-| Learning Curve | ⚠️ Steeper | ✅ Gentler | Drizzle |
-| Query Control | ⚠️ Limited | ✅ Full | Drizzle |
-| Bundle Size | ⚠️ 450KB | ✅ 80KB | Drizzle |
-| Complex Queries | ⚠️ Awkward | ✅ Natural | Drizzle |
-| Raw SQL | ⚠️ Secondary | ✅ First-class | Drizzle |
-| Edge/Serverless | ⚠️ Poor | ✅ Good | Drizzle |
-| Community | ✅ Large | ⚠️ Growing | Prisma |
-| Maturity | ✅ Mature | ⚠️ Newer | Prisma |
+| Type Safety | Excellent | Excellent | Tie |
+| Learning Curve | Steeper | Gentler | Drizzle |
+| Query Control | Limited | Full | Drizzle |
+| Bundle Size | 450KB | 80KB | Drizzle |
+| Complex Queries | Awkward | Natural | Drizzle |
+| Raw SQL | Secondary | First-class | Drizzle |
+| Edge/Serverless | Poor | Good | Drizzle |
+| Community | Large | Growing | Prisma |
+| Maturity | Mature | Newer | Prisma |
 
 ## Migration Details
 
@@ -88,18 +88,18 @@ We will **migrate from Prisma ORM to Drizzle ORM** while keeping PostgreSQL as t
 
 ### Benefits Realized
 
-✅ **Simpler database access** - SQL-first approach is more intuitive  
-✅ **Better query performance** - Direct control over queries  
-✅ **Smaller dependencies** - 80KB vs 450KB  
-✅ **Cleaner migrations** - No complex metadata files  
-✅ **Future-proof** - Better support for Edge/Serverless  
-✅ **Same type safety** - All benefits of TypeScript ORM  
+ **Simpler database access** - SQL-first approach is more intuitive  
+ **Better query performance** - Direct control over queries  
+ **Smaller dependencies** - 80KB vs 450KB  
+ **Cleaner migrations** - No complex metadata files  
+ **Future-proof** - Better support for Edge/Serverless  
+ **Same type safety** - All benefits of TypeScript ORM  
 
 ### Tradeoffs
 
-⚠️ **Smaller ecosystem** - Drizzle is newer (though growing rapidly)  
-⚠️ **Fewer built-in features** - No relation loading shortcuts like Prisma  
-⚠️ **Repository pattern change** - More explicit SQL vs Prisma's abstraction  
+ **Smaller ecosystem** - Drizzle is newer (though growing rapidly)  
+ **Fewer built-in features** - No relation loading shortcuts like Prisma  
+ **Repository pattern change** - More explicit SQL vs Prisma's abstraction  
 
 ## Implementation Notes
 
@@ -153,24 +153,24 @@ export class DrizzleExperienceRepository implements IExperienceRepository {
 
 ### Architecture Impact
 
-**Domain Layer** - ✅ No changes (still interfaces)  
-**Application Layer** - ✅ No changes (use cases unaffected)  
+**Domain Layer** -  No changes (still interfaces)  
+**Application Layer** -  No changes (use cases unaffected)  
 **Infrastructure Layer** - 🔄 Repositories rewritten for Drizzle  
-**Presentation Layer** - ✅ No changes (controllers unaffected)  
+**Presentation Layer** -  No changes (controllers unaffected)  
 
 The repository pattern isolates the ORM choice, making this migration transparent to business logic.
 
 ## Migration Path
 
-1. ✅ Install Drizzle dependencies
-2. ✅ Create schema definition from Prisma schema
-3. ✅ Generate initial Drizzle migration
-4. ✅ Rewrite all repositories
-5. ✅ Update DB client singleton
-6. ✅ Update seed script
-7. ✅ Test all CRUD operations
-8. ✅ Update documentation
-9. ✅ Deploy to production (migrations apply automatically)
+1.  Install Drizzle dependencies
+2.  Create schema definition from Prisma schema
+3.  Generate initial Drizzle migration
+4.  Rewrite all repositories
+5.  Update DB client singleton
+6.  Update seed script
+7.  Test all CRUD operations
+8.  Update documentation
+9.  Deploy to production (migrations apply automatically)
 
 ## Related ADRs
 

@@ -1,4 +1,4 @@
-# ADR-002: Use PostgreSQL with Prisma ORM ⚠️ SUPERSEDED
+# ADR-002: Use PostgreSQL with Prisma ORM  SUPERSEDED
 
 **Date**: February 2026  
 **Status**: Superseded (see ADR-003)  
@@ -74,18 +74,18 @@ We will use:
 ## Consequences
 
 ### Positive
-- ✅ Type-safe database queries (catch errors early)
-- ✅ Auto-generated Prisma Client (no manual DAO/repo boilerplate)
-- ✅ Schema versioning with migrations (safe deployments)
-- ✅ Visual schema editor (Prisma Studio)
-- ✅ PostgreSQL is rock-solid and scalable
-- ✅ No vendor lock-in (can always write raw SQL)
+-  Type-safe database queries (catch errors early)
+-  Auto-generated Prisma Client (no manual DAO/repo boilerplate)
+-  Schema versioning with migrations (safe deployments)
+-  Visual schema editor (Prisma Studio)
+-  PostgreSQL is rock-solid and scalable
+-  No vendor lock-in (can always write raw SQL)
 
 ### Negative
-- ⚠️ Learning curve - Prisma has its own concepts and syntax
-- ⚠️ Overkill for very simple schemas
-- ⚠️ Vendor dependency - Prisma team controls the tool (though open-source)
-- ⚠️ Migration complexity - Multi-database deployments need environment-specific configs
+-  Learning curve - Prisma has its own concepts and syntax
+-  Overkill for very simple schemas
+-  Vendor dependency - Prisma team controls the tool (though open-source)
+-  Migration complexity - Multi-database deployments need environment-specific configs
 
 ## Alternatives Considered
 

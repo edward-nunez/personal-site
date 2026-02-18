@@ -15,7 +15,7 @@ Runbooks and troubleshooting guides for production operations, debugging, and in
 
 ## Production Runbooks
 
-### 🚨 Emergency: Application Not Responding
+### Emergency: Application Not Responding
 
 **Initial Triage (5 minutes)**
 
@@ -161,7 +161,7 @@ nslookup yourdomain.com
 
 ---
 
-### 📊 Scaling Under Load
+### Scaling Under Load
 
 **Detected: High CPU/Memory Usage**
 
@@ -598,11 +598,11 @@ npm run prisma:migrate
 **2. Optimize Queries** (in repositories)
 ```typescript
 // Instead of fetching all then filtering:
-// ❌ const all = await prisma.experience.findMany();
-// ❌ return all.filter(e => e.featured);
+// Wrong: const all = await prisma.experience.findMany();
+// Wrong: return all.filter(e => e.featured);
 
 // Do filtering in database:
-// ✅ Only fetch featured experiences
+// Correct: Only fetch featured experiences
 return prisma.experience.findMany({
   where: { featured: true },
   orderBy: { createdAt: 'desc' },

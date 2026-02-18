@@ -1,4 +1,4 @@
-# 🔬 Research & Investigation Notes
+# Research & Investigation Notes
 
 Exploration documents, research findings, and investigation notes. Use this section to understand how decisions were informed and what alternatives were considered.
 
@@ -6,7 +6,7 @@ Exploration documents, research findings, and investigation notes. Use this sect
 
 | Document | Purpose |
 |----------|---------|
-| [Project Specifications](./project-specs.md) | 📋 Project vision, requirements, and goals |
+| [Project Specifications](./project-specs.md) | Project vision, requirements, and goals |
 
 ## When to Read This Section
 

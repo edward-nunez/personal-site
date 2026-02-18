@@ -4,35 +4,35 @@ Welcome to the Personal Site v2 documentation! This guide is organized by role a
 
 ---
 
-## 🚀 **Quick Start** 
+## Quick Start 
 
 **New to the project or just want to get running?**  
 👉 [**QUICK START.md**](./QUICK_START.md) - Get running in 5 minutes
 
 ---
 
-## 📚 **Browse by Section**
+## Browse by Section
 
-### 👨‍💻 **[Developer Guides](./guides/README.md)** - Learn how to build
+### [Developer Guides](./guides/README.md) - Learn how to build
 - [Getting Started](./guides/GETTING_STARTED.md) - Setup your environment
 - [Feature Development](./guides/FEATURE_DEVELOPMENT.md) - Build new features
 - [Testing](./guides/TESTING.md) - Write tests
 
-### 📖 **[Reference Docs](./reference/README.md)** - Quick lookup
+### [Reference Docs](./reference/README.md) - Quick lookup
 - [API Reference](./reference/API_REFERENCE.md) - Endpoint documentation
 - [Service Contracts](./reference/SERVICE_CONTRACTS.md) - Service communication
 - [Feature Flags](./reference/FEATURE_FLAGS.md) - Feature management
 - [Glossary](./reference/GLOSSARY.md) - Terms & definitions
 
-### ⚙️ **[Operations](./operations/README.md)** - Deploy & troubleshoot
+### [Operations](./operations/README.md) - Deploy & troubleshoot
 - [Deployment](./operations/DEPLOYMENT.md) - Docker & Kubernetes
 - [Operations](./operations/OPERATIONS.md) - Production runbooks
 
-### 🏗️ **[Architecture](./architecture/README.md)** - Understand the design
+### [Architecture](./architecture/README.md) - Understand the design
 - [Architecture Guide](./architecture/ARCHITECTURE.md) - System overview
 - [Architectural Decisions](./architecture/ADR/) - Why we made choices
 
-### 📊 **[Observability](./observability/README.md)** - Monitor & debug
+### [Observability](./observability/README.md) - Monitor & debug
 - [Overview](./observability/OVERVIEW.md) - What & why
 - [Backend Setup](./observability/BACKEND.md) - Node.js monitoring
 - [Frontend Setup](./observability/FRONTEND.md) - React monitoring
@@ -40,7 +40,7 @@ Welcome to the Personal Site v2 documentation! This guide is organized by role a
 
 ---
 
-## 📋 **Documentation Organization**
+## Documentation Organization
 
 ```
 docs/
@@ -97,7 +97,7 @@ docs/
 
 ---
 
-## 🎯 **Find What You Need**
+## Find What You Need
 
 | I want to... | Go to... |
 |--------------|----------|
@@ -114,7 +114,7 @@ docs/
 
 ---
 
-## 🤝 **Need Help?**
+## Need Help?
 
 - **Getting started issues?** → [guides/GETTING_STARTED.md](./guides/GETTING_STARTED.md)
 - **Architecture questions?** → [architecture/ARCHITECTURE.md](./architecture/ARCHITECTURE.md)

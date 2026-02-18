@@ -1,24 +1,23 @@
 # Backend Observability Guide
 
-## 📌 Overview
 
 The Express.js backend automatically tracks HTTP errors, validates input, and reports database/external service failures to LaunchDarkly. Error tracking is environment-aware: development captures 100% of errors for debugging, production samples 10% to manage quota usage.
 
 ### What's Tracked
 
-✅ **Automatic**:
-- HTTP 4xx/5xx responses
-- Unhandled exceptions
-- Request/response details with unique request IDs
+- **Automatic** (tracked automatically):
+  - HTTP 4xx/5xx responses
+  - Unhandled exceptions
+  - Request/response details with unique request IDs
 
-✅ **Manual (via utility functions)**:
-- Validation errors
-- Database operation errors
-- External service failures
-- Authentication errors
-- Configuration errors
+- **Manual** (via utility functions):
+  - Validation errors
+  - Database operation errors
+  - External service failures
+  - Authentication errors
+  - Configuration errors
 
-## 🛠️ Setup Steps
+## Setup Steps
 
 ### Step 1: Install Dependencies
 
@@ -77,13 +76,13 @@ curl http://localhost:3000/api/nonexistent
 # 404 error should appear in LaunchDarkly within 30 seconds
 ```
 
-## ⚙️ Configuration
+## Configuration
 
 ### Environment-Based Settings
 
 | Setting | Development | Staging | Production |
 |---------|-------------|---------|-----------|
-| Error Tracking | ✅ Enabled | ✅ Enabled | ✅ Enabled |
+| Error Tracking | Enabled | Enabled | Enabled |
 | Error Sampling | 100% | 50-100% | 10% |
 | Logging Level | Verbose | Normal | Filtered |
 | Tracing | Enabled | Enabled | Disabled |
@@ -122,17 +121,17 @@ trackError(error, {
 });
 ```
 
-## 📚 Environment Variables Reference
+## Environment Variables Reference
 
 | Variable | Required | Example | Purpose |
 |----------|----------|---------|---------|
-| `LD_SDK_KEY` | ✅ Yes | `sdk-xxxx...` | Authenticate with LaunchDarkly |
-| `LD_ENVIRONMENT` | ✅ Yes | `production` | Determines sampling, logging level |
-| `SERVICE_NAME` | ❌ No | `personal-site-backend` | Identifies service in dashboard |
-| `SERVICE_VERSION` | ❌ No | `v1.2.3` | Track errors by deployment version |
-| `LOG_LEVEL` | ❌ No | `info` | Winston logger level (error, warn, info, debug) |
+| `LD_SDK_KEY` | Yes | `sdk-xxxx...` | Authenticate with LaunchDarkly |
+| `LD_ENVIRONMENT` | Yes | `production` | Determines sampling, logging level |
+| `SERVICE_NAME` | No | `personal-site-backend` | Identifies service in dashboard |
+| `SERVICE_VERSION` | No | `v1.2.3` | Track errors by deployment version |
+| `LOG_LEVEL` | No | `info` | Winston logger level (error, warn, info, debug) |
 
-## 💻 Usage Examples
+## Usage Examples
 
 ### Automatic HTTP Error Tracking
 
@@ -143,7 +142,7 @@ Errors on 4xx/5xx responses are tracked automatically:
 app.get('/api/data', (req, res) => {
   doSomething().catch(() => {
     res.status(500).json({ error: 'Failed to process' }); 
-    // ✅ Automatically tracked with request context
+    // Automatically tracked with request context
   });
 });
 ```
@@ -246,7 +245,7 @@ const requiredEnvVars = ['DATABASE_URL', 'LD_SDK_KEY', 'JWT_SECRET'];
 for (const envVar of requiredEnvVars) {
   if (!process.env[envVar]) {
     trackConfigError(envVar, `${envVar} is required but not set`);
-    console.error(`❌ Missing ${envVar}`);
+    console.error(`Missing ${envVar}`);
     process.exit(1);
   }
 }
@@ -279,7 +278,7 @@ interface ErrorContext {
 | `trackAuthError(reason, context)` | Auth failures | `trackAuthError('Invalid token')` |
 | `trackConfigError(variable, reason)` | Config issues | `trackConfigError('API_KEY', 'required')` |
 
-## 📊 Viewing Errors in Dashboard
+## Viewing Errors in Dashboard
 
 ### Access Errors
 
@@ -319,7 +318,7 @@ Find errors by user:
 userId: user-12345
 ```
 
-## ⚠️ Common Issues & Solutions
+## Common Issues & Solutions
 
 ### Errors Not Appearing?
 
@@ -333,7 +332,7 @@ echo $LD_SDK_KEY
 **Check 2**: Verify middleware is applied in correct order
 
 ```typescript
-// ✅ Correct order
+// Correct order
 app.use(express.json());
 app.use(errorTrackingMiddleware);  // Add early
 app.use('/api', apiRoutes);
@@ -385,11 +384,11 @@ ldcli sourcemaps upload \
 Ensure middleware is added **before** routes:
 
 ```typescript
-// ✅ Correct
+//  Correct
 app.use(errorTrackingMiddleware);
 app.use('/api', routes);
 
-// ❌ Wrong
+// Wrong
 app.use('/api', routes);
 app.use(errorTrackingMiddleware); // Too late!
 ```
@@ -404,7 +403,7 @@ app.use(errorTrackingMiddleware); // Too late!
 | `src/infrastructure/feature-flags/ldClient.ts` | LaunchDarkly client setup |
 | `.env` / `.env.example` | Environment variables |
 
-## 🚀 Production Deployment Checklist
+## Production Deployment Checklist
 
 - [ ] `LD_SDK_KEY` set to production SDK key
 - [ ] `LD_ENVIRONMENT` set to `production`
@@ -414,7 +413,7 @@ app.use(errorTrackingMiddleware); // Too late!
 - [ ] Monitoring alerts configured for error spikes
 - [ ] Team has access to LaunchDarkly dashboard
 
-## 🔗 Related Documentation
+## Related Documentation
 
 - [Error Handling Patterns](../ERROR_HANDLING.md)
 - [API Reference](../API_REFERENCE.md)
@@ -423,5 +422,5 @@ app.use(errorTrackingMiddleware); // Too late!
 
 ---
 
-**Status**: ✅ Backend observability fully integrated  
+**Status**: Backend observability fully integrated  
 **Last Updated**: February 18, 2026
