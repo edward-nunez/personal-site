@@ -491,7 +491,7 @@ Observability does NOT collect:
 - [API Reference](../API_REFERENCE.md)
 - [TROUBLESHOOTING →](TROUBLESHOOTING.md)
 
-## 📖 External Resources
+##  External Resources
 
 - [LaunchDarkly React SDK](https://launchdarkly.com/docs/sdk/client-side/react/react-web)
 - [Web Vitals at web.dev](https://web.dev/vitals/)

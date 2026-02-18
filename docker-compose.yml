@@ -1,9 +1,11 @@
 version: '3.8'
 
 services:
+  # PostgreSQL Database
   postgres:
     image: postgres:18-alpine
     container_name: personal-site-postgres
+    restart: unless-stopped
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: admin123
@@ -21,11 +23,13 @@ services:
       timeout: 5s
       retries: 5
 
+  # Express.js Backend API
   backend:
     build:
       context: .
       dockerfile: ./packages/backend/Dockerfile
     container_name: personal-site-backend
+    restart: unless-stopped
     ports:
       - "3000:3000"
     environment:
@@ -42,11 +46,36 @@ services:
     networks:
       - personal-site-network
 
+  # AI Agent Service (uses Ollama for LLM)
+  agent:
+    build:
+      context: .
+      dockerfile: ./packages/agent/Dockerfile
+    container_name: personal-site-agent
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    environment:
+      NODE_ENV: development
+      PORT: 3001
+      CORS_ORIGIN: "http://localhost:5173,http://localhost:3000"
+      OLLAMA_HOST: http://ollama:11434
+      OLLAMA_MODEL: neural-chat
+    depends_on:
+      - backend
+    volumes:
+      - ./packages/agent/src:/app/src
+    networks:
+      - personal-site-network
+
+  # HAProxy Web Server (serves frontend SPA)
+  # HAProxy 3.3.3 - powerful reverse proxy with security features and load balancing
   frontend:
     build:
       context: .
       dockerfile: ./packages/frontend/Dockerfile
     container_name: personal-site-frontend
+    restart: unless-stopped
     ports:
       - "5173:80"
     environment:
@@ -58,8 +87,22 @@ services:
     networks:
       - personal-site-network
 
+  # Optional: Ollama service for AI capabilities
+  # Uncomment to enable local LLM support for the agent service
+  # ollama:
+  #   image: ollama/ollama:latest
+  #   container_name: personal-site-ollama
+  #   restart: unless-stopped
+  #   ports:
+  #     - "11434:11434"
+  #   volumes:
+  #     - ollama_data:/root/.ollama
+  #   networks:
+  #     - personal-site-network
+
 volumes:
   postgres_data:
+  # ollama_data:  # Uncomment when enabling Ollama
 
 networks:
   personal-site-network:

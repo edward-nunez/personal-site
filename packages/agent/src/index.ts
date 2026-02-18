@@ -6,7 +6,7 @@ const PORT = process.env.PORT || 3001;
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
 const server = app.listen(PORT, () => {
-  logger.info(`🚀 Agent service started`, {
+  logger.info(` Agent service started`, {
     port: PORT,
     environment: NODE_ENV,
     ollama: process.env.OLLAMA_HOST || 'http://localhost:11434',

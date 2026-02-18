@@ -7,7 +7,7 @@ Welcome to the Personal Site v2 documentation! This guide is organized by role a
 ## Quick Start 
 
 **New to the project or just want to get running?**  
-👉 [**QUICK START.md**](./QUICK_START.md) - Get running in 5 minutes
+ [**QUICK START.md**](./QUICK_START.md) - Get running in 5 minutes
 
 ---
 
@@ -78,7 +78,7 @@ docs/
 └── research/                    ← Investigation notes
 ```
 
-## 📖 **Project Overview**
+##  **Project Overview**
 
 **Personal Site v2** is a modern monorepo featuring:
 - **Backend**: Express.js API with Clean Architecture (PostgreSQL + Drizzle)
@@ -128,7 +128,7 @@ docs/
 
 ---
 
-## 📝 **Documentation Improvements**
+##  **Documentation Improvements**
 
 We recently reorganized our documentation for better navigation and scalability. See [SUMMARY.md](./SUMMARY.md) for details about the improvements and [CHANGELOG.md](./CHANGELOG.md) for recent updates.
 

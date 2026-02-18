@@ -2,7 +2,7 @@
 
 A modern monorepo featuring a **React frontend**, **Express.js backend** with **Clean Architecture**, **PostgreSQL database**, and **Kubernetes deployment** via Helm.
 
-> 📚 **All documentation is in the [`docs/` folder](./docs/index.md)**. Start there!
+>  **All documentation is in the [`docs/` folder](./docs/index.md)**. Start there!
 
 ## Quick Start
 
@@ -29,7 +29,7 @@ npm run dev
 
 ---
 
-## 📖 Documentation
+##  Documentation
 
 This project has **comprehensive documentation** for every audience:
 
@@ -41,7 +41,7 @@ This project has **comprehensive documentation** for every audience:
 | **DevOps/Infrastructure** | [Deployment Guide](./docs/DEPLOYMENT.md) → [Operations Guide](./docs/OPERATIONS.md) |
 | **Contributing code** | [Contributing Guide](./docs/CONTRIBUTING.md) |
 
-👉 **[Full Documentation Index](./docs/index.md)**
+ **[Full Documentation Index](./docs/index.md)**
 
 ---
 
@@ -72,7 +72,7 @@ This project has **comprehensive documentation** for every audience:
 
 ---
 
-## 🚀 Key Features
+##  Key Features
 
 - ✅ **Clean Architecture** - Testable, maintainable backend following industry best practices
 - ✅ **Type-Safe** - Full TypeScript with strict mode, no `any` types
@@ -86,7 +86,7 @@ This project has **comprehensive documentation** for every audience:
 
 ---
 
-## 📝 Common Commands
+##  Common Commands
 
 ### Development
 ```bash
@@ -143,7 +143,7 @@ personal-site-v2/
 │       └── tests/
 │
 ├── helm/                     # Kubernetes Helm charts
-├── docs/                     # 📚 Comprehensive documentation
+├── docs/                     #  Comprehensive documentation
 └── docker-compose.yml        # Local development stack
 ```
 
@@ -202,7 +202,7 @@ npm run format
 
 ---
 
-## 📚 Learning Resources
+##  Learning Resources
 
 - [Architecture Guide](./docs/ARCHITECTURE.md) - Explains Clean Architecture pattern
 - [API Reference](./docs/API_REFERENCE.md) - All endpoints documented
@@ -243,7 +243,7 @@ MIT
 
 ## 🆘 Need Help?
 
-- 📖 Check the [docs folder](./docs/index.md) first
+-  Check the [docs folder](./docs/index.md) first
 - 🔍 Search existing issues on GitHub
 - 💬 Ask the team on Slack
 - 🐛 File a bug report with details

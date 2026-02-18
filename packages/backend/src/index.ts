@@ -16,7 +16,7 @@ const startServer = async (): Promise<void> => {
     logger.info('✨ Feature flags initialized');
 
     const server = app.listen(port, () => {
-      logger.info('🚀 Server started successfully');
+      logger.info(' Server started successfully');
       logger.info(`📦 Environment: ${config.nodeEnv}`);
       logger.info(`🔌 Port: ${port}`);
       logger.info(`🌐 CORS Origin: ${config.corsOrigin}`);

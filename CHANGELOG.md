@@ -99,7 +99,7 @@ All notable changes to this project will be documented in this file.
 | Tests | ❌ Not Started | 0% |
 | **Overall** | ✅ **Phase 1 Complete** | **~95%** |
 
-### 📝 API Endpoints Summary
+###  API Endpoints Summary
 
 **Total Endpoints**: 24+ documented endpoints across 6 entities
 
@@ -116,7 +116,7 @@ All notable changes to this project will be documented in this file.
 - Submission management (mark as read, view)
 - Admin authentication
 
-### 🚀 Next Steps
+###  Next Steps
 
 **Phase 2: Frontend Pages & Layout** (Estimated 7-8 days)
 - Implement all 7 main pages (Home, About, Experience, Projects, Blog, Contact, Consultation)
@@ -173,9 +173,9 @@ All notable changes to this project will be documented in this file.
 
 ## Documentation
 
-- 📖 [Getting Started Guide](./docs/GETTING_STARTED.md)
+-  [Getting Started Guide](./docs/GETTING_STARTED.md)
 - 🏗 [Architecture Guide](./docs/ARCHITECTURE.md)
-- 📚 [API Reference](./docs/API_REFERENCE.md)
+-  [API Reference](./docs/API_REFERENCE.md)
 - 🛠 [Feature Development Guide](./docs/FEATURE_DEVELOPMENT.md)
 - 📋 [Implementation Plan](./docs/IMPLEMENTATION_PLAN.md)
 - 📊 [Implementation Status](./docs/IMPLEMENTATION_STATUS.md)

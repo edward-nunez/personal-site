@@ -60,3 +60,4 @@ k8s/
 .prettierrc*
 .eslintrc*
 .editorconfig
+.npmrc

@@ -7,7 +7,7 @@ Understanding our system design and the decisions that shaped it. This section d
 | Document | Purpose |
 |----------|---------|
 | [Architecture Overview](./ARCHITECTURE.md) | 🗂️ Complete system design, component interactions, and design patterns |
-| [Architectural Decision Records (ADR)](./ADR/) | 📝 Decision log: why we chose specific technologies and approaches |
+| [Architectural Decision Records (ADR)](./ADR/) |  Decision log: why we chose specific technologies and approaches |
 
 ## Why ADRs Matter
 

@@ -272,7 +272,7 @@ npm run dev:backend
 
 And verify the URL in `.env` is correct (default: `http://localhost:3000`).
 
-## 📚 Next Steps
+##  Next Steps
 
 1. Integrate agent endpoints into your frontend
 2. Build UI for job assessment and conversation
