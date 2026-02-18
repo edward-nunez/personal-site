@@ -1,0 +1,128 @@
+global:
+  environment: production
+  namespace: personal-site
+
+# PostgreSQL 18 (application database; use this or a managed DB in production)
+postgresql:
+  enabled: true
+  image: postgres:18-alpine
+  replicaCount: 1
+  port: 5432
+  auth:
+    username: admin
+    password: changeme
+  database: personal_site
+  persistence:
+    enabled: true
+    size: 10Gi
+    storageClass: standard
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "250m"
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
+
+# Backend secrets (set in production via --set or values file; never commit real secrets)
+backendSecrets:
+  jwtSecret: changeme-in-production
+  corsOrigin: ""
+  # When postgresql.enabled is false, set databaseUrl to your managed DB connection string
+  databaseUrl: ""
+
+# MongoDB not used by this app (PostgreSQL + Drizzle); kept for optional compatibility
+mongodb:
+  enabled: false
+  image: mongo:7.0
+  replicaCount: 1
+  port: 27017
+  auth:
+    username: admin
+    password: admin123
+  persistence:
+    enabled: true
+    size: 10Gi
+    storageClass: standard
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "250m"
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
+
+backend:
+  image: personal-site-backend
+  imageTag: latest
+  imagePullPolicy: Never
+  replicaCount: 1
+  port: 3000
+  env:
+    NODE_ENV: production
+    LOG_LEVEL: info
+    PORT: 3000
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "250m"
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
+  service:
+    type: ClusterIP
+    port: 3000
+  livenessProbe:
+    httpGet:
+      path: /health
+      port: 3000
+    initialDelaySeconds: 30
+    periodSeconds: 10
+  readinessProbe:
+    httpGet:
+      path: /ready
+      port: 3000
+    initialDelaySeconds: 5
+    periodSeconds: 5
+
+frontend:
+  image: personal-site-frontend
+  imageTag: latest
+  imagePullPolicy: Never
+  replicaCount: 1
+  port: 80
+  env:
+    VITE_API_BASE_URL: /api
+  resources:
+    requests:
+      memory: "128Mi"
+      cpu: "100m"
+    limits:
+      memory: "256Mi"
+      cpu: "250m"
+  service:
+    type: LoadBalancer
+    port: 80
+  livenessProbe:
+    httpGet:
+      path: /
+      port: 80
+    initialDelaySeconds: 30
+    periodSeconds: 10
+  readinessProbe:
+    httpGet:
+      path: /
+      port: 80
+    initialDelaySeconds: 5
+    periodSeconds: 5
+
+ingress:
+  enabled: false
+  className: nginx
+  annotations: {}
+  hosts:
+    - host: personal-site.local
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []

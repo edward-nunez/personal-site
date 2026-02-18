@@ -156,6 +156,12 @@ docker-compose logs -f backend --tail 100
 docker exec -it personal-site-v2-backend-1 npm run drizzle:studio
 ```
 
+**Building images manually:** Dockerfiles expect the **repository root** as build context. From the repo root run:
+`docker build -t personal-site-backend:latest -f packages/backend/Dockerfile .`
+and
+`docker build -t personal-site-frontend:latest -f packages/frontend/Dockerfile .`
+Or use `docker-compose build`, which uses the correct context and paths.
+
 ### Database Reset in Docker
 
 ```bash
@@ -290,16 +296,25 @@ Start by reading these docs in order:
 
 ### 2. Run Tests
 
+See the [Testing Guide](./TESTING.md) for full details (how to run, add, and structure tests).
+
 ```bash
-# Backend tests
+# All unit and integration tests (backend + frontend)
+npm run test
+
+# Backend only (Jest: unit + integration)
 npm run test:backend
 
-# Frontend tests
+# Frontend only (Vitest)
 npm run test:frontend
 
-# Frontend E2E tests
-npm run test:e2e -w packages/frontend
+# Coverage for both (70%+ threshold)
+npm run test:coverage
+
+# E2E tests (Playwright; starts frontend automatically)
+npm run test:e2e
 ```
+For E2E, the frontend dev server is started automatically. Optionally run the backend (`npm run dev:backend`) in another terminal for full API during E2E.
 
 ### 3. Try Making a Change
 

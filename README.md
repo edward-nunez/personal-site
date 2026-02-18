@@ -97,10 +97,14 @@ npm run dev:frontend     # Frontend only (port 5173)
 
 ### Testing
 ```bash
-npm run test:backend     # Backend tests
-npm run test:frontend    # Frontend tests
-npm run test:e2e -w packages/frontend  # E2E tests
+npm run test             # All unit/integration tests (backend + frontend)
+npm run test:backend     # Backend unit + integration (Jest)
+npm run test:frontend    # Frontend unit (Vitest)
+npm run test:coverage    # Coverage for both packages (70%+ threshold)
+npm run test:e2e         # E2E tests (Playwright, starts frontend automatically)
+npm run test:e2e:ui      # E2E with Playwright UI
 ```
+E2E runs the frontend dev server automatically; optional: run backend (`npm run dev:backend`) for full API during E2E.
 
 ### Build & Deployment
 ```bash

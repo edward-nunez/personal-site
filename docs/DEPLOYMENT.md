@@ -9,6 +9,8 @@ Complete guide for deploying Personal Site v2 using Docker and Kubernetes (Helm)
 - [Environment Configuration](#environment-configuration)
 - [Health Checks & Monitoring](#health-checks--monitoring)
 - [Troubleshooting](#troubleshooting)
+- [Production Checklist](#production-checklist)
+- [Launch Runbook](#launch-runbook)
 
 ---
 
@@ -23,18 +25,22 @@ Complete guide for deploying Personal Site v2 using Docker and Kubernetes (Helm)
 
 This guide covers **Docker** and **Kubernetes (Helm)**.
 
+**Production secrets:** Never commit `JWT_SECRET`, `DATABASE_URL`, or database passwords. Use environment variables, a secrets manager, or Helm `--set` / values files that are not committed. The Helm chart expects `backendSecrets.jwtSecret` and (when using in-cluster PostgreSQL) `postgresql.auth.password` to be set securely. See [Helm README](../helm/README.md) and [Environment Configuration](#environment-configuration) below.
+
 ---
 
 ## Docker Deployment
 
 ### Build Docker Images
 
-```bash
-# Build all images
-docker build -t personal-site-backend:latest ./packages/backend
-docker build -t personal-site-frontend:latest ./packages/frontend
+Images must be built from the **repository root** (Dockerfiles use the monorepo layout):
 
-# Or use docker-compose to build all
+```bash
+# From repo root
+docker build -t personal-site-backend:latest -f packages/backend/Dockerfile .
+docker build -t personal-site-frontend:latest -f packages/frontend/Dockerfile .
+
+# Or use docker-compose to build all (uses correct context and Dockerfile path)
 docker-compose build
 ```
 
@@ -75,13 +81,14 @@ docker run -d \
 
 ### Run Frontend
 
+The frontend image serves static files on port 80 (nginx). Map host port as needed (e.g. 80:80 or 5173:80):
+
 ```bash
 docker run -d \
   --name frontend \
   --network personal-site \
   -e VITE_API_BASE_URL=https://api.yourdomain.com \
   -p 80:80 \
-  -p 443:443 \
   personal-site-frontend:latest
 ```
 
@@ -115,14 +122,16 @@ curl http://localhost/
 ### Quick Start
 
 ```bash
-# Navigate to helm chart
-cd helm
+# From repo root; chart is in helm/
+helm install personal-site ./helm \
+  --namespace personal-site \
+  --create-namespace
 
-# Install the release
-helm install personal-site . \
+# With custom values file
+helm install personal-site ./helm \
   --namespace personal-site \
   --create-namespace \
-  --values values.yaml
+  -f helm/values-prod.yaml
 
 # Verify installation
 kubectl get all -n personal-site
@@ -152,7 +161,7 @@ helm/
 │   └── ingress.yaml         # HTTP routing
 ```
 
-**Note**: Helm templates currently reference MongoDB, but the application uses PostgreSQL. The helm templates may need updating to match the PostgreSQL configuration in [`copilot-instructions.md`](../.github/copilot-instructions.md).
+**Note**: The chart deploys **PostgreSQL** (and optionally MongoDB, disabled by default). Backend secrets `DATABASE_URL` and `JWT_SECRET` are provided via the `app-secrets` Secret; see [helm/README.md](../helm/README.md) for required values and production setup.
 
 ### Configuration
 
@@ -502,6 +511,8 @@ kubectl get events -n personal-site --sort-by='.lastTimestamp'
 
 ## Monitoring & Logging
 
+*Optional Phase 5 follow-up:* For production you may add Prometheus metrics, log aggregation (e.g. Loki, CloudWatch), and alerting. The sections below are a starting point.
+
 ### View Logs (ELK Stack / Loki)
 
 ```bash
@@ -603,21 +614,47 @@ kubectl exec -i <pod> -n personal-site -- tar xzf - -C /
 
 ## Production Checklist
 
-Before deploying to production:
+*Phase 7 (Launch readiness):* Use this checklist and the [Launch Runbook](#launch-runbook) below before your first production deploy.
 
-- [ ] All environment variables configured securely (use Secrets, not ConfigMaps)
-- [ ] Database backups enabled and tested
-- [ ] TLS/SSL certificates configured (Ingress)
-- [ ] Resource limits set appropriately
-- [ ] Health checks configured (liveness & readiness probes)
-- [ ] Logging and monitoring set up
-- [ ] Database migrations run successfully
-- [ ] Load testing completed
-- [ ] Disaster recovery plan documented
-- [ ] Team trained on runbooks
-- [ ] DNS pointing to production ingress
-- [ ] CORS_ORIGIN set to production domain
-- [ ] JWT_SECRET rotated and stored securely
+Before deploying to production, work through the items below. Where applicable, see [OPERATIONS.md](./OPERATIONS.md) (Secrets management, Disaster recovery) and [helm/README.md](../helm/README.md) (Helm values and required secrets).
+
+- [ ] **Environment variables and secrets** – Use Secrets (not ConfigMaps) for `DATABASE_URL`, `JWT_SECRET`, and DB passwords. See [OPERATIONS.md – Secrets Management](./OPERATIONS.md#secrets-management) and [helm/README.md – Required secrets](../helm/README.md#required-secrets-backend).
+- [ ] **Database backups enabled and tested** – Define schedule and retention; test restore. See [OPERATIONS.md – Disaster recovery](./OPERATIONS.md#disaster-recovery).
+- [ ] **TLS/SSL certificates** – Configure Ingress with cert-manager or your provider’s TLS; document in your runbook.
+- [ ] **Resource limits** – Set in Helm `values.yaml` (backend/frontend/postgresql resources); adjust for your cluster. See [helm/values.yaml](../helm/values.yaml).
+- [ ] **Health checks** – Liveness and readiness probes are set in Helm (backend: `/health`, `/ready`; frontend: `/`). See [helm/values.yaml](../helm/values.yaml).
+- [ ] **Logging and monitoring** – Optional Phase 5 follow-up. See [OPERATIONS.md – Monitoring](./OPERATIONS.md#monitoring-checklist) and [DEPLOYMENT – Monitoring & Logging](#monitoring--logging).
+- [ ] **Database migrations** – Run before or as part of deploy: `npm run drizzle:migrate -w packages/backend` (or equivalent in your pipeline). See [GETTING_STARTED.md – Set Up Database](./GETTING_STARTED.md#step-3-set-up-database).
+- [ ] **Load testing** – Optional; run post-launch or before go-live and document approach.
+- [ ] **Disaster recovery plan** – Documented in [OPERATIONS.md – Disaster recovery](./OPERATIONS.md#disaster-recovery). Ensure team knows backup/restore steps.
+- [ ] **Team trained on runbooks** – Share [OPERATIONS.md](./OPERATIONS.md) and this guide; confirm who runs backups and incident response.
+- [ ] **DNS** – Point production domain to Ingress/LoadBalancer; verify with `kubectl get ingress -n personal-site` (or your namespace).
+- [ ] **CORS_ORIGIN** – Set to production frontend URL in Helm `backendSecrets.corsOrigin` or backend env. See [helm/README.md](../helm/README.md).
+- [ ] **JWT_SECRET** – Rotate from default; store in secrets manager or Helm `--set backendSecrets.jwtSecret=...`. See [OPERATIONS.md – Secrets management](./OPERATIONS.md#secrets-management).
+
+---
+
+## Launch Runbook
+
+Ordered steps for a first production (or staging) deploy. Use with the [Production Checklist](#production-checklist) above.
+
+### Pre-deploy
+
+1. **Secrets** – Set `backendSecrets.jwtSecret`, `postgresql.auth.password` (or `backendSecrets.databaseUrl` for managed DB). Never commit real values. See [OPERATIONS.md – Secrets management](./OPERATIONS.md#secrets-management).
+2. **Database** – If using in-cluster PostgreSQL, ensure PVC or use managed PostgreSQL and set `postgresql.enabled: false` and `backendSecrets.databaseUrl`. Run migrations (e.g. from a one-off job or locally against the target DB). See [helm/README.md](../helm/README.md).
+3. **Backup** – If replacing an existing DB, take a backup first. See [OPERATIONS.md – Disaster recovery](./OPERATIONS.md#disaster-recovery).
+
+### Deploy
+
+4. **Build and push images** (if using a registry): from repo root, `./scripts/build-images.sh <tag>` or `docker build -f packages/backend/Dockerfile .` and same for frontend; push to your registry. Update Helm `values.yaml` or `--set` with image tag.
+5. **Install or upgrade Helm release**: e.g. `helm upgrade --install personal-site ./helm -n personal-site --create-namespace -f values-prod.yaml`. See [Kubernetes Deployment (Helm)](#kubernetes-deployment-helm).
+6. **Verify pods**: `kubectl get pods -n personal-site`; all should be Running/Ready.
+
+### Post-deploy
+
+7. **Smoke tests** – Call `https://<your-domain>/health` and `https://<your-domain>/ready`; open frontend and check one public page and, if applicable, admin login.
+8. **DNS and CORS** – Confirm DNS points to the Ingress/LB and `CORS_ORIGIN` includes the frontend URL so API calls succeed from the browser.
+9. **Monitoring** – Confirm logging/monitoring (if configured) and that alerts or runbooks are in place. See [OPERATIONS.md](./OPERATIONS.md).
 
 ---
 

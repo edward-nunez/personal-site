@@ -12,6 +12,7 @@ Start here if you're new to the project or setting up your development environme
 - [Architecture Guide](./ARCHITECTURE.md) - Clean Architecture patterns, layer breakdown, and design decisions
 - [Feature Development Guide](./FEATURE_DEVELOPMENT.md) - Step-by-step guide to adding new features
 - [API Reference](./API_REFERENCE.md) - Complete API documentation with examples for frontend consumption
+- [Testing Guide](./TESTING.md) - How to run tests, add unit/integration/E2E tests, and use mocks
 - [Code Standards & Contributing](./CONTRIBUTING.md) - ESLint rules, naming conventions, PR process
 
 ### 🔧 **For DevOps/Infrastructure**
@@ -56,6 +57,7 @@ Start here if you're new to the project or setting up your development environme
 | Deploy to Kubernetes | [Deployment Guide](./DEPLOYMENT.md) |
 | Debug a production issue | [Operations Guide](./OPERATIONS.md) |
 | Learn the codebase structure | [Architecture Guide](./ARCHITECTURE.md) |
+| Run or add tests | [Testing Guide](./TESTING.md) |
 | Set up CI/CD or monitoring | [Operations Guide](./OPERATIONS.md) |
 
 ---

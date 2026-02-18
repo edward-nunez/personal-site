@@ -4,6 +4,8 @@ Runbooks and troubleshooting guides for production operations, debugging, and in
 
 **Table of Contents**
 - [Production Runbooks](#production-runbooks)
+- [Secrets Management](#secrets-management)
+- [Disaster Recovery](#disaster-recovery)
 - [Common Issues & Solutions](#common-issues--solutions)
 - [Debugging Guide](#debugging-guide)
 - [Performance Optimization](#performance-optimization)
@@ -88,6 +90,74 @@ nslookup yourdomain.com
 3. If database issue: restore from backup
 4. If code issue: rollback to previous version (`helm rollback personal-site`)
 5. Monitor logs and metrics for 15 minutes
+
+---
+
+### Secrets Management
+
+**Where secrets live**
+
+- **Backend** requires at least:
+  - `DATABASE_URL` – PostgreSQL connection string (never commit; use env or Kubernetes Secret).
+  - `JWT_SECRET` – Used to sign and verify JWTs (min 32 chars in production).
+  - Optionally: `CORS_ORIGIN` for production frontend URL(s).
+
+- **Docker / docker-compose**: Set in `environment` or an env file that is not committed (e.g. `.env` in `packages/backend`, listed in `.gitignore`).
+
+- **Kubernetes (Helm)**: The chart expects these in the `app-secrets` Secret. Set them via:
+  - `helm install ... --set backendSecrets.jwtSecret="..." --set postgresql.auth.password="..."`
+  - Or a values file that is not committed (e.g. `values-prod.yaml` in CI secrets or a secret manager).
+
+**Do not**
+
+- Commit real `JWT_SECRET`, `DATABASE_URL`, or database passwords to the repo.
+- Rely on default/example values in code for production (backend config uses defaults only for dev/test).
+
+**Rotating secrets**
+
+1. **JWT_SECRET**: Generate a new value; update the Secret (or env); restart backend. All existing tokens become invalid; users must log in again.
+2. **Database password**: Change password in PostgreSQL; update `DATABASE_URL` (or `postgresql.auth.password` and Secret); restart backend (and any app that connects to the DB).
+
+---
+
+### Disaster Recovery
+
+**Database backup and restore**
+
+- **Backup (PostgreSQL)**  
+  With in-cluster or local PostgreSQL:
+
+  ```bash
+  # From host (adjust pod/service name and namespace)
+  kubectl exec -n personal-site deployment/postgresql -- pg_dump -U admin personal_site > backup_$(date +%Y%m%d).sql
+
+  # Or with Docker
+  docker exec personal-site-postgres pg_dump -U admin personal_site > backup_$(date +%Y%m%d).sql
+  ```
+
+  For managed PostgreSQL (e.g. cloud), use the provider’s backup/snapshot feature and document the restore procedure in your runbook.
+
+- **Restore**  
+  Restore into an existing empty database or a new database:
+
+  ```bash
+  # Kubernetes
+  kubectl exec -i -n personal-site deployment/postgresql -- psql -U admin personal_site < backup_YYYYMMDD.sql
+
+  # Docker
+  docker exec -i personal-site-postgres psql -U admin personal_site < backup_YYYYMMDD.sql
+  ```
+
+  Then restart the backend so it uses the restored data.
+
+- **Point-in-time recovery (PITR)**  
+  Not covered here. If you use a managed PostgreSQL service with PITR, follow the provider’s docs and add the exact steps to this runbook.
+
+**Runbook checklist**
+
+- Backup frequency (e.g. daily) and retention.
+- Who can run backups/restores and where backups are stored.
+- Restore test at least once to confirm the process.
 
 ---
 

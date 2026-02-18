@@ -13,7 +13,7 @@ export class ToolkitController {
    * GET /api/toolkit
    * Get all toolkit categories in display order.
    */
-  async getAll(req: Request, res: Response, next: NextFunction): Promise<void> {
+  async getAll(_req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const useCase = new GetAllToolkitCategoriesUseCase(this.repository);
       const categories = await useCase.execute();

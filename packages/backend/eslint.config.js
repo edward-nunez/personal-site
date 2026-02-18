@@ -43,8 +43,10 @@ export default [
       globals: {
         ...globals.node,
         describe: 'readonly',
+        it: 'readonly',
         test: 'readonly',
         expect: 'readonly',
+        jest: 'readonly',
         beforeEach: 'readonly',
         afterEach: 'readonly',
         beforeAll: 'readonly',

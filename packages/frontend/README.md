@@ -156,8 +156,8 @@ VITE_API_BASE_URL=http://localhost:3000
 Build the frontend Docker image:
 
 ```bash
-# From monorepo root
-docker build -f packages/frontend/Dockerfile -t personal-site-frontend .
+# From monorepo root (context must be repo root)
+docker build -t personal-site-frontend:latest -f packages/frontend/Dockerfile .
 ```
 
 ### Kubernetes
@@ -191,11 +191,12 @@ See the main project [CONTRIBUTING.md](../../docs/CONTRIBUTING.md) guide for:
 
 ## Documentation
 
-For full project documentation, see the [monorepo docs](../../docs/index.md):
-- [Architecture Guide](../../docs/ARCHITECTURE.md)
-- [API Reference](../../docs/API_REFERENCE.md)
-- [Feature Development](../../docs/FEATURE_DEVELOPMENT.md)
-- [Getting Started](../../docs/GETTING_STARTED.md)
+For full project documentation, start at the [documentation index](../../docs/index.md). Key docs:
+
+- [Getting Started](../../docs/GETTING_STARTED.md) - Setup, Docker, first run
+- [Architecture Guide](../../docs/ARCHITECTURE.md) - Backend and frontend structure
+- [API Reference](../../docs/API_REFERENCE.md) - Backend endpoints
+- [Testing Guide](../../docs/TESTING.md) - How to run and add tests
 
 ## Troubleshooting
 

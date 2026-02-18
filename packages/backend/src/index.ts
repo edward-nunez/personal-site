@@ -1,67 +1,13 @@
-import './configs/index.js'; // Load dotenv once for runtime
-import express, { Express } from 'express';
-import cors from 'cors';
-import helmet from 'helmet';
 import DbService from './infrastructure/persistence/db.js';
-import apiRoutes from './routes/index.js';
-import { errorHandler } from './presentation/middleware/errorHandler.middleware.js';
-import { apiLimiter } from './presentation/middleware/rateLimiter.middleware.js';
 import logger from './shared/utils/logger.js';
 import config from './configs/index.js';
+import { createApp } from './app.js';
 
-const app: Express = express();
+const app = createApp();
 const port = config.port;
 
-// Middleware
-app.use(helmet());
-const corsOrigins = config.corsOrigin
-  .split(',')
-  .map((o) => o.trim())
-  .filter(Boolean);
-app.use(
-  cors({
-    origin: corsOrigins.length > 1 ? corsOrigins : (corsOrigins[0] ?? true),
-    credentials: true,
-  })
-);
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-// Apply rate limiting to all API routes
-app.use('/api', apiLimiter);
-
-// Health check routes
-app.get('/health', (_req, res) => {
-  res.json({ status: 'ok' });
-});
-
-app.get('/ready', async (_req, res) => {
-  const dbHealthy = await DbService.healthCheck();
-  res.status(dbHealthy ? 200 : 503).json({
-    status: dbHealthy ? 'ready' : 'degraded',
-    database: dbHealthy ? 'connected' : 'disconnected',
-  });
-});
-
-// API routes
-app.use('/api', apiRoutes);
-
-// 404 handler for unmatched routes (must come after all routes)
-app.use((_req, res) => {
-  res.status(404).json({
-    success: false,
-    error: 'Route not found',
-    message: 'The requested endpoint does not exist',
-  });
-});
-
-// Error handling middleware (must be last)
-app.use(errorHandler);
-
-// Connect to PostgreSQL and start server
 const startServer = async (): Promise<void> => {
   try {
-    // Connect to database
     await DbService.connect();
 
     app.listen(port, () => {

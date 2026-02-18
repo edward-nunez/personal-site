@@ -4,6 +4,8 @@ Complete documentation of all backend API endpoints. This is the contract betwee
 
 **Base URL**: `http://localhost:3000/api` (development)
 
+**Machine-readable spec**: An [OpenAPI 3.x spec](./openapi.yaml) is available for code generation, Swagger UI, or tooling. Use it alongside this document for full request/response schemas.
+
 **Table of Contents**
 - [Authentication](#authentication)
 - [Experiences](#experiences)

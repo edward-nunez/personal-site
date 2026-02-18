@@ -14,29 +14,44 @@ This guide explains the overall architecture of Personal Site v2, focusing on th
 
 ## Architecture Overview
 
-Personal Site v2 is a **monorepo** consisting of:
+Personal Site v2 is a **monorepo** consisting of three independent services:
 
 ```
 ┌─────────────────────────────────────────────────────────┐
 │                      Frontend (React)                     │
 │              Running on http://localhost:5173             │
-└──────────────────────┬──────────────────────────────────┘
-                       │ HTTP Requests (Axios)
-                       │ JSON API with JWT Auth
-                       ▼
-┌─────────────────────────────────────────────────────────┐
-│                  Backend (Express.js)                     │
-│   Clean Architecture with 4 Layers (see below)            │
-│              Running on http://localhost:3000             │
-└──────────────────────┬──────────────────────────────────┘
-                       │ Connection Pool
-                       ▼
-┌─────────────────────────────────────────────────────────┐
-│                 PostgreSQL Database                       │
-│          6 Models (Experience, Project, etc.)             │
-│          Port 5432 (or containerized)                     │
-└─────────────────────────────────────────────────────────┘
+└────────┬────────────────────────────────────┬───────────┘
+         │ HTTP Requests (Axios)              │
+         │ JSON API with JWT Auth             │
+         ▼                                    ▼
+┌──────────────────────────────┐  ┌──────────────────────┐
+│  Backend (Express.js)         │  │  Agent (Express.js)   │
+│  Clean Architecture           │  │  Clean Architecture   │
+│  Port 3000                    │  │  Port 3001            │
+│  ┌────────────────────────┐   │  │  ┌────────────────┐  │
+│  │ Auth, Portfolio,       │◄──┼──┼──│ Portfolio Data │  │
+│  │ Content, Engagement    │   │  │  │ Service (HTTP) │  │
+│  └────────────────────────┘   │  │  └────────────────┘  │
+└─────────────┬────────────────┘  │  │                    │
+              │                    │  │  ┌────────────────┐  │
+              │                    │  └──│ Ollama Service │  │
+              │                    │     │ (LLM Inference)│  │
+              │                    │     └────────┬───────┘  │
+              │                    │              │          │
+              ▼                    │              ▼          │
+┌─────────────────────────┐       │  ┌──────────────────┐   │
+│  PostgreSQL Database    │       │  │ Ollama (External)│   │
+│  Port 5432              │       │  │ Port 11434       │   │
+└─────────────────────────┘       └──┴──────────────────┴───┘
 ```
+
+### Service Responsibilities
+
+1. **Frontend** - User interface, presentation logic
+2. **Backend** - Portfolio data, authentication, content management
+3. **Agent** - Job assessment, conversational engagement via LLM
+4. **PostgreSQL** - Persistent data storage
+5. **Ollama** - Local LLM inference engine (external dependency)
 
 ---
 
@@ -72,46 +87,137 @@ Dependencies flow **inward only** — Domain knows nothing about Infrastructure,
            (Databases, External APIs)
 ```
 
+**Request flow (Mermaid)** – From HTTP request to database and back:
+
+```mermaid
+sequenceDiagram
+  participant Client
+  participant Controller
+  participant UseCase
+  participant Repository
+  participant DB
+
+  Client->>Controller: HTTP GET /api/experiences
+  Controller->>UseCase: execute(options)
+  UseCase->>Repository: findAll(options)
+  Repository->>DB: SQL query
+  DB-->>Repository: rows
+  Repository-->>UseCase: Experience[]
+  UseCase-->>Controller: Experience[]
+  Controller-->>Client: JSON response
+```
+
 ### Layer Breakdown
 
 #### 1. **Domain Layer** (`src/domain/`)
-**Responsibility**: Define core business concepts and rules.
+**Responsibility**: Define core business concepts and rules, organized by bounded contexts.
 
-**Contents**:
-- **Entities** (`domain/entities/`): TypeScript interfaces representing core business objects
-  - [`Experience`](../packages/backend/src/domain/entities/Experience.ts) - Professional work experience
-  - `Project`, `BlogPost`, `AdminUser`, etc.
-  - **Rules**: Entities contain only attributes and structure, NO behavior
-  - **Imports**: Nothing external (pure TypeScript)
+**Bounded Contexts**: The domain is explicitly organized into four bounded contexts following Domain-Driven Design principles:
 
-- **Interfaces** (`domain/interfaces/`): Contracts that Infrastructure must implement
-  - `IExperienceRepository` - Interface for persistence
-  - `IAdminUserRepository` - Another persistence contract
-  - **Purpose**: Decouple business logic from database choice
-  - **Example**: If you code against `IExperienceRepository`, you can swap Drizzle for raw SQL or MongoDB later
+1. **Portfolio** (`domain/portfolio/`)
+   - Entities: `Experience`, `Project`
+   - Interfaces: `IExperienceRepository`, `IProjectRepository`
+   - Purpose: Professional work history and portfolio projects
+
+2. **Auth** (`domain/auth/`)
+   - Entities: `AdminUser`, `SafeAdminUser`
+   - Interfaces: `IAdminUserRepository`
+   - Purpose: Authentication and administrative access control
+
+3. **Content** (`domain/content/`)
+   - Entities: `BlogPost`, `ToolkitCategory`
+   - Interfaces: `IBlogPostRepository`, `IToolkitCategoryRepository`
+   - Purpose: Content management (blog articles, toolkit items)
+
+4. **Engagement** (`domain/engagement/`)
+   - Entities: `ContactSubmission`, `ConsultationSubmission`
+   - Interfaces: `IContactSubmissionRepository`, `IConsultationSubmissionRepository`
+   - Purpose: User engagement through contact and consultation forms
+
+**Structure**:
+```
+domain/
+├── portfolio/
+│   ├── Experience.ts
+│   ├── Project.ts
+│   ├── IExperienceRepository.ts
+│   ├── IProjectRepository.ts
+│   └── index.ts
+├── auth/
+│   ├── AdminUser.ts
+│   ├── IAdminUserRepository.ts
+│   └── index.ts
+├── content/
+│   ├── BlogPost.ts
+│   ├── ToolkitCategory.ts
+│   ├── IBlogPostRepository.ts
+│   ├── IToolkitCategoryRepository.ts
+│   └── index.ts
+├── engagement/
+│   ├── ContactSubmission.ts
+│   ├── ConsultationSubmission.ts
+│   ├── IContactSubmissionRepository.ts
+│   ├── IConsultationSubmissionRepository.ts
+│   └── index.ts
+├── entities/      # Legacy - redirects to bounded contexts
+├── interfaces/    # Legacy - redirects to bounded contexts
+└── index.ts       # Main exports
+```
 
 **Example Structure**:
 ```typescript
-// domain/entities/Experience.ts
+// domain/portfolio/Experience.ts
 export interface Experience {
-  id: number;
+  id: string;
   company: string;
   role: string;
   startDate: Date;
   // ... other fields
 }
 
-// domain/interfaces/IExperienceRepository.ts
+// domain/portfolio/IExperienceRepository.ts
 export interface IExperienceRepository {
   findAll(options?: QueryOptions): Promise<Experience[]>;
-  findById(id: number): Promise<Experience | null>;
+  findById(id: string): Promise<Experience | null>;
   create(input: CreateExperienceInput): Promise<Experience>;
-  update(id: number, input: UpdateExperienceInput): Promise<Experience>;
-  delete(id: number): Promise<void>;
+  update(id: string, input: UpdateExperienceInput): Promise<Experience>;
+  delete(id: string): Promise<void>;
 }
 ```
 
-**Key Rule**: Domain layer imports from NOTHING except other domain files.
+**Key Rules**: 
+- Domain layer imports from NOTHING except other domain files
+- Each bounded context is self-contained
+- Cross-context dependencies should be avoided at domain level
+- Repository interfaces define persistence contracts for each entity
+
+**Layer dependencies (Mermaid)**:
+
+```mermaid
+flowchart LR
+  subgraph Presentation [Presentation]
+    Controllers[Controllers]
+    Routes[Routes]
+    Middleware[Middleware]
+  end
+  subgraph Application [Application]
+    UseCases[Use Cases]
+    DTOs[DTOs]
+  end
+  subgraph Domain [Domain]
+    Entities[Entities]
+    Interfaces[Interfaces]
+  end
+  subgraph Infrastructure [Infrastructure]
+    Repositories[Repositories]
+    DB[Database]
+  end
+  Controllers --> UseCases
+  UseCases --> Interfaces
+  UseCases --> Entities
+  Repositories --> Interfaces
+  Repositories --> DB
+```
 
 ---
 
@@ -309,6 +415,136 @@ Step-by-step flow:
 - Dependencies point inward only (Presentation → Application → Domain ← Infrastructure)
 - Business logic (steps 2-5) is separate from plumbing (HTTP, database)
 - Easy to test: mock the repository, test the use case in isolation
+
+---
+
+## Agent Service Architecture
+
+The **Agent service** is an independent Express.js microservice that handles AI-powered job assessment and conversational engagement functionality. Like the Backend, it follows Clean Architecture principles but with different bounded contexts.
+
+### Service Overview
+
+```
+Agent Service (Port 3001)
+├── Domain Layer
+│   ├── Assessment (JobFitAssessment, CandidateStrength)
+│   └── Conversation (ConversationMessage, Session)
+├── Application Layer
+│   ├── Use Cases
+│   │   ├── AssessJobFit
+│   │   └── EngageInConversation
+│   └── DTOs (Zod validation schemas)
+├── Infrastructure Layer
+│   ├── OllamaService (LLM inference)
+│   ├── ConversationSessionManager (in-memory sessions)
+│   └── PortfolioDataService (HTTP client to Backend)
+└── Presentation Layer
+    ├── Controllers (assessment.controller.ts)
+    └── Routes (/api/assess/*)
+```
+
+### Agent-Specific Bounded Contexts
+
+The Agent service operates within two primary bounded contexts:
+
+1. **Assessment Context** - Job fit evaluation using LLM analysis
+   - Entities: `JobFitAssessment`, `CandidateStrength`
+   - Use Cases: `AssessJobFit`, `EngageInConversation`
+   - External Dependencies: Ollama (neural-chat 13B model), Backend portfolio API
+
+2. **Conversation Context** - Session management for multi-turn dialogue
+   - Entities: `ConversationMessage`, `ConversationSession`
+   - Infrastructure: `ConversationSessionManager` (in-memory with 30-min TTL)
+   - Privacy: No database storage - sessions expire and are garbage collected
+
+### External Dependencies
+
+#### 1. **Ollama (Port 11434)**
+- **Purpose**: Local LLM inference engine running neural-chat (13B parameters)
+- **Usage**: Agent sends prompt + conversation history → receives assessment response
+- **Deployment**: Runs on separate home server (requires 8GB+ RAM)
+- **Communication**: HTTP API calls to `http://localhost:11434/api/generate`
+
+#### 2. **Backend API (Port 3000)**
+- **Purpose**: Fetch candidate portfolio data (experiences, projects)
+- **Usage**: `PortfolioDataService` makes HTTP requests to Backend's public API endpoints
+- **Endpoints Used**:
+  - `GET /api/experiences` - Work history
+  - `GET /api/projects` - Portfolio projects
+- **Authentication**: Not required for public portfolio data
+
+### Data Flow Example: Job Assessment
+
+```
+1. Frontend sends POST /api/assess/job-fit
+   Body: { jobDescription: "...", sessionId?: "..." }
+
+2. PRESENTATION LAYER (assessment.controller.ts)
+   ├─ Validate input with AssessJobFitSchema (DTO)
+   └─ Call: useCase.execute(jobDescription, sessionId)
+
+3. APPLICATION LAYER (AssessJobFitUseCase)
+   ├─ Fetch portfolio data via PortfolioDataService
+   ├─ Retrieve conversation history (if sessionId provided)
+   └─ Call: ollamaService.assessJobFit(...)
+
+4. INFRASTRUCTURE LAYER (OllamaService)
+   ├─ Build prompt with evaluation criteria
+   ├─ Include conversation history for context
+   ├─ Send HTTP POST to Ollama at port 11434
+   └─ Parse LLM response into JobFitAssessment structure
+
+5. INFRASTRUCTURE LAYER (ConversationSessionManager)
+   ├─ Create new session (if none provided)
+   ├─ Add exchange to session history
+   └─ Return sessionId for next turn
+
+6. PRESENTATION LAYER → returns to controller
+7. HTTP RESPONSE sent back to Frontend
+   {
+     success: true,
+     data: {
+       fitScore: 85,
+       fit: true,
+       strengths: [{ title: "...", description: "..." }],
+       gaps: ["..."],
+       recommendation: "...",
+       sessionId: "abc-123"
+     }
+   }
+```
+
+### Key Design Decisions
+
+| Decision | Rationale | Trade-off |
+|----------|----------|-----------|
+| **Separate service** | Assessment is independent bounded context | Additional service to deploy |
+| **In-memory sessions** | Privacy requirement (no database) | Sessions don't survive service restart |
+| **30-minute TTL** | Balance UX vs. memory usage | User must complete conversation within window |
+| **HTTP to Backend** | Loose coupling, service independence | Network latency for portfolio data |
+| **External Ollama** | Agent doesn't own LLM lifecycle | Dependency on external service availability |
+
+### Session Management Details
+
+Conversation sessions are managed entirely in-memory:
+
+```typescript
+// Session structure
+{
+  sessionId: "uuid-v4",
+  messages: [
+    { role: "system", content: "You are..." },
+    { role: "user", content: "Job description: ..." },
+    { role: "assistant", content: "Assessment: ..." }
+  ],
+  createdAt: Date,
+  expiresAt: Date  // createdAt + 30 minutes
+}
+```
+
+**Cleanup**: Background task runs every 5 minutes, removes expired sessions.
+
+**Limits**: Maximum 21 messages per session (10 exchanges + 1 system prompt) to prevent memory bloat.
 
 ---
 

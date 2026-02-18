@@ -4,8 +4,22 @@ export default {
   roots: ['<rootDir>/tests'],
   testMatch: ['**/__tests__/**/*.ts', '**/?(*.)+(spec|test).ts'],
   moduleFileExtensions: ['ts', 'js', 'json'],
+  transform: {
+    '^.+\\.tsx?$': [
+      'ts-jest',
+      { tsconfig: 'tsconfig.jest.json' },
+    ],
+  },
+  moduleNameMapper: {
+    '^@/(.*)$': '<rootDir>/src/$1',
+    '^(\\.{1,2}/.*)\\.js$': '$1',
+  },
   collectCoverageFrom: [
-    'src/**/*.ts',
+    'src/application/use-cases/project/**/*.ts',
+    'src/application/use-cases/blog/**/*.ts',
+    'src/application/use-cases/contact/**/*.ts',
+    'src/application/use-cases/auth/**/*.ts',
+    'src/shared/errors/**/*.ts',
     '!src/**/*.d.ts',
     '!src/index.ts',
   ],

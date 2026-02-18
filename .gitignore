@@ -33,3 +33,5 @@ logs/
 .docker/
 
 **/generated/prisma**
+
+playwright-report/

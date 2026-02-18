@@ -1,0 +1,494 @@
+openapi: 3.0.3
+info:
+  title: Personal Site API
+  description: |
+    REST API for the Personal Site monorepo (experiences, projects, blog, contact, consultation, admin auth).
+    See [API Reference](./API_REFERENCE.md) for full request/response examples and frontend integration.
+  version: 1.0.0
+  contact:
+    name: Project docs
+    url: https://github.com/yourusername/personal-site-v2/tree/main/docs
+
+servers:
+  - url: http://localhost:3000
+    description: Development (API base path /api)
+
+tags:
+  - name: Health
+    description: Liveness and readiness
+  - name: Auth
+    description: Admin authentication (JWT)
+  - name: Experiences
+    description: Work experience CRUD
+  - name: Projects
+    description: Project CRUD
+  - name: Blog
+    description: Blog posts CRUD
+  - name: Contact
+    description: Contact form submissions
+  - name: Consultation
+    description: Consultation requests
+
+security:
+  - bearerAuth: []
+
+paths:
+  /health:
+    get:
+      tags: [Health]
+      summary: Liveness probe
+      security: []
+      responses:
+        '200':
+          description: Service is running
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+
+  /ready:
+    get:
+      tags: [Health]
+      summary: Readiness probe (includes DB check)
+      security: []
+      responses:
+        '200':
+          description: Service and database are ready
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: { type: string }
+                  database: { type: string }
+
+  /api/auth/login:
+    post:
+      tags: [Auth]
+      summary: Admin login
+      description: Returns JWT token. Rate limited (5 req / 15 min).
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [username, password]
+              properties:
+                username: { type: string, description: Admin username }
+                password: { type: string, format: password }
+      responses:
+        '201':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessAuth'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+        '429':
+          description: Too many login attempts
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+
+  /api/auth/me:
+    get:
+      tags: [Auth]
+      summary: Get current user
+      description: Requires valid JWT in Authorization header.
+      responses:
+        '200':
+          description: Current admin user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+                  data:
+                    type: object
+                    properties:
+                      id: { type: integer }
+                      username: { type: string }
+                      createdAt: { type: string, format: date-time }
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+
+  /api/experiences:
+    get:
+      tags: [Experiences]
+      summary: List experiences
+      security: []
+      parameters:
+        - name: featured
+          in: query
+          schema: { type: boolean }
+        - name: orderBy
+          in: query
+          schema: { type: string, enum: [startDate, order] }
+        - name: orderDirection
+          in: query
+          schema: { type: string, enum: [asc, desc] }
+      responses:
+        '200':
+          description: List of experiences
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+                  data:
+                    type: array
+                    items: { $ref: '#/components/schemas/Experience' }
+    post:
+      tags: [Experiences]
+      summary: Create experience (admin)
+      requestBody:
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/ExperienceCreate' }
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+                  data: { $ref: '#/components/schemas/Experience' }
+        '400':
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ValidationError' }
+        '401':
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+
+  /api/experiences/{id}:
+    get:
+      tags: [Experiences]
+      summary: Get experience by ID
+      security: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+                  data: { $ref: '#/components/schemas/Experience' }
+        '404':
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+    put:
+      tags: [Experiences]
+      summary: Update experience (admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      requestBody:
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/ExperienceUpdate' }
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+                  data: { $ref: '#/components/schemas/Experience' }
+        '400':
+        '401':
+        '404':
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+    delete:
+      tags: [Experiences]
+      summary: Delete experience (admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+                  message: { type: string }
+        '401':
+        '404':
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+
+  /api/projects:
+    get:
+      tags: [Projects]
+      summary: List projects
+      security: []
+      parameters:
+        - name: published
+          in: query
+          schema: { type: boolean }
+        - name: category
+          in: query
+          schema: { type: string }
+      responses:
+        '200':
+          description: List of projects
+    post:
+      tags: [Projects]
+      summary: Create project (admin)
+      responses:
+        '201':
+        '400':
+        '401':
+  /api/projects/{id}:
+    get:
+      tags: [Projects]
+      summary: Get project by ID
+      security: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        '200':
+        '404':
+  /api/projects/slug/{slug}:
+    get:
+      tags: [Projects]
+      summary: Get project by slug
+      security: []
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+        '404':
+
+  /api/blog:
+    get:
+      tags: [Blog]
+      summary: List blog posts
+      security: []
+      parameters:
+        - name: published
+          in: query
+          schema: { type: boolean }
+        - name: category
+          in: query
+          schema: { type: string }
+      responses:
+        '200':
+    post:
+      tags: [Blog]
+      summary: Create blog post (admin)
+      responses:
+        '201':
+        '400':
+        '401':
+  /api/blog/{id}:
+    get:
+      tags: [Blog]
+      summary: Get blog post by ID
+      security: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        '200':
+        '404':
+  /api/blog/slug/{slug}:
+    get:
+      tags: [Blog]
+      summary: Get blog post by slug
+      security: []
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+        '404':
+
+  /api/contact:
+    post:
+      tags: [Contact]
+      summary: Submit contact form
+      description: Public; rate limited.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, email, message]
+              properties:
+                name: { type: string }
+                email: { type: string, format: email }
+                subject: { type: string }
+                message: { type: string }
+      responses:
+        '201':
+        '400':
+        '429':
+
+  /api/consultation:
+    post:
+      tags: [Consultation]
+      summary: Submit consultation request
+      description: Public; rate limited.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, email, message]
+              properties:
+                name: { type: string }
+                email: { type: string, format: email }
+                projectType: { type: string }
+                message: { type: string }
+      responses:
+        '201':
+        '400':
+        '429':
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT from POST /api/auth/login
+
+  schemas:
+    SuccessAuth:
+      type: object
+      properties:
+        success: { type: boolean }
+        data:
+          type: object
+          properties:
+            token: { type: string }
+            admin:
+              type: object
+              properties:
+                id: { type: integer }
+                username: { type: string }
+                createdAt: { type: string, format: date-time }
+
+    Error:
+      type: object
+      properties:
+        success: { type: boolean, example: false }
+        error: { type: string }
+        message: { type: string }
+
+    ValidationError:
+      type: object
+      properties:
+        success: { type: boolean, example: false }
+        error: { type: string }
+        details:
+          type: object
+          additionalProperties: { type: string }
+
+    Experience:
+      type: object
+      properties:
+        id: { type: integer }
+        company: { type: string }
+        role: { type: string }
+        startDate: { type: string, format: date-time }
+        endDate: { type: string, format: date-time, nullable: true }
+        description: { type: string }
+        location: { type: string }
+        employmentType: { type: string }
+        achievements: { type: array, items: { type: string } }
+        skills: { type: array, items: { type: string } }
+        technologies: { type: array, items: { type: string } }
+        featured: { type: boolean }
+        order: { type: integer }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+
+    ExperienceCreate:
+      type: object
+      required: [company, role, startDate]
+      properties:
+        company: { type: string, maxLength: 200 }
+        role: { type: string, maxLength: 200 }
+        startDate: { type: string, format: date-time }
+        endDate: { type: string, format: date-time, nullable: true }
+        description: { type: string, maxLength: 5000 }
+        location: { type: string, maxLength: 200 }
+        employmentType: { type: string, maxLength: 100 }
+        achievements: { type: array, items: { type: string } }
+        skills: { type: array, items: { type: string } }
+        technologies: { type: array, items: { type: string } }
+        featured: { type: boolean }
+        order: { type: integer }
+
+    ExperienceUpdate:
+      type: object
+      description: All fields optional (partial update)
+      properties:
+        company: { type: string, maxLength: 200 }
+        role: { type: string, maxLength: 200 }
+        startDate: { type: string, format: date-time }
+        endDate: { type: string, format: date-time, nullable: true }
+        description: { type: string, maxLength: 5000 }
+        location: { type: string, maxLength: 200 }
+        employmentType: { type: string, maxLength: 100 }
+        achievements: { type: array, items: { type: string } }
+        skills: { type: array, items: { type: string } }
+        technologies: { type: array, items: { type: string } }
+        featured: { type: boolean }
+        order: { type: integer }
