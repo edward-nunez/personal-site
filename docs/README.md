@@ -1,31 +1,84 @@
 # Personal Site v2 - Documentation Index
 
-Welcome to the Personal Site v2 documentation! This guide is organized by audience and topic to help you quickly find what you need.
-
-## Quick Navigation
-
-### 🚀 **Getting Started** (For Everyone)
-Start here if you're new to the project or setting up your development environment.
-- [Getting Started Guide](./GETTING_STARTED.md) - Local development, Docker, and first steps
-
-### 👨‍💻 **For Developers**
-- [Architecture Guide](./ARCHITECTURE.md) - Clean Architecture patterns, layer breakdown, and design decisions
-- [Feature Development Guide](./FEATURE_DEVELOPMENT.md) - Step-by-step guide to adding new features
-- [API Reference](./API_REFERENCE.md) - Complete API documentation with examples for frontend consumption
-- [Testing Guide](./TESTING.md) - How to run tests, add unit/integration/E2E tests, and use mocks
-- [Code Standards & Contributing](./CONTRIBUTING.md) - ESLint rules, naming conventions, PR process
-
-### 🔧 **For DevOps/Infrastructure**
-- [Deployment Guide](./DEPLOYMENT.md) - Docker, Kubernetes (Helm), environment configuration
-- [Operations & Troubleshooting](./OPERATIONS.md) - Production runbooks, debugging, monitoring, common issues
-
-### 📚 **Reference**
-- [Glossary](./GLOSSARY.md) - Technical terms and definitions
-- [Architecture Decision Records](./ADR/) - Historical decisions and their rationale
+Welcome to the Personal Site v2 documentation! This guide is organized by role and topic to help you quickly find what you need.
 
 ---
 
-## Project Overview
+## 🚀 **Quick Start** 
+
+**New to the project or just want to get running?**  
+👉 [**QUICK START.md**](./QUICK_START.md) - Get running in 5 minutes
+
+---
+
+## 📚 **Browse by Section**
+
+### 👨‍💻 **[Developer Guides](./guides/README.md)** - Learn how to build
+- [Getting Started](./guides/GETTING_STARTED.md) - Setup your environment
+- [Feature Development](./guides/FEATURE_DEVELOPMENT.md) - Build new features
+- [Testing](./guides/TESTING.md) - Write tests
+
+### 📖 **[Reference Docs](./reference/README.md)** - Quick lookup
+- [API Reference](./reference/API_REFERENCE.md) - Endpoint documentation
+- [Service Contracts](./reference/SERVICE_CONTRACTS.md) - Service communication
+- [Feature Flags](./reference/FEATURE_FLAGS.md) - Feature management
+- [Glossary](./reference/GLOSSARY.md) - Terms & definitions
+
+### ⚙️ **[Operations](./operations/README.md)** - Deploy & troubleshoot
+- [Deployment](./operations/DEPLOYMENT.md) - Docker & Kubernetes
+- [Operations](./operations/OPERATIONS.md) - Production runbooks
+
+### 🏗️ **[Architecture](./architecture/README.md)** - Understand the design
+- [Architecture Guide](./architecture/ARCHITECTURE.md) - System overview
+- [Architectural Decisions](./architecture/ADR/) - Why we made choices
+
+### 📊 **[Observability](./observability/README.md)** - Monitor & debug
+- [Overview](./observability/OVERVIEW.md) - What & why
+- [Backend Setup](./observability/BACKEND.md) - Node.js monitoring
+- [Frontend Setup](./observability/FRONTEND.md) - React monitoring
+- [Troubleshooting](./observability/TROUBLESHOOTING.md) - Common issues
+
+---
+
+## 📋 **Documentation Organization**
+
+```
+docs/
+├── README.md                    ← You are here
+├── QUICK_START.md               ← Start here!
+├── SUMMARY.md                   ← Audit & improvements
+├── CHANGELOG.md                 ← Document updates
+│
+├── guides/                      ← How-to tutorials
+│   ├── GETTING_STARTED.md
+│   ├── FEATURE_DEVELOPMENT.md
+│   └── TESTING.md
+│
+├── reference/                   ← Lookup specs
+│   ├── API_REFERENCE.md
+│   ├── SERVICE_CONTRACTS.md
+│   ├── FEATURE_FLAGS.md
+│   ├── GLOSSARY.md
+│   └── openapi.yaml
+│
+├── operations/                  ← Deployment & runbooks
+│   ├── DEPLOYMENT.md
+│   └── OPERATIONS.md
+│
+├── architecture/                ← Design decisions
+│   ├── ARCHITECTURE.md
+│   └── ADR/                     ← Architecture Decision Records
+│
+├── observability/               ← Monitoring & debugging
+│   ├── OVERVIEW.md
+│   ├── BACKEND.md
+│   ├── FRONTEND.md
+│   └── TROUBLESHOOTING.md
+│
+└── research/                    ← Investigation notes
+```
+
+## 📖 **Project Overview**
 
 **Personal Site v2** is a modern monorepo featuring:
 - **Backend**: Express.js API with Clean Architecture (PostgreSQL + Drizzle)
@@ -44,83 +97,43 @@ Start here if you're new to the project or setting up your development environme
 
 ---
 
-## Common Tasks
+## 🎯 **Find What You Need**
 
-### I want to...
-
-| Task | Document |
-|------|----------|
-| Get my dev environment running locally | [Getting Started](./GETTING_STARTED.md) |
-| Understand how the backend layers work | [Architecture Guide](./ARCHITECTURE.md) |
-| Add a new API endpoint | [Feature Development](./FEATURE_DEVELOPMENT.md) |
-| Call a backend API from the frontend | [API Reference](./API_REFERENCE.md) |
-| Deploy to Kubernetes | [Deployment Guide](./DEPLOYMENT.md) |
-| Debug a production issue | [Operations Guide](./OPERATIONS.md) |
-| Learn the codebase structure | [Architecture Guide](./ARCHITECTURE.md) |
-| Run or add tests | [Testing Guide](./TESTING.md) |
-| Set up CI/CD or monitoring | [Operations Guide](./OPERATIONS.md) |
-
----
-
-## Documentation Standards
-
-All documentation is:
-- **Stored in version control** (`/docs` folder)
-- **Reviewed with each release** - updates should be submitted in PRs
-- **Maintained collaboratively** - see [CONTRIBUTING.md](./CONTRIBUTING.md) for process
-- **Written for clarity** - assume readers have varying familiarity with the codebase
-
-### Keeping Docs Current
-- Update docs **when you make code changes** that affect the documented behavior
-- Flag outdated content with `⚠️ OUTDATED` markers
-- Questions? Check existing docs first, then ask team members
-- See [CONTRIBUTING.md](./CONTRIBUTING.md) for the documentation review process
+| I want to... | Go to... |
+|--------------|----------|
+| Get my dev environment running | [guides/GETTING_STARTED.md](./guides/GETTING_STARTED.md) |
+| Add a new API endpoint | [guides/FEATURE_DEVELOPMENT.md](./guides/FEATURE_DEVELOPMENT.md) |
+| Understand system architecture | [architecture/ARCHITECTURE.md](./architecture/ARCHITECTURE.md) |
+| Call a backend API from frontend | [reference/API_REFERENCE.md](./reference/API_REFERENCE.md) |
+| Write tests | [guides/TESTING.md](./guides/TESTING.md) |
+| Deploy to Kubernetes | [operations/DEPLOYMENT.md](./operations/DEPLOYMENT.md) |
+| Respond to production issues | [operations/OPERATIONS.md](./operations/OPERATIONS.md) |
+| Set up error monitoring | [observability/BACKEND.md](./observability/BACKEND.md) or [observability/FRONTEND.md](./observability/FRONTEND.md) |
+| Understand terminology | [reference/GLOSSARY.md](./reference/GLOSSARY.md) |
+| Learn architectural decisions | [architecture/ADR/](./architecture/ADR/) |
 
 ---
 
-## Monorepo Structure
+## 🤝 **Need Help?**
 
-```
-personal-site-v2/
-├── packages/
-│   ├── backend/          # Express API (Clean Architecture)
-│   │   ├── src/
-│   │   │   ├── domain/          # Core business logic (entities, interfaces)
-│   │   │   ├── application/     # Use cases and DTOs
-│   │   │   ├── infrastructure/  # Database and external service implementations
-│   │   │   ├── presentation/    # Controllers, routes, middleware
-│   │   │   └── shared/          # Shared utilities (error handling, logger, config)
-│   │   └── tests/               # Unit and integration tests
-│   │
-│   └── frontend/         # React SPA
-│       ├── src/
-│       │   ├── pages/           # Page-level components
-│       │   ├── features/        # Feature-specific code
-│       │   ├── components/      # Shared UI components
-│       │   ├── design-system/   # Design tokens and system components
-│       │   ├── core/            # App infrastructure (API client, router, providers)
-│       │   ├── hooks/           # Custom React hooks
-│       │   └── utils/           # Utility functions
-│       └── tests/               # Unit and E2E tests
-│
-├── helm/                 # Kubernetes configuration (Helm charts)
-├── docs/                 # This documentation
-└── docker-compose.yml    # Local development stack
-```
+- **Getting started issues?** → [guides/GETTING_STARTED.md](./guides/GETTING_STARTED.md)
+- **Architecture questions?** → [architecture/ARCHITECTURE.md](./architecture/ARCHITECTURE.md)
+- **API documentation?** → [reference/API_REFERENCE.md](./reference/API_REFERENCE.md)
+- **Feature development?** → [guides/FEATURE_DEVELOPMENT.md](./guides/FEATURE_DEVELOPMENT.md)
+- **Production problems?** → [operations/OPERATIONS.md](./operations/OPERATIONS.md)
+- **Observability setup?** → [observability/README.md](./observability/README.md)
+- **Design decisions?** → [architecture/ADR/](./architecture/ADR/)
+
+**Still stuck?** Reach out to the team or consult [.github/copilot-instructions.md](../.github/copilot-instructions.md) for additional context.
 
 ---
 
-## Support & Communication
+## 📝 **Documentation Improvements**
 
-- **Questions about setup?** → Check [GETTING_STARTED.md](./GETTING_STARTED.md)
-- **Questions about architecture?** → Check [ARCHITECTURE.md](./ARCHITECTURE.md)
-- **Questions about APIs?** → Check [API_REFERENCE.md](./API_REFERENCE.md)
-- **Questions about adding features?** → Check [FEATURE_DEVELOPMENT.md](./FEATURE_DEVELOPMENT.md)
-- **Production issues?** → Check [OPERATIONS.md](./OPERATIONS.md)
-
-Still stuck? Reach out to the team or consult the backend's [`copilot-instructions.md`](../.github/copilot-instructions.md) for additional context.
+We recently reorganized our documentation for better navigation and scalability. See [SUMMARY.md](./SUMMARY.md) for details about the improvements and [CHANGELOG.md](./CHANGELOG.md) for recent updates.
 
 ---
 
-**Last Updated**: February 2026  
-**Status**: Active documentation (reviewed with each release)
+**Last Updated**: February 18, 2026  
+**Status**: Active documentation (reviewed with each release)  
+**Structure**: Organized by role and topic for easy discovery
