@@ -6,8 +6,12 @@ import blogRoutes from '../presentation/routes/blog.routes.js';
 import contactRoutes from '../presentation/routes/contact.routes.js';
 import consultationRoutes from '../presentation/routes/consultation.routes.js';
 import toolkitRoutes from '../presentation/routes/toolkit.routes.js';
+import { featureFlagsMiddleware } from '../presentation/middleware/featureFlagsMiddleware.js';
 
 const router = Router();
+
+// Apply feature flags middleware to all routes
+router.use(featureFlagsMiddleware);
 
 // Mount routes
 router.use('/experiences', experienceRoutes);

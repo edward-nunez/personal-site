@@ -6,6 +6,10 @@ import DbService from './infrastructure/persistence/db.js';
 import apiRoutes from './routes/index.js';
 import { errorHandler } from './presentation/middleware/errorHandler.middleware.js';
 import { apiLimiter } from './presentation/middleware/rateLimiter.middleware.js';
+import {
+  errorTrackingMiddleware,
+  expressErrorHandler,
+} from './presentation/middleware/errorTrackingMiddleware.js';
 import config from './configs/index.js';
 
 /**
@@ -28,6 +32,9 @@ export function createApp(): Express {
   );
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
+
+  // Error tracking middleware (capture errors for LaunchDarkly observability)
+  app.use(errorTrackingMiddleware);
 
   app.use('/api', apiLimiter);
 
@@ -54,5 +61,9 @@ export function createApp(): Express {
   });
 
   app.use(errorHandler);
+
+  // Express error handler (must be last middleware)
+  app.use(expressErrorHandler);
+
   return app;
 }

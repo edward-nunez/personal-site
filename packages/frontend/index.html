@@ -7,6 +7,12 @@
     <meta name="description" content="Portfolio website for Edward Nunez" />
     <meta name="author" content="Edward Nunez" />
 
+    <!-- LaunchDarkly Observability CSP Headers -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="connect-src https://pub.observability.app.launchdarkly.com https://otel.observability.app.launchdarkly.com https://clientstream.launchdarkly.com https://app.launchdarkly.com https://events.launchdarkly.com http://localhost:3000 http://localhost:8080 ws://localhost:8080; worker-src data: blob:;"
+    />
+
     <!-- Favicons -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />

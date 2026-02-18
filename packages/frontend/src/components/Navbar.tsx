@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
 import { useTheme } from '@/components/ThemeProvider';
 import AskAIModal from '@/components/AskAIModal';
+import { useFeatureFlag } from '@/hooks/useFeatureFlag';
 
 const navLinks = [
   { label: 'ABOUT', hash: '#about' },
@@ -20,6 +21,7 @@ const Navbar = () => {
   const location = useLocation();
   const isHome = location.pathname === '/';
   const { theme, toggleTheme } = useTheme();
+  const isAIEnabled = useFeatureFlag('askAi');
 
   const getHref = (link: (typeof navLinks)[0]) => {
     if (link.isRoute) return link.hash;
@@ -122,13 +124,15 @@ const Navbar = () => {
         </div>
 
         <div className="flex items-center gap-4">
-          {/* Ask AI */}
-          <button
-            onClick={() => setIsAIOpen(true)}
-            className="font-mono text-xs tracking-widest text-accent hover:text-foreground transition-colors font-bold"
-          >
-            [⚡ ASK AI]
-          </button>
+          {/* Ask AI - Feature flagged */}
+          {isAIEnabled && (
+            <button
+              onClick={() => setIsAIOpen(true)}
+              className="font-mono text-xs tracking-widest text-accent hover:text-foreground transition-colors font-bold"
+            >
+              [⚡ ASK AI]
+            </button>
+          )}
 
           {/* Theme toggle */}
           <button
@@ -183,10 +187,11 @@ const Navbar = () => {
               )}
             </div>
           </motion.div>
-        )}
+        )}{' '}
       </AnimatePresence>
 
-      <AskAIModal isOpen={isAIOpen} onClose={() => setIsAIOpen(false)} />
+      {/* Ask AI Modal - Feature flagged */}
+      {isAIEnabled && <AskAIModal isOpen={isAIOpen} onClose={() => setIsAIOpen(false)} />}
     </nav>
   );
 };

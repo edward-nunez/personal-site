@@ -8,6 +8,7 @@ import SkillsSection from '@/components/SkillsSection';
 import BlogSection from '@/components/BlogSection';
 import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
+import { FeatureGate } from '@/components/FeatureGate';
 
 const Index = () => {
   return (
@@ -18,7 +19,12 @@ const Index = () => {
         <AboutSection />
         <ExperienceSection />
         <SkillsSection />
-        <JobFitSection />
+
+        {/* Job Fit Section - Feature flagged */}
+        <FeatureGate flag="fitCheck">
+          <JobFitSection />
+        </FeatureGate>
+
         <ProjectsSection />
         <BlogSection />
         <ContactSection />

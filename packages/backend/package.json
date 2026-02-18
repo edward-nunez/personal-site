@@ -31,6 +31,8 @@
   ],
   "author": "Edward Nunez",
   "dependencies": {
+    "@launchdarkly/node-server-sdk": "^9.10.6",
+    "@launchdarkly/observability-node": "^1.0.0",
     "bcrypt": "^6.0.0",
     "cors": "^2.8.6",
     "dotenv": "^17.3.1",

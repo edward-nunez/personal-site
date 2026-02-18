@@ -21,7 +21,7 @@ npm install
 npm run dev
 
 # 3. Open in browser
-# Frontend: http://localhost:5173
+# Frontend: http://localhost:8080
 # Backend API: http://localhost:3000/api
 ```
 
@@ -50,7 +50,7 @@ This project has **comprehensive documentation** for every audience:
 ```
 ┌─────────────────────────────────────────┐
 │     Frontend (React 19 + Vite)          │
-│         http://localhost:5173           │
+│         http://localhost:8080           │
 └────────────────┬────────────────────────┘
                  │ HTTP + JWT Auth
                  ▼
@@ -92,7 +92,7 @@ This project has **comprehensive documentation** for every audience:
 ```bash
 npm run dev              # Start all services
 npm run dev:backend      # Backend only (port 3000)
-npm run dev:frontend     # Frontend only (port 5173)
+npm run dev:frontend     # Frontend only (port 8080)
 ```
 
 ### Testing
@@ -167,7 +167,7 @@ personal-site-v2/
 ### Local Development (Docker Compose)
 ```bash
 docker-compose up -d
-# Frontend: http://localhost:5173
+# Frontend: http://localhost:8080
 # Backend: http://localhost:3000
 ```
 
