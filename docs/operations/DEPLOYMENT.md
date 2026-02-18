@@ -81,7 +81,7 @@ docker run -d \
 
 ### Run Frontend
 
-The frontend image serves static files on port 80 (nginx). Map host port as needed (e.g. 80:80 or 5173:80):
+The frontend image serves static files on port 80 via HAProxy 3.3-alpine with security headers. Map host port as needed (e.g. 80:80 or 5173:80):
 
 ```bash
 docker run -d \

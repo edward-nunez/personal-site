@@ -3,9 +3,10 @@
 ## Architecture Overview
 
 This is a **monorepo** using npm workspaces with three main components:
-- **Backend** (`packages/backend`): Express.js API following Clean Architecture with Prisma ORM
-- **Frontend** (`packages/frontend`): React 19 + Vite SPA with TailwindCSS v4
-- **PostgreSQL**: Database with Prisma (containerized or in Kubernetes)
+- **Backend** (`packages/backend`): Express.js API following Clean Architecture with Drizzle ORM
+- **Frontend** (`packages/frontend`): React 19 + Vite SPA with TailwindCSS v4, served via HAProxy 3.3-alpine
+- **Agent** (`packages/agent`): AI agent service with Ollama integration
+- **PostgreSQL**: Database with Drizzle (containerized or in Kubernetes)
 
 ### Backend Clean Architecture Layers
 The backend strictly follows Clean Architecture with dependency inversion:
@@ -52,9 +53,11 @@ docker-compose up -d     # Start all services (PostgreSQL, backend, frontend)
 ```
 
 Services:
-- Frontend: `http://localhost:5173` → `VITE_API_BASE_URL=http://localhost:3000`
+- Frontend: `http://localhost:5173` → HAProxy 3.3-alpine on port 80, mapped to host 5173, `VITE_API_BASE_URL=http://localhost:3000`
 - Backend: `http://localhost:3000` → connects to PostgreSQL at `postgresql://admin:admin123@postgres:5432/personal_site`
+- Agent: `http://localhost:3001` → connects to Ollama at `http://ollama:11434`
 - PostgreSQL: `localhost:5432` (postgres:18-alpine image)
+- Ollama: `localhost:11434` (ollama/ollama:latest image)
 
 Volumes mount `src/` directories for hot reload in containers.
 
@@ -66,6 +69,12 @@ npm run build:frontend   # Vite build to dist/
 ```
 
 **Kubernetes/Helm**: Deploy with `helm install personal-site ./helm -n personal-site --create-namespace`. See [helm/README.md](../helm/README.md) for configuration details.
+
+### Docker Best Practices
+- **Lifecycle scripts**: All Dockerfiles use `npm ci --ignore-scripts` to skip prepare/postinstall hooks (e.g., Husky git hooks)
+- **Multi-stage builds**: Separate builder and runtime stages to minimize image size
+- **Frontend architecture**: HAProxy 3.3-alpine handles reverse proxy with security headers, busybox httpd serves static files on localhost:8080
+- **Security**: HAProxy chosen over nginx/Caddy due to superior security track record and minimal CVE exposure
 
 ## Code Conventions
 
@@ -138,7 +147,7 @@ Use `.env` files in respective package directories. See `docker-compose.yml` for
 - **Docker compose**: [docker-compose.yml](../docker-compose.yml) - Full local stack
 - **Helm chart**: [helm/values.yaml](../helm/values.yaml) - K8s deployment config
 - **Backend Dockerfile**: [packages/backend/Dockerfile](../packages/backend/Dockerfile) - Multi-stage build with npm workspaces
-- **Frontend Dockerfile**: [packages/frontend/Dockerfile](../packages/frontend/Dockerfile) - Multi-stage with Nginx
+- **Frontend Dockerfile**: [packages/frontend/Dockerfile](../packages/frontend/Dockerfile) - Multi-stage with HAProxy 3.3-alpine + busybox httpd
 
 ## Key Architectural Patterns
 

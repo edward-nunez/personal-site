@@ -173,7 +173,7 @@ See [../../helm/README.md](../../helm/README.md) for Kubernetes deployment detai
 ### Static Hosting
 
 The production build (`dist/`) is a static SPA that can be deployed to:
-- Nginx
+- HAProxy (current Docker setup)
 - Vercel
 - Netlify
 - AWS S3 + CloudFront
