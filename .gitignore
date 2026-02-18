@@ -38,3 +38,5 @@ logs/
 playwright-report/
 
 tmp
+
+test-results
