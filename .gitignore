@@ -36,3 +36,5 @@ logs/
 **/generated/prisma**
 
 playwright-report/
+
+tmp
