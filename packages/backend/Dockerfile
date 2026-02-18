@@ -7,9 +7,8 @@ WORKDIR /app
 COPY package*.json ./
 COPY packages/backend/package*.json ./packages/backend/
 
-# Install dependencies
-ENV HUSKY=0
-RUN npm ci --workspace=packages/backend
+# Install dependencies (skip lifecycle scripts like husky)
+RUN npm ci --workspace=packages/backend --ignore-scripts
 
 # Copy source code
 COPY packages/backend/src ./packages/backend/src
@@ -31,9 +30,8 @@ WORKDIR /app
 COPY package*.json ./
 COPY packages/backend/package*.json ./packages/backend/
 
-# Skip prepare script (husky) in production
-ENV HUSKY=0
-RUN npm ci --workspace=packages/backend --omit=dev --loglevel=verbose || npm ci --workspace=packages/backend --omit=dev --force || true
+# Install production dependencies (skip lifecycle scripts)
+RUN npm ci --workspace=packages/backend --omit=dev --ignore-scripts
 
 # Copy built application from builder
 COPY --from=builder /app/packages/backend/dist ./packages/backend/dist

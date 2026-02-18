@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # PostgreSQL Database
   postgres:
@@ -89,20 +87,20 @@ services:
 
   # Optional: Ollama service for AI capabilities
   # Uncomment to enable local LLM support for the agent service
-  # ollama:
-  #   image: ollama/ollama:latest
-  #   container_name: personal-site-ollama
-  #   restart: unless-stopped
-  #   ports:
-  #     - "11434:11434"
-  #   volumes:
-  #     - ollama_data:/root/.ollama
-  #   networks:
-  #     - personal-site-network
+  ollama:
+    image: ollama/ollama:latest
+    container_name: personal-site-ollama
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    networks:
+      - personal-site-network
 
 volumes:
   postgres_data:
-  # ollama_data:  # Uncomment when enabling Ollama
+  ollama_data:
 
 networks:
   personal-site-network:

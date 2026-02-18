@@ -7,9 +7,8 @@ WORKDIR /app
 COPY package*.json ./
 COPY packages/agent/package*.json ./packages/agent/
 
-# Install dependencies
-ENV HUSKY=0
-RUN npm ci --workspace=packages/agent
+# Install dependencies (skip lifecycle scripts like husky)
+RUN npm ci --workspace=packages/agent --ignore-scripts
 
 # Copy source code
 COPY packages/agent/src ./packages/agent/src
@@ -27,9 +26,8 @@ WORKDIR /app
 COPY package*.json ./
 COPY packages/agent/package*.json ./packages/agent/
 
-# Skip prepare script (husky) in production
-ENV HUSKY=0
-RUN npm ci --workspace=packages/agent --omit=dev --loglevel=verbose ||  npm ci --workspace=packages/agent --omit=dev --force || true
+# Install production dependencies (skip lifecycle scripts)
+RUN npm ci --workspace=packages/agent --omit=dev --ignore-scripts
 
 # Copy built application from builder
 COPY --from=builder /app/packages/agent/dist ./packages/agent/dist

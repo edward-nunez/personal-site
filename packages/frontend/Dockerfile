@@ -7,8 +7,8 @@ WORKDIR /app
 COPY package*.json ./
 COPY packages/frontend/package*.json ./packages/frontend/
 
-# Install dependencies
-RUN npm ci --workspace=packages/frontend
+# Install dependencies (skip lifecycle scripts like husky)
+RUN npm ci --workspace=packages/frontend --ignore-scripts
 
 # Copy frontend source and config
 COPY packages/frontend ./packages/frontend
@@ -16,26 +16,25 @@ COPY packages/frontend ./packages/frontend
 # Build the app
 RUN npm run build -w packages/frontend
 
-# Production stage: serve static files with nginx
-FROM nginx:alpine
+# Production stage: HAProxy 3.3 Alpine
+FROM haproxy:3.3-alpine
 
-# SPA: fallback to index.html for client-side routing
-RUN echo 'server { \
-    listen 80; \
-    root /usr/share/nginx/html; \
-    index index.html; \
-    location / { \
-        try_files $uri $uri/ /index.html; \
-    } \
-    location /health { \
-        access_log off; \
-        return 200 "OK"; \
-        add_header Content-Type text/plain; \
-    } \
-}' > /etc/nginx/conf.d/default.conf
+# Switch to root for installation
+USER root
 
-COPY --from=builder /app/packages/frontend/dist /usr/share/nginx/html
+# Install busybox-extras for httpd (lightweight static file server)
+RUN apk add --no-cache busybox-extras
+
+# Copy HAProxy configuration
+COPY packages/frontend/haproxy.cfg /usr/local/etc/haproxy/haproxy.cfg
+
+# Copy built frontend assets from builder
+COPY --from=builder /app/packages/frontend/dist /srv
 
 EXPOSE 80
 
-CMD ["nginx", "-g", "daemon off;"]
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+  CMD wget -q -O- http://localhost/health || exit 1
+
+# Start busybox httpd on port 8080 and HAProxy in foreground
+CMD ["/bin/sh", "-c", "httpd -f -p 8080 -h /srv & haproxy -db -f /usr/local/etc/haproxy/haproxy.cfg"]
