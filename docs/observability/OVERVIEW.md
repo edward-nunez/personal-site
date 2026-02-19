@@ -63,7 +63,7 @@ Select your platform to get started:
 
 ### Frontend
 - [ ] Get client-side ID from LaunchDarkly
-- [ ] Set `VITE_LD_SDK_KEY` environment variable
+- [ ] Set `LD_CLIENT_ID` environment variable
 - [ ] Run `npm run dev:frontend`
 - [ ] Verify console shows: `[LaunchDarkly] Observability enabled`
 

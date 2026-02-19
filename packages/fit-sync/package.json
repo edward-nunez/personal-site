@@ -1,7 +1,7 @@
 {
-  "name": "@personal-site/agent",
+  "name": "@personal-site/fit-sync",
   "version": "1.0.0",
-  "description": "AI agent service for job assessment and client engagement using Ollama",
+  "description": "FitSync microservice for AI-powered job assessment and client engagement using Ollama",
   "private": true,
   "type": "module",
   "main": "dist/index.js",
@@ -16,7 +16,7 @@
     "format": "prettier --write \"src/**/*.ts\"",
     "format:check": "prettier --check \"src/**/*.ts\""
   },
-  "keywords": ["agent", "ollama", "llm", "job-assessment"],
+  "keywords": ["fit-sync", "fitsync", "ollama", "llm", "job-assessment"],
   "author": "Edward Nunez",
   "dependencies": {
     "axios": "^1.7.6",

@@ -43,7 +43,7 @@ const logger = winston.createLogger({
     }),
   ],
   exceptionHandlers: [new winston.transports.File({ filename: 'logs/exceptions.log' })],
-  rejectionHandlers: [new winston.transports.File({ filename: ' logs/rejections.log' })],
+  rejectionHandlers: [new winston.transports.File({ filename: 'logs/rejections.log' })],
 });
 
 /**

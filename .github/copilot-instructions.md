@@ -5,7 +5,7 @@
 This is a **monorepo** using npm workspaces with three main components:
 - **Backend** (`packages/backend`): Express.js API following Clean Architecture with Drizzle ORM
 - **Frontend** (`packages/frontend`): React 19 + Vite SPA with TailwindCSS v4, served via HAProxy 3.3-alpine
-- **Agent** (`packages/agent`): AI agent service with Ollama integration
+- **FitSync** (`packages/fit-sync`): AI microservice with Ollama integration for job assessment
 - **PostgreSQL**: Database with Drizzle (containerized or in Kubernetes)
 
 ### Backend Clean Architecture Layers
@@ -68,7 +68,7 @@ npm run build:backend    # Compiles TypeScript to dist/
 npm run build:frontend   # Vite build to dist/
 ```
 
-**Kubernetes/Helm**: Deploy with `helm install personal-site ./helm -n personal-site --create-namespace`. See [helm/README.md](../helm/README.md) for configuration details.
+**Kubernetes/Helm**: Deploy with `helm install personal-site ./helm -n io-edwardnunez --create-namespace`. See [helm/README.md](../helm/README.md) for configuration details.
 
 ### Docker Best Practices
 - **Lifecycle scripts**: All Dockerfiles use `npm ci --ignore-scripts` to skip prepare/postinstall hooks (e.g., Husky git hooks)

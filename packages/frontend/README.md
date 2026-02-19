@@ -165,7 +165,7 @@ docker build -t personal-site-frontend:latest -f packages/frontend/Dockerfile .
 Deploy using Helm from the monorepo root:
 
 ```bash
-helm install personal-site ./helm -n personal-site --create-namespace
+helm install personal-site ./helm -n io-edwardnunez --create-namespace
 ```
 
 See [../../helm/README.md](../../helm/README.md) for Kubernetes deployment details.

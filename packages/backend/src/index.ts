@@ -20,7 +20,7 @@ const startServer = async (): Promise<void> => {
       logger.info(`📦 Environment: ${config.nodeEnv}`);
       logger.info(`🔌 Port: ${port}`);
       logger.info(`🌐 CORS Origin: ${config.corsOrigin}`);
-      logger.info(`📊 API available at: http://localhost:${port}/api`);
+      logger.info(`📊 API available at: http://localhost:${port}`);
     });
 
     // Graceful shutdown handler

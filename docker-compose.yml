@@ -33,7 +33,7 @@ services:
     environment:
       NODE_ENV: development
       DATABASE_URL: postgresql://admin:admin123@postgres:5432/personal_site?schema=public
-      CORS_ORIGIN: http://localhost:5173
+      CORS_ORIGIN: "http://localhost:8080,http://localhost:8081,http://localhost:5173"
       JWT_SECRET: dev-secret-change-in-production
       JWT_EXPIRES_IN: 7d
     depends_on:
@@ -44,25 +44,25 @@ services:
     networks:
       - personal-site-network
 
-  # AI Agent Service (uses Ollama for LLM)
-  agent:
+  # FitSync Service - AI-powered job assessment (uses Ollama for LLM)
+  fit-sync:
     build:
       context: .
-      dockerfile: ./packages/agent/Dockerfile
-    container_name: personal-site-agent
+      dockerfile: ./packages/fit-sync/Dockerfile
+    container_name: personal-site-fit-sync
     restart: unless-stopped
     ports:
       - "3001:3001"
     environment:
       NODE_ENV: development
       PORT: 3001
-      CORS_ORIGIN: "http://localhost:5173,http://localhost:3000"
+      CORS_ORIGIN: "http://localhost:8080,http://localhost:3000"
       OLLAMA_HOST: http://ollama:11434
       OLLAMA_MODEL: neural-chat
     depends_on:
       - backend
     volumes:
-      - ./packages/agent/src:/app/src
+      - ./packages/fit-sync/src:/app/src
     networks:
       - personal-site-network
 
@@ -75,7 +75,7 @@ services:
     container_name: personal-site-frontend
     restart: unless-stopped
     ports:
-      - "5173:80"
+      - "8080:80"
     environment:
       VITE_API_BASE_URL: http://localhost:3000
     depends_on:
@@ -86,7 +86,7 @@ services:
       - personal-site-network
 
   # Optional: Ollama service for AI capabilities
-  # Uncomment to enable local LLM support for the agent service
+  # Uncomment to enable local LLM support for the FitSync service
   ollama:
     image: ollama/ollama:latest
     container_name: personal-site-ollama

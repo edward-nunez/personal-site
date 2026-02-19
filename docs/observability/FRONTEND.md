@@ -45,7 +45,7 @@ Create or update `packages/frontend/.env`:
 
 ```bash
 # Required: Client-side ID (found in Project Settings > Environments)
-VITE_LD_SDK_KEY=your-launchdarkly-client-side-id
+LD_CLIENT_ID=your-launchdarkly-client-side-id
 
 # Required: Environment name
 VITE_API_ENV=development
@@ -117,7 +117,7 @@ Check **LaunchDarkly Dashboard → Observe → Errors** - error should appear wi
 
 | Variable | Required | Example | Purpose |
 |----------|----------|---------|---------|
-| `VITE_LD_SDK_KEY` | Yes | `abc123def456` | Client-side ID for LaunchDarkly |
+| `LD_CLIENT_ID` | Yes | `abc123def456` | Client-side ID for LaunchDarkly |
 | `VITE_API_ENV` | Yes | `production` | Environment identifier |
 | `VITE_SESSION_REPLAY_PRIVACY` | No | `strict` | Privacy level for session recording |
 | `VITE_API_BASE_URL` | Yes | `http://localhost:3000` | Backend URL for request correlation |
@@ -365,7 +365,7 @@ interface ErrorContext {
 **Check 1**: Verify client-side ID is set
 
 ```bash
-echo $VITE_LD_SDK_KEY
+echo $LD_CLIENT_ID
 # Should output your client-side ID (not your server SDK key)
 ```
 
@@ -474,7 +474,7 @@ Observability does NOT collect:
 
 ## Production Deployment Checklist
 
-- [ ] `VITE_LD_SDK_KEY` set to production client-side ID
+- [ ] `LD_CLIENT_ID` set to production client-side ID
 - [ ] `VITE_API_ENV` set to `production`
 - [ ] `VITE_SESSION_REPLAY_PRIVACY` set to `strict`
 - [ ] CSP headers configured in `index.html`

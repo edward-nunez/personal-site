@@ -14,7 +14,8 @@ router.post('/', authMiddleware, (req, res, next) => controller.create(req, res,
 router.put('/:id', authMiddleware, (req, res, next) => controller.update(req, res, next));
 router.delete('/:id', authMiddleware, (req, res, next) => controller.delete(req, res, next));
 
-// Handle unsupported methods
+// DELETE, PUT, PATCH endpoints disabled per API design. Experiences are immutable portfolio records;
+// corrections require database intervention to maintain historical accuracy and audit trail.
 router.all('/', (req, res) => {
   res.status(405).json({
     success: false,

@@ -1,0 +1,74 @@
+{{- if .Values.ollama.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "personal-site.fullname" . }}-ollama
+  labels:
+    {{- include "personal-site.componentLabels" (dict "component" "ollama" "context" $) | nindent 4 }}
+  {{- with .Values.global.commonAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  replicas: {{ .Values.ollama.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "personal-site.componentSelectorLabels" (dict "component" "ollama" "context" $) | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "personal-site.componentSelectorLabels" (dict "component" "ollama" "context" $) | nindent 8 }}
+      {{- with .Values.ollama.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    spec:
+      serviceAccountName: {{ include "personal-site.componentServiceAccountName" (dict "component" "ollama" "context" $) }}
+      {{- with .Values.imagePullSecrets.secrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.ollama.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: ollama
+          image: {{ include "personal-site.image" (dict "image" .Values.ollama.image "context" $) }}
+          imagePullPolicy: {{ include "personal-site.imagePullPolicy" (dict "pullPolicy" .Values.ollama.image.pullPolicy "context" $) }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.ollama.port }}
+              protocol: TCP
+          {{- with .Values.ollama.containerSecurityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.ollama.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- if .Values.ollama.persistence.enabled }}
+          volumeMounts:
+            - name: ollama-data
+              mountPath: /root/.ollama
+          {{- end }}
+      {{- if .Values.ollama.persistence.enabled }}
+      volumes:
+        - name: ollama-data
+          persistentVolumeClaim:
+            claimName: {{ include "personal-site.fullname" . }}-ollama-pvc
+      {{- end }}
+      {{- with .Values.ollama.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.ollama.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.ollama.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end }}

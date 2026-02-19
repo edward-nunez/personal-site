@@ -1,0 +1,86 @@
+🚀 Personal Site v2 has been deployed!
+
+Release Name: {{ .Release.Name }}
+Namespace: {{ .Release.Namespace }}
+
+Components Deployed:
+{{- if .Values.backend }}
+  ✓ Backend API ({{ .Values.backend.replicaCount }} replica(s))
+{{- end }}
+{{- if .Values.frontend }}
+  ✓ Frontend SPA ({{ .Values.frontend.replicaCount }} replica(s))
+{{- end }}
+{{- if .Values.agent.enabled }}
+  ✓ AI Agent Service ({{ .Values.agent.replicaCount }} replica(s))
+{{- end }}
+{{- if .Values.ollama.enabled }}
+  ✓ Ollama LLM Service ({{ .Values.ollama.replicaCount }} replica(s))
+{{- end }}
+{{- if .Values.postgresql.enabled }}
+  ✓ PostgreSQL Database ({{ .Values.postgresql.replicaCount }} replica(s))
+{{- else }}
+  ℹ Using external database
+{{- end }}
+
+📋 Getting Started:
+
+1. Check deployment status:
+   kubectl get pods -n {{ .Release.Namespace }}
+
+2. View services:
+   kubectl get services -n {{ .Release.Namespace }}
+
+{{- if .Values.ingress.enabled }}
+
+3. Access your application:
+   {{- range .Values.ingress.hosts }}
+   https://{{ .host }}
+   {{- end }}
+
+{{- else if eq .Values.frontend.service.type "LoadBalancer" }}
+
+3. Get the LoadBalancer IP:
+   kubectl get service {{ include "personal-site.frontend.serviceName" . }} -n {{ .Release.Namespace }}
+   
+   Then access: http://<EXTERNAL-IP>
+
+{{- else }}
+
+3. Port-forward to access locally:
+   kubectl port-forward -n {{ .Release.Namespace }} svc/{{ include "personal-site.frontend.serviceName" . }} 8080:{{ .Values.frontend.service.port }}
+   
+   Then access: http://localhost:8080
+
+{{- end }}
+
+🔍 Troubleshooting:
+
+View logs for a component:
+  kubectl logs -n {{ .Release.Namespace }} -l app.kubernetes.io/component=backend
+  kubectl logs -n {{ .Release.Namespace }} -l app.kubernetes.io/component=frontend
+{{- if .Values.agent.enabled }}
+  kubectl logs -n {{ .Release.Namespace }} -l app.kubernetes.io/component=agent
+{{- end }}
+
+Check pod events:
+  kubectl describe pod -n {{ .Release.Namespace }} <pod-name>
+
+⚠️  Security Reminders:
+
+{{- if .Values.postgresql.enabled }}
+{{- if eq .Values.postgresql.auth.password "changeme-in-production" }}
+⚠️  WARNING: Default PostgreSQL password detected!
+   Update with: helm upgrade {{ .Release.Name }} . --set postgresql.auth.password="<secure-password>"
+{{- end }}
+{{- end }}
+
+{{- if eq .Values.backend.secrets.jwtSecret "changeme-in-production" }}
+⚠️  WARNING: Default JWT secret detected!
+   Update with: helm upgrade {{ .Release.Name }} . --set backend.secrets.jwtSecret="<secure-secret>"
+{{- end }}
+
+For production deployments, always use external secret management!
+
+📚 Documentation: See helm/README.md for full configuration options
+
+🐛 Issues? https://github.com/yourusername/personal-site-v2/issues

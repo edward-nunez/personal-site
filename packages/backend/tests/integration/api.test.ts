@@ -31,10 +31,10 @@ describe('API integration', () => {
     });
   });
 
-  describe('POST /api/contact', () => {
+  describe('POST /contact', () => {
     it('should return 400 for invalid body (missing required fields)', async () => {
       const res = await request(app)
-        .post('/api/contact')
+        .post('/contact')
         .set('Content-Type', 'application/json')
         .send({});
       expect(res.status).toBe(400);
@@ -43,7 +43,7 @@ describe('API integration', () => {
 
     it('should return 400 for invalid email', async () => {
       const res = await request(app)
-        .post('/api/contact')
+        .post('/contact')
         .set('Content-Type', 'application/json')
         .send({
           name: 'Test',
@@ -56,7 +56,7 @@ describe('API integration', () => {
 
   describe('404', () => {
     it('should return 404 for unknown route', async () => {
-      const res = await request(app).get('/api/nonexistent');
+      const res = await request(app).get('/nonexistent');
       expect(res.status).toBe(404);
       expect(res.body.success).toBe(false);
       expect(res.body.error).toBe('Route not found');

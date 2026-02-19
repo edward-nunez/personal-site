@@ -21,7 +21,7 @@ Runbooks and troubleshooting guides for production operations, debugging, and in
 
 ```bash
 # 1. Check if service is running
-kubectl get pods -n personal-site
+kubectl get pods -n io-edwardnunez
 # Look for: All RUNNING status? Any CrashLoopBackOff?
 
 # 2. Check health endpoints
@@ -30,54 +30,54 @@ curl http://localhost:3000/ready
 # Should return 200 with { "status": "ok" } or { "status": "ready" }
 
 # 3. Check recent logs
-kubectl logs -f deployment/backend -n personal-site --tail=50
+kubectl logs -f deployment/backend -n io-edwardnunez --tail=50
 
 # 4. Check database connectivity
-kubectl logs -f deployment/backend -n personal-site | grep -i "database\|connection"
+kubectl logs -f deployment/backend -n io-edwardnunez | grep -i "database\|connection"
 ```
 
 **If Backend Pod is Down**
 
 ```bash
 # Check pod status
-kubectl describe pod <pod-name> -n personal-site
+kubectl describe pod <pod-name> -n io-edwardnunez
 
 # Common causes:
-# - Out of memory: kubectl top pods -n personal-site
+# - Out of memory: kubectl top pods -n io-edwardnunez
 # - Database unreachable: kubectl logs... | grep database
 # - Readiness probe failing: Pod crashed, needs restart
 
 # Restart the deployment
-kubectl rollout restart deployment/backend -n personal-site
+kubectl rollout restart deployment/backend -n io-edwardnunez
 
 # Watch rollout status
-kubectl rollout status deployment/backend -n personal-site
+kubectl rollout status deployment/backend -n io-edwardnunez
 ```
 
 **If Database is Down**
 
 ```bash
 # Check PostgreSQL pod
-kubectl describe pod postgres-0 -n personal-site
-kubectl logs postgres-0 -n personal-site
+kubectl describe pod postgres-0 -n io-edwardnunez
+kubectl logs postgres-0 -n io-edwardnunez
 
 # Attempted restart
-kubectl delete pod postgres-0 -n personal-site
+kubectl delete pod postgres-0 -n io-edwardnunez
 # Kubernetes will recreate it
 
 # If still failing, restore from backup
-kubectl exec -i postgres-0 -n personal-site < /path/to/backup.sql
+kubectl exec -i postgres-0 -n io-edwardnunez < /path/to/backup.sql
 ```
 
 **If Network/Ingress Issue**
 
 ```bash
 # Test pod-to-pod communication
-kubectl exec -it <frontend-pod> -n personal-site -- curl http://backend:3000/health
+kubectl exec -it <frontend-pod> -n io-edwardnunez -- curl http://backend:3000/health
 
 # Check ingress
-kubectl get ingress -n personal-site
-kubectl describe ingress personal-site-ingress -n personal-site
+kubectl get ingress -n io-edwardnunez
+kubectl describe ingress personal-site-ingress -n io-edwardnunez
 
 # Check DNS (if external)
 nslookup yourdomain.com
@@ -129,7 +129,7 @@ nslookup yourdomain.com
 
   ```bash
   # From host (adjust pod/service name and namespace)
-  kubectl exec -n personal-site deployment/postgresql -- pg_dump -U admin personal_site > backup_$(date +%Y%m%d).sql
+  kubectl exec -n io-edwardnunez deployment/postgresql -- pg_dump -U admin personal_site > backup_$(date +%Y%m%d).sql
 
   # Or with Docker
   docker exec personal-site-postgres pg_dump -U admin personal_site > backup_$(date +%Y%m%d).sql
@@ -142,7 +142,7 @@ nslookup yourdomain.com
 
   ```bash
   # Kubernetes
-  kubectl exec -i -n personal-site deployment/postgresql -- psql -U admin personal_site < backup_YYYYMMDD.sql
+  kubectl exec -i -n io-edwardnunez deployment/postgresql -- psql -U admin personal_site < backup_YYYYMMDD.sql
 
   # Docker
   docker exec -i personal-site-postgres psql -U admin personal_site < backup_YYYYMMDD.sql
@@ -167,17 +167,17 @@ nslookup yourdomain.com
 
 ```bash
 # Check current resource usage
-kubectl top pods -n personal-site
+kubectl top pods -n io-edwardnunez
 kubectl top nodes
 
 # If pod using > 80% memory:
 kubectl get pod <pod-name> -o yaml | grep -A 5 limits
 
 # Scale up replicas temporarily
-kubectl scale deployment backend --replicas=5 -n personal-site
+kubectl scale deployment backend --replicas=5 -n io-edwardnunez
 
 # Monitor the effect
-watch kubectl top pods -n personal-site
+watch kubectl top pods -n io-edwardnunez
 ```
 
 **If Out of Node Resources**
@@ -203,11 +203,11 @@ kubectl autoscale deployment backend \
   --min=2 \
   --max=10 \
   --cpu-percent=70 \
-  -n personal-site
+  -n io-edwardnunez
 
 # View HPA status
-kubectl get hpa -n personal-site
-watch kubectl get hpa -n personal-site
+kubectl get hpa -n io-edwardnunez
+watch kubectl get hpa -n io-edwardnunez
 ```
 
 ---
@@ -219,15 +219,15 @@ watch kubectl get hpa -n personal-site
 ```bash
 # Update image (automatically does rolling update)
 helm upgrade personal-site ./helm \
-  --namespace personal-site \
+  --namespace io-edwardnunez \
   --set backend.tag=v1.2.3
 
 # Watch rollout progress
-kubectl rollout status deployment/backend -n personal-site
+kubectl rollout status deployment/backend -n io-edwardnunez
 
 # Rollback if issues detected
-helm rollout history personal-site -n personal-site
-helm rollback personal-site 1 -n personal-site
+helm rollout history personal-site -n io-edwardnunez
+helm rollback personal-site 1 -n io-edwardnunez
 ```
 
 **Verify No Downtime**
@@ -255,10 +255,10 @@ NEW_SECRET=$(openssl rand -base64 32)
 # Update Kubernetes secret
 kubectl patch secret personal-site-secrets \
   -p '{"data":{"JWT_SECRET":"'$(echo -n $NEW_SECRET | base64)'"}}' \
-  -n personal-site
+  -n io-edwardnunez
 
 # Restart backend to pick up new secret
-kubectl rollout restart deployment/backend -n personal-site
+kubectl rollout restart deployment/backend -n io-edwardnunez
 
 # Old tokens will be invalid (users need to re-login)
 # This is expected behavior
@@ -270,7 +270,7 @@ kubectl rollout restart deployment/backend -n personal-site
 # WARNING: Complex process, plan during maintenance window
 
 # 1. Create new PostgreSQL user
-kubectl exec -it postgres-0 -n personal-site -- psql -U postgres
+kubectl exec -it postgres-0 -n io-edwardnunez -- psql -U postgres
 #> CREATE USER newuser WITH PASSWORD 'newpassword';
 #> GRANT ALL ON DATABASE personal_site TO newuser;
 #> \q
@@ -278,10 +278,10 @@ kubectl exec -it postgres-0 -n personal-site -- psql -U postgres
 # 2. Update secret
 kubectl patch secret personal-site-secrets \
   -p '{"data":{"DATABASE_URL":"postgresql://newuser:newpassword@postgres:5432/personal_site"}}' \
-  -n personal-site
+  -n io-edwardnunez
 
 # 3. Restart backend
-kubectl rollout restart deployment/backend -n personal-site
+kubectl rollout restart deployment/backend -n io-edwardnunez
 
 # 4. (Optional) Remove old user if no longer needed
 # DELETE USER olduser;
@@ -298,13 +298,13 @@ kubectl rollout restart deployment/backend -n personal-site
 **Diagnosis**:
 ```bash
 # Check if backend service exists
-kubectl get svc backend -n personal-site
+kubectl get svc backend -n io-edwardnunez
 
 # Check if backend pods are ready
-kubectl get pods -l app=backend -n personal-site
+kubectl get pods -l app=backend -n io-edwardnunez
 
 # Check backend logs
-kubectl logs deployment/backend -n personal-site
+kubectl logs deployment/backend -n io-edwardnunez
 ```
 
 **Solutions**:
@@ -314,10 +314,10 @@ kubectl logs deployment/backend -n personal-site
 
 ```bash
 # Quick fix: Restart backend
-kubectl rollout restart deployment/backend -n personal-site
+kubectl rollout restart deployment/backend -n io-edwardnunez
 
 # If that doesn't work: Check database connection
-kubectl logs deployment/backend -n personal-site | grep -i database
+kubectl logs deployment/backend -n io-edwardnunez | grep -i database
 ```
 
 ---
@@ -329,13 +329,13 @@ kubectl logs deployment/backend -n personal-site | grep -i database
 **Diagnosis**:
 ```bash
 # 1. Check if PostgreSQL pod is running
-kubectl get pod postgres-0 -n personal-site
+kubectl get pod postgres-0 -n io-edwardnunez
 
 # 2. Check PostgreSQL logs
-kubectl logs postgres-0 -n personal-site
+kubectl logs postgres-0 -n io-edwardnunez
 
 # 3. Test connectivity from app pod
-kubectl exec -it <backend-pod> -n personal-site -- \
+kubectl exec -it <backend-pod> -n io-edwardnunez -- \
   psql "postgresql://admin:password@postgres:5432/personal_site" -c "SELECT 1"
 ```
 
@@ -343,15 +343,15 @@ kubectl exec -it <backend-pod> -n personal-site -- \
 
 **PostgreSQL not running**:
 ```bash
-kubectl get pvc -n personal-site  # Check persistent volume
-kubectl describe pod postgres-0 -n personal-site  # Check events
-kubectl logs postgres-0 -n personal-site  # Check startup logs
+kubectl get pvc -n io-edwardnunez  # Check persistent volume
+kubectl describe pod postgres-0 -n io-edwardnunez  # Check events
+kubectl logs postgres-0 -n io-edwardnunez  # Check startup logs
 ```
 
 **Wrong connection string**:
 ```bash
 # Verify DATABASE_URL in secret
-kubectl get secret personal-site-secrets -o yaml -n personal-site
+kubectl get secret personal-site-secrets -o yaml -n io-edwardnunez
 # Check: host should be "postgres" (service name), not "localhost"
 # Format: postgresql://user:password@postgres:5432/personal_site
 ```
@@ -359,10 +359,10 @@ kubectl get secret personal-site-secrets -o yaml -n personal-site
 **Network issue**:
 ```bash
 # Test DNS from pod
-kubectl exec <pod> -n personal-site -- nslookup postgres
+kubectl exec <pod> -n io-edwardnunez -- nslookup postgres
 
 # Test network connectivity
-kubectl exec <pod> -n personal-site -- nc -zv postgres 5432
+kubectl exec <pod> -n io-edwardnunez -- nc -zv postgres 5432
 # Should show: Connection to postgres:5432 succeeded!
 ```
 
@@ -375,14 +375,14 @@ kubectl exec <pod> -n personal-site -- nc -zv postgres 5432
 **Diagnosis**:
 ```bash
 # Check memory usage trend
-kubectl top pod <pod-name> -n personal-site
+kubectl top pod <pod-name> -n io-edwardnunez
 
 # Check nodejs heap size
-kubectl exec <pod> -n personal-site -- node --version
+kubectl exec <pod> -n io-edwardnunez -- node --version
 # Node should have memory limit from container
 
 # Check for memory leaks
-kubectl logs <pod> -n personal-site | grep -i "memory\|gc\|heap"
+kubectl logs <pod> -n io-edwardnunez | grep -i "memory\|gc\|heap"
 ```
 
 **Solutions**:
@@ -429,7 +429,7 @@ localStorage.getItem('auth.token')
 # Check: "exp" (expiration), "iat" (issued at)
 
 # Check backend logs for token validation
-kubectl logs deployment/backend -n personal-site | grep -i "token\|auth"
+kubectl logs deployment/backend -n io-edwardnunez | grep -i "token\|auth"
 ```
 
 **Solutions**:
@@ -445,7 +445,7 @@ kubectl logs deployment/backend -n personal-site | grep -i "token\|auth"
 **Token validation failing**:
 ```bash
 # Check JWT_SECRET is set
-kubectl get secret personal-site-secrets -o yaml -n personal-site | grep JWT_SECRET
+kubectl get secret personal-site-secrets -o yaml -n io-edwardnunez | grep JWT_SECRET
 # Decode: echo '<base64>' | base64 -d
 
 # Verify it's long enough (32+ chars recommended)
@@ -460,10 +460,10 @@ kubectl get secret personal-site-secrets -o yaml -n personal-site | grep JWT_SEC
 **Diagnosis**:
 ```bash
 # Check backend CPU/Memory
-kubectl top pod <backend-pod> -n personal-site
+kubectl top pod <backend-pod> -n io-edwardnunez
 
 # Enable query logging
-kubectl exec <postgres-pod> -n personal-site -- psql -U admin -d personal_site
+kubectl exec <postgres-pod> -n io-edwardnunez -- psql -U admin -d personal_site
 #> SET log_min_duration_statement = 1000;  -- Log queries > 1s
 ```
 
@@ -510,9 +510,9 @@ const { data, isLoading } = useQuery({
 # In Kubernetes:
 kubectl set env deployment/backend \
   LOG_LEVEL=debug \
-  -n personal-site
+  -n io-edwardnunez
 
-kubectl rollout restart deployment/backend -n personal-site
+kubectl rollout restart deployment/backend -n io-edwardnunez
 
 # Now logs will show:
 # - All requests (method, path, status)
@@ -535,23 +535,23 @@ localStorage.removeItem('DEBUG')
 
 ```bash
 # Backend logs
-kubectl logs -f deployment/backend -n personal-site
+kubectl logs -f deployment/backend -n io-edwardnunez
 
 # Frontend logs (if logging to console)
-kubectl logs -f deployment/frontend -n personal-site
+kubectl logs -f deployment/frontend -n io-edwardnunez
 
 # Specific pod
-kubectl logs -f pod/<pod-name> -n personal-site
+kubectl logs -f pod/<pod-name> -n io-edwardnunez
 
 # Filter for errors
-kubectl logs deployment/backend -n personal-site | grep -i error
+kubectl logs deployment/backend -n io-edwardnunez | grep -i error
 ```
 
 ### Interactive Debugging
 
 ```bash
 # Shell into running pod
-kubectl exec -it <pod-name> -n personal-site -- /bin/sh
+kubectl exec -it <pod-name> -n io-edwardnunez -- /bin/sh
 
 # Inside pod:
 $ npm run test             # Run tests
@@ -564,16 +564,16 @@ $ env | grep DATABASE_URL  # Check environment variables
 
 ```bash
 # Test service-to-service communication
-kubectl exec <frontend-pod> -n personal-site -- curl http://backend:3000/health
+kubectl exec <frontend-pod> -n io-edwardnunez -- curl http://backend:3000/health
 
 # DNS resolution
-kubectl exec <pod> -n personal-site -- nslookup postgres
+kubectl exec <pod> -n io-edwardnunez -- nslookup postgres
 
 # Port scanning
-kubectl exec <pod> -n personal-site -- nc -zv backend 3000
+kubectl exec <pod> -n io-edwardnunez -- nc -zv backend 3000
 
 # Full packet capture (requires tcpdump)
-kubectl exec <pod> -n personal-site -- tcpdump -i eth0 'port 3000'
+kubectl exec <pod> -n io-edwardnunez -- tcpdump -i eth0 'port 3000'
 ```
 
 ---
@@ -680,18 +680,18 @@ backend:
 **Every morning**:
 ```bash
 # Check pod health
-kubectl get pods -n personal-site
+kubectl get pods -n io-edwardnunez
 # All RUNNING? Any restarts?
 
 # Check resource usage
-kubectl top pods -n personal-site
+kubectl top pods -n io-edwardnunez
 # Any pods at > 80% memory/CPU?
 
 # Check error logs
-kubectl logs deployment/backend -n personal-site | grep -i error | head -20
+kubectl logs deployment/backend -n io-edwardnunez | grep -i error | head -20
 
 # Check database size
-kubectl exec postgres-0 -n personal-site -- \
+kubectl exec postgres-0 -n io-edwardnunez -- \
   psql -U admin -d personal_site -c "SELECT pg_size_pretty(pg_database_size(current_database()));"
 ```
 
@@ -700,10 +700,10 @@ kubectl exec postgres-0 -n personal-site -- \
 **Every week**:
 ```bash
 # Review events
-kubectl get events -n personal-site --sort-by='.lastTimestamp' | head -30
+kubectl get events -n io-edwardnunez --sort-by='.lastTimestamp' | head -30
 
 # Check disk usage
-kubectl exec postgres-0 -n personal-site -- df -h
+kubectl exec postgres-0 -n io-edwardnunez -- df -h
 # Should be < 80% full
 
 # Database backups working?

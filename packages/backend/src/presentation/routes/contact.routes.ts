@@ -17,7 +17,8 @@ router.patch('/:id/read', authMiddleware, (req, res, next) =>
 );
 router.delete('/:id', authMiddleware, (req, res, next) => controller.delete(req, res, next));
 
-// Handle unsupported methods
+// DELETE, PUT, PATCH intentionally disabled. Contact requests are append-only records
+// for audit/compliance purposes; modification or deletion disabled to preserve message integrity.
 router.all('/', (req, res) => {
   res.status(405).json({
     success: false,

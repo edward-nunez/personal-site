@@ -2,7 +2,7 @@ import type { Project, ProjectDisplay, ProjectStatus } from '@/types';
 import { apiGet } from './api';
 import { formatChapter } from '@/utils/formatters';
 
-const PROJECTS_BASE = '/api/projects';
+const PROJECTS_BASE = '/projects';
 
 export type ProjectListOptions = {
   featured?: boolean;

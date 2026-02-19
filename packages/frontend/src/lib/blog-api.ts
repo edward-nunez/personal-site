@@ -3,7 +3,7 @@ import { apiGet } from './api';
 import { parseBlogContent } from './parseBlogContent';
 import { formatReadTime, formatVolume } from '@/utils/formatters';
 
-const BLOG_BASE = '/api/blog';
+const BLOG_BASE = '/blog';
 
 export type BlogListOptions = {
   published?: boolean;

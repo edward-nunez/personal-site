@@ -1,14 +1,20 @@
 import Observability, { LDObserve } from '@launchdarkly/observability';
 import SessionReplay, { LDRecord } from '@launchdarkly/session-replay';
+import {
+  getApiBaseUrl,
+  getApiEnvironment,
+  getLdClientId,
+  getSessionReplayPrivacy,
+} from '@/core/config/runtimeConfig';
 
 /**
  * Frontend observability and session replay configuration for LaunchDarkly.
  * Enables error tracking, logging, metrics, tracing, and session recording.
  */
 
-const LD_CLIENT_ID = import.meta.env.VITE_LD_SDK_KEY || '';
-const ENVIRONMENT = import.meta.env.VITE_API_ENV || import.meta.env.MODE || 'development';
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
+const LD_CLIENT_ID = getLdClientId();
+const ENVIRONMENT = getApiEnvironment();
+const API_BASE_URL = getApiBaseUrl();
 
 /**
  * Session replay privacy settings:
@@ -16,8 +22,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000
  * - 'default': Redacts text matching common PII regex patterns
  * - 'none': No obfuscation (use only with explicit user consent for privacy compliance)
  */
-const SESSION_REPLAY_PRIVACY =
-  (import.meta.env.VITE_SESSION_REPLAY_PRIVACY as 'strict' | 'default' | 'none') || 'strict';
+const SESSION_REPLAY_PRIVACY = getSessionReplayPrivacy();
 
 /**
  * Determine if observability should be enabled based on environment.

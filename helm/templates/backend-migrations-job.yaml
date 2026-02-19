@@ -1,0 +1,98 @@
+{{- if and .Values.backend.migrations.enabled .Values.postgresql.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "personal-site.fullname" . }}-backend-migrations
+  labels:
+    {{- include "personal-site.componentLabels" (dict "component" "backend" "context" $) | nindent 4 }}
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded,hook-failed
+spec:
+  backoffLimit: 3
+  template:
+    metadata:
+      labels:
+        {{- include "personal-site.componentSelectorLabels" (dict "component" "backend" "context" $) | nindent 8 }}
+    spec:
+      restartPolicy: OnFailure
+      {{- with .Values.imagePullSecrets.secrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: run-migrations
+          image: {{ include "personal-site.image" (dict "image" .Values.postgresql.image "context" $) }}
+          imagePullPolicy: {{ include "personal-site.imagePullPolicy" (dict "pullPolicy" .Values.postgresql.image.pullPolicy "context" $) }}
+          command:
+            - sh
+            - -c
+            - |
+              set -eu
+              export PGPASSWORD="$POSTGRES_PASSWORD"
+
+              echo "Waiting for PostgreSQL to be ready..."
+              for i in $(seq 1 60); do
+                if pg_isready -h {{ include "personal-site.postgresql.serviceName" . }} -p {{ .Values.postgresql.port }} -U "$POSTGRES_USER" -d "$POSTGRES_DB" >/dev/null 2>&1; then
+                  echo "PostgreSQL is ready"
+                  break
+                fi
+                if [ "$i" -eq 60 ]; then
+                  echo "PostgreSQL did not become ready in time"
+                  exit 1
+                fi
+                sleep 5
+              done
+
+              psql -h {{ include "personal-site.postgresql.serviceName" . }} -p {{ .Values.postgresql.port }} -U "$POSTGRES_USER" -d "$POSTGRES_DB" -v ON_ERROR_STOP=1 <<'SQL'
+              CREATE SCHEMA IF NOT EXISTS drizzle;
+              CREATE TABLE IF NOT EXISTS drizzle.__drizzle_migrations (
+                id serial PRIMARY KEY,
+                hash text NOT NULL,
+                created_at bigint
+              );
+              SQL
+
+              apply_migration() {
+                file="$1"
+                hash="$2"
+                created_at="$3"
+
+                exists=$(psql -h {{ include "personal-site.postgresql.serviceName" . }} -p {{ .Values.postgresql.port }} -U "$POSTGRES_USER" -d "$POSTGRES_DB" -Atc "SELECT 1 FROM drizzle.__drizzle_migrations WHERE hash='${hash}' LIMIT 1;")
+                if [ "$exists" = "1" ]; then
+                  echo "Skipping already applied migration: ${file}"
+                  return 0
+                fi
+
+                echo "Applying migration: ${file}"
+                psql -h {{ include "personal-site.postgresql.serviceName" . }} -p {{ .Values.postgresql.port }} -U "$POSTGRES_USER" -d "$POSTGRES_DB" -v ON_ERROR_STOP=1 -f "/migrations/${file}"
+                psql -h {{ include "personal-site.postgresql.serviceName" . }} -p {{ .Values.postgresql.port }} -U "$POSTGRES_USER" -d "$POSTGRES_DB" -v ON_ERROR_STOP=1 -c "INSERT INTO drizzle.__drizzle_migrations (hash, created_at) VALUES ('${hash}', ${created_at});"
+              }
+
+              apply_migration "0000_abnormal_piledriver.sql" "7433649b9f137e843de8df5e1418fe9c6d34ff657a5be73cfa5c5e301444b079" 1771214491556
+              apply_migration "0001_parched_selene.sql" "a6c05f6225d64c0567786755f0b0fb65babf09e55f34772be0b6caf51506bb66" 1771288710994
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "personal-site.apiSecretName" . }}
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "personal-site.apiSecretName" . }}
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "personal-site.apiSecretName" . }}
+                  key: POSTGRES_DB
+          volumeMounts:
+            - name: backend-migrations
+              mountPath: /migrations
+      volumes:
+        - name: backend-migrations
+          configMap:
+            name: {{ include "personal-site.fullname" . }}-backend-migrations
+{{- end }}

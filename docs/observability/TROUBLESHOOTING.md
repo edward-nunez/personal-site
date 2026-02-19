@@ -27,7 +27,7 @@ echo $LD_ENVIRONMENT
 Frontend:
 ```bash
 # Verify client-side ID is set
-echo $VITE_LD_SDK_KEY
+echo $LD_CLIENT_ID
 # Should output: your-client-id (not sdk-... key)
 
 echo $VITE_API_ENV

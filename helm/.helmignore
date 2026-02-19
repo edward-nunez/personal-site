@@ -1,0 +1,29 @@
+# Patterns to ignore when packaging Helm charts
+.git/
+.gitignore
+.DS_Store
+*.swp
+*.bak
+*.tmp
+*.orig
+*~
+.project
+.idea/
+*.tmproj
+.vscode/
+*.code-workspace
+
+# Helm test files
+test/
+
+# Documentation drafts
+NOTES.txt
+
+# CI/CD files
+.github/
+.gitlab-ci.yml
+.travis.yml
+
+# Development files
+values-*.yaml.example
+*.local.yaml

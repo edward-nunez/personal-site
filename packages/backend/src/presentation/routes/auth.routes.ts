@@ -12,7 +12,8 @@ router.post('/login', authLimiter, (req, res, next) => controller.login(req, res
 // Protected routes
 router.get('/me', authMiddleware, (req, res, next) => controller.me(req, res, next));
 
-// Handle unsupported methods
+// DELETE, PUT, PATCH endpoints intentionally disabled. Authentication is stateless (JWT);
+// users cannot modify their login state after initial POST. Sessions managed by token expiration.
 router.all('/login', (req, res) => {
   res.status(405).json({
     success: false,

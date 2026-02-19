@@ -1,0 +1,109 @@
+{{- if .Values.fitSync.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "personal-site.fullname" . }}-fit-sync
+  labels:
+    {{- include "personal-site.componentLabels" (dict "component" "fit-sync" "context" $) | nindent 4 }}
+  {{- with .Values.global.commonAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  replicas: {{ .Values.fitSync.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "personal-site.componentSelectorLabels" (dict "component" "fit-sync" "context" $) | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "personal-site.componentSelectorLabels" (dict "component" "fit-sync" "context" $) | nindent 8 }}
+      {{- with .Values.fitSync.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    spec:
+      serviceAccountName: {{ include "personal-site.componentServiceAccountName" (dict "component" "fit-sync" "context" $) }}
+      {{- with .Values.imagePullSecrets.secrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.fitSync.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if .Values.ollama.enabled }}
+      initContainers:
+        - name: wait-for-ollama
+          image: busybox:latest
+          command:
+            - sh
+            - -c 
+            - |
+              until nc -z {{ include "personal-site.ollama.serviceName" . }} {{ .Values.ollama.port }}; do
+                echo "Waiting for Ollama...";
+                sleep 2;
+              done
+          {{- with .Values.fitSync.containerSecurityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- end }}
+      containers:
+        - name: fit-sync
+          image: {{ include "personal-site.image" (dict "image" .Values.fitSync.image "context" $) }}
+          imagePullPolicy: {{ include "personal-site.imagePullPolicy" (dict "pullPolicy" .Values.fitSync.image.pullPolicy "context" $) }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.fitSync.port }}
+              protocol: TCP
+          env:
+            {{- range $key, $value := .Values.fitSync.env }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+            {{- end }}
+            {{- if .Values.ollama.enabled }}
+            - name: OLLAMA_HOST
+              value: {{ printf "http://%s:%d" (include "personal-site.ollama.serviceName" .) (.Values.ollama.port | int) | quote }}
+            {{- end }}
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "personal-site.apiSecretName" . }}
+                  key: JWT_SECRET
+            {{- if .Values.backend.secrets.corsOrigin }}
+            - name: CORS_ORIGIN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "personal-site.apiSecretName" . }}
+                  key: CORS_ORIGIN
+            {{- end }}
+          {{- with .Values.fitSync.containerSecurityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.fitSync.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.fitSync.livenessProbe }}
+          livenessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.fitSync.readinessProbe }}
+          readinessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- with .Values.fitSync.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.fitSync.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.fitSync.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end }}

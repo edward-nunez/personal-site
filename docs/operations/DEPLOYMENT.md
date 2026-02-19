@@ -124,21 +124,21 @@ curl http://localhost/
 ```bash
 # From repo root; chart is in helm/
 helm install personal-site ./helm \
-  --namespace personal-site \
+  --namespace io-edwardnunez \
   --create-namespace
 
 # With custom values file
 helm install personal-site ./helm \
-  --namespace personal-site \
+  --namespace io-edwardnunez \
   --create-namespace \
   -f helm/values-prod.yaml
 
 # Verify installation
-kubectl get all -n personal-site
-kubectl get pods -n personal-site
+kubectl get all -n io-edwardnunez
+kubectl get pods -n io-edwardnunez
 
 # View service IPs
-kubectl get svc -n personal-site
+kubectl get svc -n io-edwardnunez
 ```
 
 ### Helm Chart Structure
@@ -231,7 +231,7 @@ EOF
 
 # Deploy with custom values
 helm install personal-site . \
-  --namespace personal-site \
+  --namespace io-edwardnunez \
   --create-namespace \
   -f custom-values.yaml
 ```
@@ -241,7 +241,7 @@ helm install personal-site . \
 ```bash
 # Update to new image version
 helm upgrade personal-site . \
-  --namespace personal-site \
+  --namespace io-edwardnunez \
   --set backend.tag=v1.2.3 \
   --set frontend.tag=v1.2.3
 
@@ -254,7 +254,7 @@ helm history personal-site  # See revision history
 
 #### Via LoadBalancer Service (Cloud)
 ```bash
-kubectl get svc -n personal-site
+kubectl get svc -n io-edwardnunez
 # Look for EXTERNAL-IP of frontend or ingress
 # Access via: http://<EXTERNAL-IP>
 ```
@@ -262,7 +262,7 @@ kubectl get svc -n personal-site
 #### Via Ingress (Recommended)
 ```bash
 # Get ingress IP
-kubectl get ingress -n personal-site
+kubectl get ingress -n io-edwardnunez
 
 # Configure DNS to point to ingress IP
 # Then access via https://yourdomain.com
@@ -271,10 +271,10 @@ kubectl get ingress -n personal-site
 #### Port Forward (Local Testing)
 ```bash
 # Forward frontend to localhost:8080
-kubectl port-forward -n personal-site svc/frontend 8080:80
+kubectl port-forward -n io-edwardnunez svc/frontend 8080:80
 
 # Forward backend to localhost:3000
-kubectl port-forward -n personal-site svc/backend 3000:3000
+kubectl port-forward -n io-edwardnunez svc/backend 3000:3000
 
 # Access: http://localhost:8080
 ```
@@ -292,7 +292,7 @@ kubectl port-forward -n personal-site svc/backend 3000:3000
 kubectl create secret generic personal-site-secrets \
   --from-literal=JWT_SECRET=your-production-secret \
   --from-literal=DATABASE_PASSWORD=secure_db_password \
-  --namespace personal-site
+  --namespace io-edwardnunez
 ```
 
 Or use Helm:
@@ -396,16 +396,16 @@ readinessProbe:
 
 ```bash
 # Get pod status
-kubectl get pods -n personal-site
+kubectl get pods -n io-edwardnunez
 
 # Describe pod (shows probe status)
-kubectl describe pod <pod-name> -n personal-site
+kubectl describe pod <pod-name> -n io-edwardnunez
 
 # Check logs for errors
-kubectl logs <pod-name> -n personal-site
+kubectl logs <pod-name> -n io-edwardnunez
 
 # Live log stream
-kubectl logs -f <pod-name> -n personal-site
+kubectl logs -f <pod-name> -n io-edwardnunez
 ```
 
 ### Manual Health Check
@@ -431,14 +431,14 @@ kubectl describe node
 # Check: disk space, memory, resource requests
 
 # Scale down if node overloaded
-kubectl scale deployment backend --replicas=1 -n personal-site
+kubectl scale deployment backend --replicas=1 -n io-edwardnunez
 ```
 
 ### Pod CrashLoopBackOff
 
 ```bash
 # Check logs
-kubectl logs <pod-name> -n personal-site
+kubectl logs <pod-name> -n io-edwardnunez
 
 # Common causes:
 # 1. Missing environment variables
@@ -446,23 +446,23 @@ kubectl logs <pod-name> -n personal-site
 # 3. Port already in use
 
 # Fix: Update ConfigMap/Secret and restart pod
-kubectl rollout restart deployment backend -n personal-site
+kubectl rollout restart deployment backend -n io-edwardnunez
 ```
 
 ### Database Connection Failed
 
 ```bash
 # Verify PostgreSQL pod is running
-kubectl get pods -n personal-site | grep postgres
+kubectl get pods -n io-edwardnunez | grep postgres
 
 # Check PostgreSQL logs
-kubectl logs postgres-0 -n personal-site
+kubectl logs postgres-0 -n io-edwardnunez
 
 # Connect to database manually
-kubectl exec -it postgres-0 -n personal-site -- psql -U admin -d personal_site
+kubectl exec -it postgres-0 -n io-edwardnunez -- psql -U admin -d personal_site
 
 # Run migrations if database is fresh
-kubectl exec -it <backend-pod> -n personal-site -- npm run drizzle:migrate
+kubectl exec -it <backend-pod> -n io-edwardnunez -- npm run drizzle:migrate
 ```
 
 ### External Access Issues
@@ -470,22 +470,22 @@ kubectl exec -it <backend-pod> -n personal-site -- npm run drizzle:migrate
 #### Ingress not routing to service
 ```bash
 # Check ingress status
-kubectl get ingress -n personal-site
+kubectl get ingress -n io-edwardnunez
 
 # Describe ingress
-kubectl describe ingress personal-site-ingress -n personal-site
+kubectl describe ingress personal-site-ingress -n io-edwardnunez
 
 # Verify service exists
-kubectl get svc -n personal-site
+kubectl get svc -n io-edwardnunez
 ```
 
 #### DNS not resolving
 ```bash
 # Check DNS from pod
-kubectl exec -it <pod> -n personal-site -- nslookup yourdomain.com
+kubectl exec -it <pod> -n io-edwardnunez -- nslookup yourdomain.com
 
 # Or test with curl
-kubectl exec -it <pod> -n personal-site -- curl http://frontend
+kubectl exec -it <pod> -n io-edwardnunez -- curl http://frontend
 ```
 
 ### Scaling Issues
@@ -494,17 +494,17 @@ kubectl exec -it <pod> -n personal-site -- curl http://frontend
 # Auto-scaling (requires metrics-server)
 kubectl autoscale deployment backend \
   --min=2 --max=10 \
-  -n personal-site
+  -n io-edwardnunez
 
 # Manual scaling
-kubectl scale deployment backend --replicas=5 -n personal-site
+kubectl scale deployment backend --replicas=5 -n io-edwardnunez
 ```
 
 ### View All Events
 
 ```bash
 # See what's happening in the cluster
-kubectl get events -n personal-site --sort-by='.lastTimestamp'
+kubectl get events -n io-edwardnunez --sort-by='.lastTimestamp'
 ```
 
 ---
@@ -517,13 +517,13 @@ kubectl get events -n personal-site --sort-by='.lastTimestamp'
 
 ```bash
 # Stream backend logs
-kubectl logs -f deployment/backend -n personal-site
+kubectl logs -f deployment/backend -n io-edwardnunez
 
 # Previous logs (if pod restarted)
-kubectl logs <pod-name> --previous -n personal-site
+kubectl logs <pod-name> --previous -n io-edwardnunez
 
 # Logs from all pods
-kubectl logs -f -l app=backend -n personal-site
+kubectl logs -f -l app=backend -n io-edwardnunez
 ```
 
 ### Metrics (Prometheus)
@@ -535,7 +535,7 @@ If Prometheus is installed:
 kubectl top nodes
 
 # Pod metrics
-kubectl top pods -n personal-site
+kubectl top pods -n io-edwardnunez
 ```
 
 ### Set Up Monitoring
@@ -577,7 +577,7 @@ jobs:
       - name: Deploy with Helm
         run: |
           helm upgrade personal-site ./helm \
-            --namespace personal-site \
+            --namespace io-edwardnunez \
             --set backend.tag=${{ github.sha }}
 ```
 
@@ -589,11 +589,11 @@ jobs:
 
 ```bash
 # Create dump
-kubectl exec postgres-0 -n personal-site -- \
+kubectl exec postgres-0 -n io-edwardnunez -- \
   pg_dump -U admin personal_site > backup.sql
 
 # Restore from dump
-kubectl exec -i postgres-0 -n personal-site -- \
+kubectl exec -i postgres-0 -n io-edwardnunez -- \
   psql -U admin personal_site < backup.sql
 ```
 
@@ -601,13 +601,13 @@ kubectl exec -i postgres-0 -n personal-site -- \
 
 ```bash
 # List PVCs
-kubectl get pvc -n personal-site
+kubectl get pvc -n io-edwardnunez
 
 # Backup PVC (via pod)
-kubectl exec <pod> -n personal-site -- tar czf - /data > backup.tar.gz
+kubectl exec <pod> -n io-edwardnunez -- tar czf - /data > backup.tar.gz
 
 # Restore
-kubectl exec -i <pod> -n personal-site -- tar xzf - -C /
+kubectl exec -i <pod> -n io-edwardnunez -- tar xzf - -C /
 ```
 
 ---
@@ -647,8 +647,8 @@ Ordered steps for a first production (or staging) deploy. Use with the [Producti
 ### Deploy
 
 4. **Build and push images** (if using a registry): from repo root, `./scripts/build-images.sh <tag>` or `docker build -f packages/backend/Dockerfile .` and same for frontend; push to your registry. Update Helm `values.yaml` or `--set` with image tag.
-5. **Install or upgrade Helm release**: e.g. `helm upgrade --install personal-site ./helm -n personal-site --create-namespace -f values-prod.yaml`. See [Kubernetes Deployment (Helm)](#kubernetes-deployment-helm).
-6. **Verify pods**: `kubectl get pods -n personal-site`; all should be Running/Ready.
+5. **Install or upgrade Helm release**: e.g. `helm upgrade --install personal-site ./helm -n io-edwardnunez --create-namespace -f values-prod.yaml`. See [Kubernetes Deployment (Helm)](#kubernetes-deployment-helm).
+6. **Verify pods**: `kubectl get pods -n io-edwardnunez`; all should be Running/Ready.
 
 ### Post-deploy
 

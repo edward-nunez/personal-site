@@ -65,7 +65,7 @@ Features ready for testing but requiring targeting/segmentation rules.
 
 ```bash
 # LaunchDarkly Client-Side ID (different from server SDK key!)
-VITE_LD_SDK_KEY=your-client-side-id-here
+LD_CLIENT_ID=your-client-side-id-here
 
 # Environment for fallback logic (development | production)
 VITE_API_ENV=development
@@ -249,7 +249,7 @@ console.log('Error:', store.error);
 **Symptoms**: Features always use fallback defaults, never LaunchDarkly values
 
 **Check**:
-1. Is `VITE_LD_SDK_KEY` set in `.env`?
+1. Is `LD_CLIENT_ID` set in `.env`?
 2. Is the SDK key correct (client-side ID, not server SDK key)?
 3. Check browser console for LaunchDarkly errors
 4. Verify `FeatureFlagsProvider` is in `App.tsx` provider stack

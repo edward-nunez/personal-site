@@ -1,0 +1,295 @@
+# Production environment values for personal-site
+# Overrides default values.yaml for production deployments
+# CRITICAL: Override all secrets via --set flags or external secret management
+
+## Global configuration
+global:
+  imageRegistry: "ghcr.io/edward-nunez/personal-site"
+  imagePullPolicy: IfNotPresent
+  commonLabels:
+    environment: production
+    team: platform
+
+## Image pull secrets for private registries
+imagePullSecrets:
+  # List of secret names to use for pulling images (pre-existing secrets)
+  secrets:
+    - name: ghcr-image-pull-secret
+    - name: docker-image-pull-secret
+  
+  # Create secrets via Helm (disabled - using pre-existing secrets)
+  create: []
+
+secrets:
+  apiSecretName: io-edwardnunez-api-secrets
+  frontendSecretName: io-edwardnunez-secrets
+
+## PostgreSQL production configuration
+postgresql:
+  enabled: true
+  image:
+    registry: ""  # Use Docker Hub (public registry)
+    repository: postgres
+    tag: "18-alpine"
+  # Use existing Kubernetes secret for auth (recommended for production)
+  # If secretRef is provided, auth credentials below are ignored
+  secretRef:
+    enabled: true
+    name: "io-edwardnunez-db-credentials"
+  replicaCount: 1
+  resources:
+    requests:
+      memory: "128Mi"
+      cpu: "100m"
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
+  persistence:
+    enabled: true
+    size: 50Gi
+    storageClass: ""
+  # Schedule on application workload nodes
+  nodeSelector:
+    workload: application
+
+## Backend production configuration
+backend:
+  image:
+    repository: backend
+    tag: "1.0.7"
+    pullPolicy: IfNotPresent
+  replicaCount: 1
+  env:
+    NODE_ENV: production
+    LOG_LEVEL: info
+    PORT: "3000"
+    CORS_ORIGIN: "https://edwardnunez.io,https://www.edwardnunez.io"
+    TRUST_PROXY: "1"
+    RATE_LIMIT_WINDOW_MS: "900000"
+    RATE_LIMIT_MAX_REQUESTS: "100"
+    RATE_LIMIT_FORMS_MAX: "5"
+    LD_ENVIRONMENT: "production"
+    SERVICE_NAME: "personal-site-backend"
+    SERVICE_VERSION: "1.0.7"
+  migrations:
+    enabled: true
+  # CRITICAL: Set secrets via --set flags or external secret management
+  secrets:
+    jwtSecret: ""
+    jwtExpiresIn: "7d"
+    corsOrigin: ""
+    ldSdkKey: ""
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "150m"
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
+  # ClusterIP for internal access (use ingress for external)
+  service:
+    type: ClusterIP
+    port: 3000
+  livenessProbe:
+    httpGet:
+      path: /health
+      port: 3000
+    initialDelaySeconds: 60
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 3
+  readinessProbe:
+    httpGet:
+      path: /ready
+      port: 3000
+    initialDelaySeconds: 30
+    periodSeconds: 5
+    timeoutSeconds: 3
+    failureThreshold: 3
+  podAnnotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "3000"
+    prometheus.io/path: "/metrics"
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchExpressions:
+                - key: app.kubernetes.io/component
+                  operator: In
+                  values:
+                    - backend
+            topologyKey: kubernetes.io/hostname
+
+## Frontend production configuration
+frontend:
+  image:
+    repository: frontend
+    tag: "1.0.9"
+    pullPolicy: IfNotPresent
+  replicaCount: 1
+  env:
+    VITE_API_BASE_URL: "https://api.edwardnunez.io/v1/orchestrator"
+    VITE_API_ENV: "production"
+    VITE_SESSION_REPLAY_PRIVACY: "strict"
+  secrets:
+    ldSdkKey: ""
+  resources:
+    requests:
+      memory: "96Mi"
+      cpu: "50m"
+    limits:
+      memory: "192Mi"
+      cpu: "200m"
+  # ClusterIP for internal access (use ingress)
+  service:
+    type: ClusterIP
+    port: 8080
+  podAnnotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "8080"
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchExpressions:
+                - key: app.kubernetes.io/component
+                  operator: In
+                  values:
+                    - frontend
+            topologyKey: kubernetes.io/hostname
+
+## FitSync production configuration
+fitSync:
+  enabled: true
+  image:
+    repository: fit-sync
+    tag: "1.0.6"
+    pullPolicy: IfNotPresent
+  replicaCount: 1
+  env:
+    NODE_ENV: production
+    PORT: "3001"
+    LOG_LEVEL: "info"
+    OLLAMA_MODEL: "neural-chat"
+    BACKEND_API_URL: "http://personal-site-backend:3000"
+  secrets:
+    corsOrigin: ""
+  resources:
+    requests:
+      memory: "96Mi"
+      cpu: "150m"
+    limits:
+      memory: "256Mi"
+      cpu: "500m"
+  service:
+    type: ClusterIP
+    port: 3001
+  podAnnotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "3001"
+
+## Ollama production configuration
+ollama:
+  enabled: false
+  replicaCount: 1
+  # Production resources (adjust based on model size and GPU availability)
+  resources:
+    requests:
+      memory: "4Gi"
+      cpu: "1000m"
+      # nvidia.com/gpu: "1"  # Uncomment if using GPU
+    limits:
+      memory: "8Gi"
+      cpu: "4000m"
+      # nvidia.com/gpu: "1"
+  # Enable persistence for model storage
+  persistence:
+    enabled: true
+    size: 50Gi
+    storageClass: "fast-ssd"
+  service:
+    type: ClusterIP
+    port: 11434
+  # Schedule on GPU node if available
+  # nodeSelector:
+  #   accelerator: nvidia-tesla-t4
+  # tolerations:
+  #   - key: nvidia.com/gpu
+  #     operator: Exists
+  #     effect: NoSchedule
+
+## Ingress production configuration
+ingress:
+  enabled: true
+  className: "traefik"
+  annotations:
+    # TLS/SSL with cert-manager (uses existing letsencrypt-prod ClusterIssuer)
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    # Traefik-specific: Use websecure entrypoint (HTTPS)
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    # Redirect HTTP to HTTPS and apply security headers
+    traefik.ingress.kubernetes.io/router.middlewares: personal-site-redirect-https@kubernetescrd,personal-site-security-headers@kubernetescrd,personal-site-rate-limit@kubernetescrd
+  hosts:
+    - host: edwardnunez.io
+      paths:
+        - path: /
+          pathType: Prefix
+          service: frontend
+    # API Gateway - Microservices pattern
+    - host: api.edwardnunez.io
+      paths:
+        - path: /v1/orchestrator
+          pathType: Prefix
+          service: backend
+        - path: /v1/fit-sync
+          pathType: Prefix
+          service: fit-sync
+  tls:
+    - secretName: edwardnunez-io-tls
+      hosts:
+        - edwardnunez.io
+    - secretName: api-edwardnunez-io-tls
+      hosts:
+        - api.edwardnunez.io
+
+  # Example Traefik Middleware configurations (apply separately):
+  # ---
+  # apiVersion: traefik.containo.us/v1alpha1
+  # kind: Middleware
+  # metadata:
+  #   name: redirect-https
+  # spec:
+  #   redirectScheme:
+  #     scheme: https
+  #     permanent: true
+  # ---
+  # apiVersion: traefik.containo.us/v1alpha1
+  # kind: Middleware
+  # metadata:
+  #   name: security-headers
+  # spec:
+  #   headers:
+  #     customResponseHeaders:
+  #       X-Frame-Options: "DENY"
+  #       X-Content-Type-Options: "nosniff"
+  #       X-XSS-Protection: "1; mode=block"
+  #       Referrer-Policy: "strict-origin-when-cross-origin"
+  #     sslRedirect: true
+  #     stsSeconds: 31536000
+  #     stsIncludeSubdomains: true
+  #     stsPreload: true
+  # ---
+  # apiVersion: traefik.containo.us/v1alpha1
+  # kind: Middleware
+  # metadata:
+  #   name: rate-limit
+  # spec:
+  #   rateLimit:
+  #     average: 100
+  #     burst: 50

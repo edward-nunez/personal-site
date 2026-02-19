@@ -2,11 +2,10 @@
  * API client base. Uses VITE_API_BASE_URL for backend.
  */
 
+import { getApiBaseUrl } from '@/core/config/runtimeConfig';
+
 const getBaseUrl = (): string => {
-  const url = import.meta.env.VITE_API_BASE_URL;
-  if (url) return url.replace(/\/$/, '');
-  // Dev default when not set
-  return 'http://localhost:3000';
+  return getApiBaseUrl();
 };
 
 export const apiBaseUrl = getBaseUrl();

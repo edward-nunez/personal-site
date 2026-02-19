@@ -1,14 +1,15 @@
 import * as LDClient from 'launchdarkly-react-client-sdk';
 import { useFeatureFlagsStore } from '../store/useFeatureFlagsStore';
 import { getObservabilityPlugins, isObservabilityEnabled } from './observability.js';
+import { getApiEnvironment, getLdClientId } from '@/core/config/runtimeConfig';
 
 /**
  * LaunchDarkly client configuration and initialization.
  * Handles connection, flag updates, fallback behavior, and observability (error tracking, session replay).
  */
 
-const LD_CLIENT_ID = import.meta.env.VITE_LD_SDK_KEY || '';
-const ENVIRONMENT = import.meta.env.VITE_API_ENV || import.meta.env.MODE || 'development';
+const LD_CLIENT_ID = getLdClientId();
+const ENVIRONMENT = getApiEnvironment();
 
 /**
  * Initialize LaunchDarkly client and sync with Zustand store.
@@ -24,8 +25,8 @@ export const initializeLDClient = async (): Promise<void> => {
   }
 
   try {
-    // Create LaunchDarkly context for frontend (user audience)
-    // Distinct from backend service context for proper analytics segmentation
+    // Create LaunchDarkly context for frontend user audience. Anonymous context prevents user lookup;
+    // environment tag enables per-environment flag variation (dev vs prod feature rollout).
     const context: LDClient.LDContext = {
       kind: 'user',
       key: 'anonymous-user',

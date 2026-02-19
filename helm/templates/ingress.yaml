@@ -1,23 +1,38 @@
 {{- if .Values.ingress.enabled }}
+---
+# Frontend Ingress - edwardnunez.io
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: personal-site-ingress
-  namespace: {{ .Values.global.namespace }}
-  {{- if .Values.ingress.annotations }}
+  name: {{ include "personal-site.fullname" . }}-frontend
+  labels:
+    {{- include "personal-site.labels" . | nindent 4 }}
+    app.kubernetes.io/component: frontend-ingress
   annotations:
-    {{- toYaml .Values.ingress.annotations | nindent 4 }}
-  {{- end }}
+    helm.sh/resource-policy: keep
+    {{- with .Values.ingress.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    traefik.ingress.kubernetes.io/router.middlewares: {{ .Release.Namespace }}-{{ include "personal-site.fullname" . }}-redirect-https@kubernetescrd,{{ .Release.Namespace }}-{{ include "personal-site.fullname" . }}-security-headers@kubernetescrd,{{ .Release.Namespace }}-{{ include "personal-site.fullname" . }}-rate-limit@kubernetescrd
 spec:
   {{- if .Values.ingress.className }}
   ingressClassName: {{ .Values.ingress.className }}
   {{- end }}
-  {{- if .Values.ingress.tls }}
   tls:
-    {{- toYaml .Values.ingress.tls | nindent 4 }}
-  {{- end }}
+    {{- range .Values.ingress.tls }}
+    {{- if has "edwardnunez.io" .hosts }}
+    - secretName: {{ .secretName }}
+      hosts:
+        {{- range .hosts }}
+        {{- if eq . "edwardnunez.io" }}
+        - {{ . | quote }}
+        {{- end }}
+        {{- end }}
+    {{- end }}
+    {{- end }}
   rules:
     {{- range .Values.ingress.hosts }}
+    {{- if eq .host "edwardnunez.io" }}
     - host: {{ .host | quote }}
       http:
         paths:
@@ -26,9 +41,117 @@ spec:
             pathType: {{ .pathType }}
             backend:
               service:
-                name: frontend
+                {{- if eq .service "frontend" }}
+                name: {{ include "personal-site.frontend.serviceName" $ }}
                 port:
                   number: {{ $.Values.frontend.service.port }}
+                {{- end }}
           {{- end }}
     {{- end }}
+    {{- end }}
+---
+# Backend Ingress - api.edwardnunez.io/v1/orchestrator/*
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "personal-site.fullname" . }}-backend
+  labels:
+    {{- include "personal-site.labels" . | nindent 4 }}
+    app.kubernetes.io/component: backend-ingress
+  annotations:
+    helm.sh/resource-policy: keep
+    {{- with .Values.ingress.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    # Add StripPrefix middleware for /v1/orchestrator
+    traefik.ingress.kubernetes.io/router.middlewares: {{ .Release.Namespace }}-{{ include "personal-site.fullname" . }}-strip-orchestrator@kubernetescrd,{{ .Release.Namespace }}-{{ include "personal-site.fullname" . }}-redirect-https@kubernetescrd,{{ .Release.Namespace }}-{{ include "personal-site.fullname" . }}-security-headers@kubernetescrd,{{ .Release.Namespace }}-{{ include "personal-site.fullname" . }}-rate-limit@kubernetescrd
+spec:
+  {{- if .Values.ingress.className }}
+  ingressClassName: {{ .Values.ingress.className }}
+  {{- end }}
+  tls:
+    {{- range .Values.ingress.tls }}
+    {{- if has "api.edwardnunez.io" .hosts }}
+    - secretName: {{ .secretName }}
+      hosts:
+        {{- range .hosts }}
+        {{- if eq . "api.edwardnunez.io" }}
+        - {{ . | quote }}
+        {{- end }}
+        {{- end }}
+    {{- end }}
+    {{- end }}
+  rules:
+    {{- range .Values.ingress.hosts }}
+    {{- if eq .host "api.edwardnunez.io" }}
+    - host: {{ .host | quote }}
+      http:
+        paths:
+          {{- range .paths }}
+          {{- if eq .service "backend" }}
+          - path: {{ .path }}
+            pathType: {{ .pathType }}
+            backend:
+              service:
+                name: {{ include "personal-site.backend.serviceName" $ }}
+                port:
+                  number: {{ $.Values.backend.service.port }}
+          {{- end }}
+          {{- end }}
+    {{- end }}
+    {{- end }}
+---
+# FitSync Ingress - api.edwardnunez.io/v1/fit-sync/*
+# Using dedicated ingress for clearer organization and independent middleware
+{{- if .Values.fitSync.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "personal-site.fullname" . }}-fit-sync
+  labels:
+    {{- include "personal-site.labels" . | nindent 4 }}
+    app.kubernetes.io/component: fit-sync-ingress
+  annotations:
+    helm.sh/resource-policy: keep
+    {{- with .Values.ingress.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    # Add StripPrefix middleware for /v1/fit-sync
+    traefik.ingress.kubernetes.io/router.middlewares: {{ .Release.Namespace }}-{{ include "personal-site.fullname" . }}-strip-fit-sync@kubernetescrd,{{ .Release.Namespace }}-{{ include "personal-site.fullname" . }}-redirect-https@kubernetescrd,{{ .Release.Namespace }}-{{ include "personal-site.fullname" . }}-security-headers@kubernetescrd,{{ .Release.Namespace }}-{{ include "personal-site.fullname" . }}-rate-limit@kubernetescrd
+spec:
+  {{- if .Values.ingress.className }}
+  ingressClassName: {{ .Values.ingress.className }}
+  {{- end }}
+  tls:
+    {{- range .Values.ingress.tls }}
+    {{- if has "api.edwardnunez.io" .hosts }}
+    - secretName: {{ .secretName }}
+      hosts:
+        {{- range .hosts }}
+        {{- if eq . "api.edwardnunez.io" }}
+        - {{ . | quote }}
+        {{- end }}
+        {{- end }}
+    {{- end }}
+    {{- end }}
+  rules:
+    {{- range .Values.ingress.hosts }}
+    {{- if eq .host "api.edwardnunez.io" }}
+    - host: {{ .host | quote }}
+      http:
+        paths:
+          {{- range .paths }}
+          {{- if eq .service "fit-sync" }}
+          - path: {{ .path }}
+            pathType: {{ .pathType }}
+            backend:
+              service:
+                name: {{ include "personal-site.fitSync.serviceName" $ }}
+                port:
+                  number: {{ $.Values.fitSync.service.port }}
+          {{- end }}
+          {{- end }}
+    {{- end }}
+    {{- end }}
+{{- end }}
 {{- end }}

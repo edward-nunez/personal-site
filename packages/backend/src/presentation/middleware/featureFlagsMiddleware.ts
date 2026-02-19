@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import * as ld from '@launchdarkly/node-server-sdk';
 import { evaluateFlags } from '../../infrastructure/feature-flags/ldClient.js';
+import logger from '../../shared/utils/logger.js';
 
 /**
  * Extend Express Request type to include feature flags
@@ -62,7 +63,10 @@ export const featureFlagsMiddleware = async (
 
     // Log flag evaluation in development
     if (process.env.NODE_ENV === 'development') {
-      console.log('[FeatureFlags] Evaluated flags for request:', req.path, req.featureFlags);
+      logger.info('[FeatureFlags] Evaluated flags for request', {
+        path: req.path,
+        featureFlags: req.featureFlags,
+      });
     }
 
     next();

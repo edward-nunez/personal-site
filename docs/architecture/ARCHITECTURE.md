@@ -445,7 +445,7 @@ Agent Service (Port 3001)
 
 ### Agent-Specific Bounded Contexts
 
-The Agent service operates within two primary bounded contexts:
+The FitSync service operates within two primary bounded contexts:
 
 1. **Assessment Context** - Job fit evaluation using LLM analysis
    - Entities: `JobFitAssessment`, `CandidateStrength`

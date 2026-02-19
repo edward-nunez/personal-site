@@ -1,0 +1,166 @@
+# Development environment values for personal-site
+# Overrides default values.yaml for development deployments
+
+## Global configuration
+global:
+  imageRegistry: "ghcr.io/edward-nunez/personal-site"
+  imagePullPolicy: Never
+
+secrets:
+  apiSecretName: io-edwardnunez-api-secrets
+  frontendSecretName: io-edwardnunez-secrets
+
+## PostgreSQL for development
+postgresql:
+  enabled: true
+  
+  # Use Helm-managed secret in development
+  secretRef:
+    enabled: false
+    name: "io-edwardnunez-db-credentials"
+  
+  # Development credentials (NOT for production)
+  auth:
+    username: admin
+    password: "admin123"
+    database: personal_site
+
+  resources:
+    requests:
+      memory: "128Mi"
+      cpu: "100m"
+    limits:
+      memory: "512Mi"
+      cpu: "250m"
+
+  # Disable persistence in development (optional - faster cleanup)
+  persistence:
+    enabled: false
+
+## Backend development configuration
+backend:
+  image:
+    repository: backend
+    tag: "latest"
+    pullPolicy: Never
+
+  replicaCount: 1
+
+  env:
+    NODE_ENV: development
+    LOG_LEVEL: debug
+    PORT: "3000"
+    CORS_ORIGIN: "http://localhost:5173,http://localhost:8080"
+    TRUST_PROXY: "1"
+    RATE_LIMIT_WINDOW_MS: "900000"
+    RATE_LIMIT_MAX_REQUESTS: "100"
+    RATE_LIMIT_FORMS_MAX: "5"
+    LD_ENVIRONMENT: "development"
+    SERVICE_NAME: "personal-site-backend"
+    SERVICE_VERSION: "latest"
+
+  migrations:
+    enabled: true
+
+  secrets:
+    jwtSecret: "dev-secret-change-in-production"
+    jwtExpiresIn: "7d"
+    corsOrigin: "http://localhost:5173"
+    ldSdkKey: ""
+
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "100m"
+    limits:
+      memory: "512Mi"
+      cpu: "250m"
+
+## Frontend development configuration
+frontend:
+  image:
+    repository: frontend
+    tag: "latest"
+    pullPolicy: Never
+  
+  replicaCount: 1
+
+  env:
+    VITE_API_BASE_URL: "/v1/orchestrator"
+    VITE_API_ENV: "development"
+    VITE_SESSION_REPLAY_PRIVACY: "strict"
+
+  secrets:
+    ldSdkKey: ""
+
+  resources:
+    requests:
+      memory: "96Mi"
+      cpu: "50m"
+    limits:
+      memory: "192Mi"
+      cpu: "100m"
+  
+  service:
+    type: LoadBalancer
+
+## FitSync development configuration
+fitSync:
+  enabled: true
+  
+  image:
+    repository: fit-sync
+    tag: "latest"
+    pullPolicy: Never
+  
+  replicaCount: 1
+  
+  env:
+    NODE_ENV: development
+    PORT: "3001"
+    LOG_LEVEL: "debug"
+    OLLAMA_MODEL: "neural-chat"
+    BACKEND_API_URL: "http://personal-site-backend:3000"
+  
+  resources:
+    requests:
+      memory: "96Mi"
+      cpu: "100m"
+    limits:
+      memory: "256Mi"
+      cpu: "250m"
+
+## Ollama development configuration
+ollama:
+  enabled: true
+  
+  # Lower resources for development (CPU-only inference)
+  resources:
+    requests:
+      memory: "4Gi"
+      cpu: "250m"
+    limits:
+      memory: "8Gi"
+      cpu: "1000m"
+  
+  persistence:
+    enabled: false
+
+## Ingress for development (typically disabled, use LoadBalancer instead)
+ingress:
+  enabled: false
+  className: "traefik"
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+  hosts:
+    - host: personal-site.local
+      paths:
+        - path: /
+          pathType: Prefix
+          service: frontend
+        - path: /api
+          pathType: Prefix
+          service: backend
+        - path: /fit-sync
+          pathType: Prefix
+          service: fit-sync

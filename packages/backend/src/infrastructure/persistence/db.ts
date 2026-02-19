@@ -2,6 +2,7 @@ import pg from 'pg';
 import { drizzle, NodePgDatabase } from 'drizzle-orm/node-postgres';
 import config from '../../configs/index.js';
 import * as schema from './schema.js';
+import logger from '../../shared/utils/logger.js';
 
 /**
  * Drizzle DB singleton instance
@@ -47,7 +48,7 @@ class DbService {
       DbService.getInstance();
       const client = await DbService.pool!.connect();
       client.release();
-      console.log('✅ PostgreSQL connected successfully via Drizzle');
+      logger.info('✅ PostgreSQL connected successfully via Drizzle');
     } catch (error) {
       console.error(
         '❌ PostgreSQL connection failed:',
@@ -65,7 +66,7 @@ class DbService {
       await DbService.pool.end();
       DbService.pool = null;
       DbService.instance = null;
-      console.log('PostgreSQL disconnected');
+      logger.info('PostgreSQL disconnected');
     }
   }
 

@@ -23,7 +23,7 @@ const db = drizzle(pool);
 async function main() {
   console.log('🌱 Seeding database...');
 
-  // Create admin user
+  // Seed admin user for testing admin panel functionality. Password hash uses bcrypt; do NOT use in production.
   const hashedPassword = await bcrypt.hash('admin123', 12);
   const [admin] = await db
     .insert(adminUsers)
@@ -39,7 +39,7 @@ async function main() {
     .returning();
   console.log(`✅ Admin user created: ${admin?.username ?? 'already exists'}`);
 
-  // Create sample experiences
+  // Seed realistic portfolio experiences (2 jobs). Test deployment, HPA, and listing endpoints with realistic data.
   const [experience1] = await db
     .insert(experiences)
     .values({
@@ -130,7 +130,8 @@ async function main() {
     .onConflictDoNothing({ target: toolkitCategories.slug });
   console.log('✅ Toolkit categories created (strong, moderate, gaps)');
 
-  // Create sample projects
+  // Seed 3 featured projects covering different tech stacks (web, game dev, cloud infrastructure).
+  // Test project filtering, search, and frontend project cards rendering.
   const [project1] = await db
     .insert(projects)
     .values({
@@ -201,7 +202,7 @@ async function main() {
     `✅ Projects created: ${project1?.title ?? 'exists'}, ${project2?.title ?? 'exists'}, ${project3?.title ?? 'exists'}`,
   );
 
-  // Create sample blog posts
+  // Seed 2 technical blog posts (DevOps, Game Development). Demonstrates category filtering, featured content, and read time calculations.
   const [post1] = await db
     .insert(blogPosts)
     .values({
@@ -245,7 +246,7 @@ async function main() {
     `✅ Blog posts created: ${post1?.title ?? 'exists'}, ${post2?.title ?? 'exists'}`,
   );
 
-  // Create sample contact submission
+  // Test contact submission handling and admin notification email triggers.
   await db.insert(contactSubmissions).values({
     name: 'Jane Smith',
     email: 'jane@example.com',
@@ -256,7 +257,7 @@ async function main() {
   });
   console.log('✅ Sample contact submission created');
 
-  // Create sample consultation submission
+  // Test consultation request workflow: capture lead info, test scheduling, and follow-up processes.
   await db.insert(consultationSubmissions).values({
     name: 'Bob Johnson',
     email: 'bob@techcorp.com',

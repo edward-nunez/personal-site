@@ -2,48 +2,86 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: postgresql
-  namespace: {{ .Values.global.namespace }}
+  name: {{ include "personal-site.fullname" . }}-postgresql
   labels:
-    app: postgresql
+    {{- include "personal-site.componentLabels" (dict "component" "postgresql" "context" $) | nindent 4 }}
+  {{- with .Values.global.commonAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
   replicas: {{ .Values.postgresql.replicaCount }}
   selector:
     matchLabels:
-      app: postgresql
+      {{- include "personal-site.componentSelectorLabels" (dict "component" "postgresql" "context" $) | nindent 6 }}
   template:
     metadata:
       labels:
-        app: postgresql
+        {{- include "personal-site.componentSelectorLabels" (dict "component" "postgresql" "context" $) | nindent 8 }}
     spec:
+      serviceAccountName: {{ include "personal-site.componentServiceAccountName" (dict "component" "postgresql" "context" $) }}
+      {{- with .Values.imagePullSecrets.secrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.postgresql.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
         - name: postgresql
-          image: {{ .Values.postgresql.image }}
+          image: {{ include "personal-site.image" (dict "image" .Values.postgresql.image "context" $) }}
+          imagePullPolicy: {{ include "personal-site.imagePullPolicy" (dict "pullPolicy" .Values.postgresql.image.pullPolicy "context" $) }}
           ports:
-            - containerPort: {{ .Values.postgresql.port }}
+            - name: postgresql
+              containerPort: {{ .Values.postgresql.port }}
+              protocol: TCP
           env:
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
-                  name: app-secrets
+                  name: {{ include "personal-site.apiSecretName" . }}
                   key: POSTGRES_USER
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: app-secrets
+                  name: {{ include "personal-site.apiSecretName" . }}
                   key: POSTGRES_PASSWORD
             - name: POSTGRES_DB
-              value: {{ .Values.postgresql.database | quote }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "personal-site.apiSecretName" . }}
+                  key: POSTGRES_DB
+            - name: PGDATA
+              value: "/var/lib/postgresql/data/pgdata"
+          {{- with .Values.postgresql.containerSecurityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.postgresql.resources }}
           resources:
-            {{- toYaml .Values.postgresql.resources | nindent 12 }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           volumeMounts:
             - name: postgresql-data
               mountPath: /var/lib/postgresql/data
+      {{- with .Values.postgresql.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.postgresql.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.postgresql.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       volumes:
         - name: postgresql-data
           {{- if .Values.postgresql.persistence.enabled }}
           persistentVolumeClaim:
-            claimName: postgresql-pvc
+            claimName: {{ include "personal-site.fullname" . }}-postgresql-pvc
           {{- else }}
           emptyDir: {}
           {{- end }}

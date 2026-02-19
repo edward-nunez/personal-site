@@ -1,46 +1,131 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: backend
-  namespace: {{ .Values.global.namespace }}
+  name: {{ include "personal-site.fullname" . }}-backend
   labels:
-    app: backend
+    {{- include "personal-site.componentLabels" (dict "component" "backend" "context" $) | nindent 4 }}
+  {{- with .Values.global.commonAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
   replicas: {{ .Values.backend.replicaCount }}
   selector:
     matchLabels:
-      app: backend
+      {{- include "personal-site.componentSelectorLabels" (dict "component" "backend" "context" $) | nindent 6 }}
   template:
     metadata:
       labels:
-        app: backend
+        {{- include "personal-site.componentSelectorLabels" (dict "component" "backend" "context" $) | nindent 8 }}
+      {{- with .Values.backend.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
     spec:
+      serviceAccountName: {{ include "personal-site.componentServiceAccountName" (dict "component" "backend" "context" $) }}
+      {{- with .Values.imagePullSecrets.secrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.backend.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       {{- if .Values.postgresql.enabled }}
       initContainers:
         - name: wait-for-postgres
-          image: {{ .Values.postgresql.image }}
-          command: ["sh", "-c", "until pg_isready -h postgresql -p {{ .Values.postgresql.port }} -U $POSTGRES_USER; do echo waiting for postgres; sleep 2; done"]
+          image: {{ include "personal-site.image" (dict "image" .Values.postgresql.image "context" $) }}
+          imagePullPolicy: {{ include "personal-site.imagePullPolicy" (dict "pullPolicy" .Values.postgresql.image.pullPolicy "context" $) }}
+          command:
+            - sh
+            - -c
+            - |
+              until pg_isready -h {{ include "personal-site.postgresql.serviceName" . }} -p {{ .Values.postgresql.port }} -U $POSTGRES_USER; do
+                echo "Waiting for PostgreSQL...";
+                sleep 2;
+              done
           env:
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
-                  name: app-secrets
+                  name: {{ include "personal-site.apiSecretName" . }}
                   key: POSTGRES_USER
+          {{- with .Values.backend.containerSecurityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
       {{- end }}
       containers:
         - name: backend
-          image: {{ .Values.backend.image }}:{{ .Values.backend.imageTag }}
-          imagePullPolicy: {{ .Values.backend.imagePullPolicy }}
+          image: {{ include "personal-site.image" (dict "image" .Values.backend.image "context" $) }}
+          imagePullPolicy: {{ include "personal-site.imagePullPolicy" (dict "pullPolicy" .Values.backend.image.pullPolicy "context" $) }}
           ports:
-            - containerPort: {{ .Values.backend.port }}
+            - name: http
+              containerPort: {{ .Values.backend.port }}
+              protocol: TCP
           envFrom:
             - configMapRef:
-                name: app-config
-            - secretRef:
-                name: app-secrets
+                name: {{ include "personal-site.fullname" . }}-config
+          env:
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "personal-site.apiSecretName" . }}
+                  key: JWT_SECRET
+            - name: JWT_EXPIRES_IN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "personal-site.apiSecretName" . }}
+                  key: JWT_EXPIRES_IN
+            {{- if .Values.backend.secrets.corsOrigin }}
+            - name: CORS_ORIGIN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "personal-site.apiSecretName" . }}
+                  key: CORS_ORIGIN
+            {{- end }}
+            {{- if .Values.backend.secrets.ldSdkKey }}
+            - name: LD_SDK_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "personal-site.apiSecretName" . }}
+                  key: LD_SDK_KEY
+            {{- end }}
+            {{- if .Values.postgresql.enabled }}
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "personal-site.apiSecretName" . }}
+                  key: DATABASE_URL
+            {{- else if .Values.postgresql.externalDatabaseUrl }}
+            - name: DATABASE_URL
+              value: {{ .Values.postgresql.externalDatabaseUrl | quote }}
+            {{- end }}
+          {{- with .Values.backend.containerSecurityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.backend.resources }}
           resources:
-            {{- toYaml .Values.backend.resources | nindent 12 }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.backend.livenessProbe }}
           livenessProbe:
-            {{- toYaml .Values.backend.livenessProbe | nindent 12 }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.backend.readinessProbe }}
           readinessProbe:
-            {{- toYaml .Values.backend.readinessProbe | nindent 12 }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- with .Values.backend.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.backend.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.backend.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

@@ -1,4 +1,4 @@
-# Agent Service - Quick Start Guide
+# FitSync - Quick Start Guide
 
 ## 1️⃣ Install Ollama
 
@@ -45,7 +45,7 @@ API server running on localhost:11434
 From the monorepo root:
 
 ```bash
-cd packages/agent
+cd packages/fit-sync
 ```
 
 Check the `.env` file and make sure these values match your setup:
@@ -276,7 +276,7 @@ And verify the URL in `.env` is correct (default: `http://localhost:3000`).
 
 1. Integrate agent endpoints into your frontend
 2. Build UI for job assessment and conversation
-3. Deploy agent service with Ollama to production
+3. Deploy FitSync service with Ollama to production
 4. Experiment with different models for better performance
 5. Configure session TTL based on your use case (default: 30 minutes)
 

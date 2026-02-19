@@ -6,6 +6,24 @@ import 'dotenv/config';
 
 const nodeEnv = process.env.NODE_ENV || 'development';
 
+const trustProxy = (() => {
+  const raw = process.env.TRUST_PROXY;
+
+  if (raw === undefined || raw === '') {
+    return nodeEnv === 'production' ? 1 : false;
+  }
+
+  const normalized = raw.trim().toLowerCase();
+
+  if (normalized === 'true') return 1;
+  if (normalized === 'false') return false;
+
+  const asNumber = Number(normalized);
+  if (!Number.isNaN(asNumber)) return asNumber;
+
+  return raw;
+})();
+
 export const config = {
   port: Number(process.env.PORT) || 3000,
   nodeEnv,
@@ -14,7 +32,7 @@ export const config = {
   databaseUrl: process.env.DATABASE_URL || '',
 
   // CORS: comma-separated list of origins, or single origin. Default allows common dev ports.
-  corsOrigin: process.env.CORS_ORIGIN || 'http://localhost:5173,http://localhost:8080',
+  corsOrigin: process.env.CORS_ORIGIN || 'http://localhost:5173,http://localhost:8081',
 
   // JWT
   jwtSecret: process.env.JWT_SECRET || 'your-secret-key-change-in-production',
@@ -27,6 +45,9 @@ export const config = {
 
   // Logging
   logLevel: process.env.LOG_LEVEL || 'info',
+
+  // Express proxy trust (required behind ingress/proxy for rate limiting)
+  trustProxy,
 
   // Pagination defaults
   defaultPageSize: 20,

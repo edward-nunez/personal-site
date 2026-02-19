@@ -17,7 +17,8 @@ router.patch('/:id/read', authMiddleware, (req, res, next) =>
 );
 router.delete('/:id', authMiddleware, (req, res, next) => controller.delete(req, res, next));
 
-// Handle unsupported methods
+// DELETE, PUT, PATCH intentionally disabled. Consultation requests are appointment records
+// and are immutable after creation; cancellation/rescheduling handled via separate endpoint.
 router.all('/', (req, res) => {
   res.status(405).json({
     success: false,

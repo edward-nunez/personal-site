@@ -1,7 +1,7 @@
 import type { Experience } from '@/types';
 import { apiGet } from './api';
 
-const EXPERIENCES_BASE = '/api/experiences';
+const EXPERIENCES_BASE = '/experiences';
 
 export type ExperienceListOptions = {
   featured?: boolean;

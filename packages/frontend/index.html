@@ -10,7 +10,7 @@
     <!-- LaunchDarkly Observability CSP Headers -->
     <meta
       http-equiv="Content-Security-Policy"
-      content="connect-src https://pub.observability.app.launchdarkly.com https://otel.observability.app.launchdarkly.com https://clientstream.launchdarkly.com https://app.launchdarkly.com https://events.launchdarkly.com http://localhost:3000 http://localhost:8080 ws://localhost:8080; worker-src data: blob:;"
+      content="connect-src 'self' https://api.edwardnunez.io https://pub.observability.app.launchdarkly.com https://otel.observability.app.launchdarkly.com https://clientstream.launchdarkly.com https://app.launchdarkly.com https://events.launchdarkly.com http://localhost:3000 http://localhost:8081 ws://localhost:8081 http://localhost:8080 ws://localhost:8080; worker-src data: blob:;"
     />
 
     <!-- Favicons -->
@@ -32,6 +32,7 @@
 
   <body>
     <div id="root"></div>
+    <script src="/runtime-config.js"></script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

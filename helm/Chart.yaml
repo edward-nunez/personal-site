@@ -1,9 +1,19 @@
 apiVersion: v2
 name: personal-site
-description: A Helm chart for deploying Personal Site v2 (backend, frontend, and PostgreSQL)
+description: A Helm chart for deploying Personal Site v2 - Full-stack application with React frontend, Express backend, PostgreSQL database, and FitSync AI microservice
 type: application
 version: 1.0.0
-appVersion: 1.0.0
+appVersion: "1.0.0"
+keywords:
+  - personal-site
+  - react
+  - express
+  - postgresql
+  - fitsync
+  - ai-microservice
+home: https://github.com/yourusername/personal-site-v2
+sources:
+  - https://github.com/yourusername/personal-site-v2
 maintainers:
   - name: Your Name
     email: your-email@example.com

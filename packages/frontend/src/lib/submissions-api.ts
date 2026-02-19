@@ -6,8 +6,8 @@ import type {
 } from '@/types';
 import { apiPost } from './api';
 
-const CONTACT_BASE = '/api/contact';
-const CONSULTATION_BASE = '/api/consultation';
+const CONTACT_BASE = '/contact';
+const CONSULTATION_BASE = '/consultation';
 
 /**
  * Submit contact form. Returns created submission on success.

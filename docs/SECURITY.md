@@ -107,6 +107,45 @@ This section documents security findings that have been reviewed and accepted as
 - Helmet.js security headers enforced
 - PostgreSQL uses parameterized queries via Drizzle ORM (SQL injection protection)
 
+#### Generating Production Secrets
+
+**JWT Secret Generation:**
+
+Always generate cryptographically secure secrets for production deployments:
+
+```bash
+# OpenSSL (Recommended - 64 bytes base64 encoded)
+openssl rand -base64 64
+
+# Node.js (Cross-platform)
+node -e "console.log(require('crypto').randomBytes(64).toString('base64'))"
+
+# PowerShell (Windows)
+[Convert]::ToBase64String((1..64 | ForEach-Object { Get-Random -Minimum 0 -Maximum 256 }))
+```
+
+**Secret Management Requirements:**
+- Minimum 32 bytes (256 bits) for JWT secrets
+- Store in password managers or secret management systems (never commit to Git)
+- Rotate secrets on a regular schedule (recommended: quarterly)
+- Use Kubernetes secrets at runtime (encrypted at rest when using etcd encryption)
+- Consider external secret operators (e.g., Sealed Secrets, External Secrets Operator) for GitOps workflows
+
+**Deployment with Secrets:**
+
+```bash
+# Generate and export secrets
+export JWT_SECRET=$(openssl rand -base64 64)
+export DB_PASSWORD=$(openssl rand -base64 32)
+
+# Deploy with secrets (never commit these values)
+helm install personal-site ./helm \
+  -n io-edwardnunez \
+  -f helm/values-prod.yaml \
+  --set backend.secrets.jwtSecret="${JWT_SECRET}" \
+  --set postgresql.auth.password="${DB_PASSWORD}"
+```
+
 ---
 
 **Last Updated:** February 18, 2026  

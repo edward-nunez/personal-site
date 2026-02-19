@@ -173,7 +173,7 @@ docker-compose up -d
 
 ### Production (Kubernetes + Helm)
 ```bash
-helm install personal-site ./helm -n personal-site --create-namespace
+helm install personal-site ./helm -n io-edwardnunez --create-namespace
 ```
 
 See [Deployment Guide](./docs/DEPLOYMENT.md) for detailed instructions.

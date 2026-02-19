@@ -1,50 +1,81 @@
-apiVersion: v1
-kind: Service
-metadata:
-  name: frontend
-  namespace: {{ .Values.global.namespace }}
-  labels:
-    app: frontend
-spec:
-  type: {{ .Values.frontend.service.type }}
-  ports:
-    - port: {{ .Values.frontend.service.port }}
-      targetPort: {{ .Values.frontend.port }}
-      protocol: TCP
-  selector:
-    app: frontend
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend
-  namespace: {{ .Values.global.namespace }}
+  name: {{ include "personal-site.fullname" . }}-frontend
   labels:
-    app: frontend
+    {{- include "personal-site.componentLabels" (dict "component" "frontend" "context" $) | nindent 4 }}
+  {{- with .Values.global.commonAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
   replicas: {{ .Values.frontend.replicaCount }}
   selector:
     matchLabels:
-      app: frontend
+      {{- include "personal-site.componentSelectorLabels" (dict "component" "frontend" "context" $) | nindent 6 }}
   template:
     metadata:
       labels:
-        app: frontend
+        {{- include "personal-site.componentSelectorLabels" (dict "component" "frontend" "context" $) | nindent 8 }}
+      {{- with .Values.frontend.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
     spec:
+      serviceAccountName: {{ include "personal-site.componentServiceAccountName" (dict "component" "frontend" "context" $) }}
+      {{- with .Values.imagePullSecrets.secrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.frontend.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
         - name: frontend
-          image: {{ .Values.frontend.image }}:{{ .Values.frontend.imageTag }}
-          imagePullPolicy: {{ .Values.frontend.imagePullPolicy }}
+          image: {{ include "personal-site.image" (dict "image" .Values.frontend.image "context" $) }}
+          imagePullPolicy: {{ include "personal-site.imagePullPolicy" (dict "pullPolicy" .Values.frontend.image.pullPolicy "context" $) }}
           ports:
-            - containerPort: {{ .Values.frontend.port }}
+            - name: http
+              containerPort: {{ .Values.frontend.port }}
+              protocol: TCP
           env:
             {{- range $key, $value := .Values.frontend.env }}
             - name: {{ $key }}
               value: {{ $value | quote }}
             {{- end }}
+            {{- if .Values.frontend.secrets.ldSdkKey }}
+            - name: LD_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "personal-site.frontendSecretName" . }}
+                  key: LD_CLIENT_ID
+            {{- end }}
+          {{- with .Values.frontend.containerSecurityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.frontend.resources }}
           resources:
-            {{- toYaml .Values.frontend.resources | nindent 12 }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.frontend.livenessProbe }}
           livenessProbe:
-            {{- toYaml .Values.frontend.livenessProbe | nindent 12 }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.frontend.readinessProbe }}
           readinessProbe:
-            {{- toYaml .Values.frontend.readinessProbe | nindent 12 }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- with .Values.frontend.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.frontend.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.frontend.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

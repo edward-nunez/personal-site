@@ -1,7 +1,7 @@
 import type { ToolkitCategory } from '@/types';
 import { apiGet } from './api';
 
-const TOOLKIT_BASE = '/api/toolkit';
+const TOOLKIT_BASE = '/toolkit';
 
 /**
  * Fetch all toolkit categories for the TOOL_KIT section (strong, moderate, gaps).

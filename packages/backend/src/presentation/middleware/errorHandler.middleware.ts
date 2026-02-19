@@ -32,7 +32,7 @@ export const errorHandler = (
 ): void => {
   logError(err);
 
-  // Handle Zod validation errors (field-level details are safe for clients)
+  // Zod validation errors are client-facing; field-level details help developers fix request payloads.
   if (err instanceof ZodError) {
     res.status(400).json({
       success: false,
@@ -45,7 +45,8 @@ export const errorHandler = (
     return;
   }
 
-  // Handle custom application errors (no stack; message is intentional API surface)
+  // Application errors have explicit status codes and messages designed for API clients.
+  // No stack traces; message is controlled API surface for security.
   if (err instanceof AppError) {
     res.status(err.statusCode).json({
       success: false,
@@ -55,7 +56,7 @@ export const errorHandler = (
     return;
   }
 
-  // Unknown errors: never expose message or stack in production
+  // Unknown errors are security risk if exposed; only dev/test environments get details for debugging.
   res.status(500).json({
     success: false,
     error: 'Internal server error',

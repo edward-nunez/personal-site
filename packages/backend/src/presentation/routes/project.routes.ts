@@ -15,7 +15,8 @@ router.post('/', authMiddleware, (req, res, next) => controller.create(req, res,
 router.put('/:id', authMiddleware, (req, res, next) => controller.update(req, res, next));
 router.delete('/:id', authMiddleware, (req, res, next) => controller.delete(req, res, next));
 
-// Handle unsupported methods
+// DELETE, PUT, PATCH intentionally disabled. Projects are immutable portfolio artifacts;
+// updates require manual database changes to maintain versioning and project history integrity.
 router.all('/', (req, res) => {
   res.status(405).json({
     success: false,

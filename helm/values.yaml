@@ -1,128 +1,499 @@
+# Default values for personal-site
+# This is a YAML-formatted file with baseline configuration
+# Declare variables to be passed into templates
+
+## Global configuration shared across all components
 global:
-  environment: production
-  namespace: personal-site
+  imageRegistry: ''
+  imagePullPolicy: IfNotPresent
+  commonLabels: {}
+  commonAnnotations: {}
 
-# PostgreSQL 18 (application database; use this or a managed DB in production)
-postgresql:
-  enabled: true
-  image: postgres:18-alpine
-  replicaCount: 1
-  port: 5432
-  auth:
-    username: admin
-    password: changeme
-  database: personal_site
-  persistence:
-    enabled: true
-    size: 10Gi
-    storageClass: standard
-  resources:
-    requests:
-      memory: "256Mi"
-      cpu: "250m"
-    limits:
-      memory: "512Mi"
-      cpu: "500m"
-
-# Backend secrets (set in production via --set or values file; never commit real secrets)
-backendSecrets:
-  jwtSecret: changeme-in-production
-  corsOrigin: ""
-  # When postgresql.enabled is false, set databaseUrl to your managed DB connection string
-  databaseUrl: ""
-
-# MongoDB not used by this app (PostgreSQL + Drizzle); kept for optional compatibility
-mongodb:
+## Image pull secrets configuration for private registries
+imagePullSecrets:
   enabled: false
-  image: mongo:7.0
+  registry: 'ghcr.io'
+  username: ''
+  password: ''  # GitHub PAT with read:packages scope
+  email: 'noreply@github.com'
+  # secretRef:  # Reference pre-created secret (if enabled: false)
+  #   name: ghcr-io-secret
+
+secrets:
+  apiSecretName: io-edwardnunez-api-secrets
+  frontendSecretName: io-edwardnunez-secrets
+
+## Service account configuration
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ''
+
+## PostgreSQL Database Configuration
+postgresql:
+  # Enable PostgreSQL deployment (set to false to use external managed database)
+  enabled: true
+
+  image:
+    registry: ''
+    repository: postgres
+    tag: '18-alpine'
+    pullPolicy: IfNotPresent
+
+  # Optional: use a dedicated pull secret for Docker Hub
+  imagePullSecrets:
+    secretRef:
+      name: ''
+
+  serviceAccount:
+    create: true
+    annotations: {}
+    name: ''
+
+  # Number of PostgreSQL replicas (use 1 for development, consider StatefulSet for production HA)
   replicaCount: 1
-  port: 27017
+
+  port: 5432
+
+  # Use existing Kubernetes secret for auth (recommended for production)
+  # If enabled, auth credentials below are ignored and the named secret is used
+  secretRef:
+    enabled: false
+    name: 'io-edwardnunez-db-credentials'
+
   auth:
     username: admin
-    password: admin123
+    password: 'changeme-in-production'
+    database: personal_site
+
   persistence:
     enabled: true
     size: 10Gi
-    storageClass: standard
+    storageClass: '' # Use default storage class if empty
+    accessModes:
+      - ReadWriteOnce
+
   resources:
     requests:
-      memory: "256Mi"
-      cpu: "250m"
+      memory: '128Mi'
+      cpu: '250m'
     limits:
-      memory: "512Mi"
-      cpu: "500m"
+      memory: '512Mi'
+      cpu: '500m'
 
+  podSecurityContext:
+    fsGroup: 999
+    runAsUser: 999
+    runAsNonRoot: true
+
+  containerSecurityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - ALL
+    readOnlyRootFilesystem: false
+
+  # Node selector
+  nodeSelector:
+    workload: application
+
+  # Tolerations
+  tolerations: []
+
+  # Affinity
+  affinity: {}
+
+  # External database URL (used when postgresql.enabled is false)
+  externalDatabaseUrl: ''
+
+## Backend Service Configuration
 backend:
-  image: personal-site-backend
-  imageTag: latest
-  imagePullPolicy: Never
+  image:
+    repository: backend
+    tag: 'latest'
+    pullPolicy: IfNotPresent
+
+  # Service account for backend
+  serviceAccount:
+    create: true
+    annotations: {}
+    name: ''
+
   replicaCount: 1
+
   port: 3000
+
   env:
     NODE_ENV: production
     LOG_LEVEL: info
-    PORT: 3000
-  resources:
-    requests:
-      memory: "256Mi"
-      cpu: "250m"
-    limits:
-      memory: "512Mi"
-      cpu: "500m"
+    PORT: '3000'
+    CORS_ORIGIN: 'http://localhost:5173,http://localhost:8080'
+    TRUST_PROXY: '1'
+    RATE_LIMIT_WINDOW_MS: '900000'
+    RATE_LIMIT_MAX_REQUESTS: '100'
+    RATE_LIMIT_FORMS_MAX: '5'
+    LD_ENVIRONMENT: 'production'
+    SERVICE_NAME: 'personal-site-backend'
+    SERVICE_VERSION: '1.0.0'
+
+  migrations:
+    enabled: true
+
+  # Secrets (these should be overridden in environment-specific values files)
+  secrets:
+    jwtSecret: 'changeme-in-production'
+    jwtExpiresIn: '7d'
+    corsOrigin: ''
+    ldSdkKey: ''
+
   service:
     type: ClusterIP
     port: 3000
+    annotations: {}
+
+  # Keep backend conservative since it handles API + DB connections
+  resources:
+    requests:
+      memory: '256Mi'
+      cpu: '250m'
+    limits:
+      memory: '512Mi'
+      cpu: '500m'
+
   livenessProbe:
     httpGet:
       path: /health
       port: 3000
     initialDelaySeconds: 30
     periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 3
+
   readinessProbe:
     httpGet:
       path: /ready
       port: 3000
-    initialDelaySeconds: 5
+    initialDelaySeconds: 10
     periodSeconds: 5
+    timeoutSeconds: 3
+    failureThreshold: 3
 
+  # Pod security context
+  podSecurityContext:
+    fsGroup: 1000
+    runAsUser: 1000
+    runAsNonRoot: true
+
+  # Container security context
+  containerSecurityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - ALL
+    readOnlyRootFilesystem: false
+
+  # Pod annotations
+  podAnnotations: {}
+
+  # Node selector
+  nodeSelector:
+    workload: application
+
+  # Tolerations
+  tolerations: []
+
+  # Affinity
+  affinity: {}
+
+  # Horizontal Pod Autoscaler (HPA)
+  autoscaling:
+    enabled: true
+    minReplicas: 1
+    maxReplicas: 3
+    targetCPUUtilizationPercentage: 75
+
+## Frontend Service Configuration
 frontend:
-  image: personal-site-frontend
-  imageTag: latest
-  imagePullPolicy: Never
+  image:
+    repository: frontend
+    tag: 'latest'
+    pullPolicy: IfNotPresent
+
+  serviceAccount:
+    create: true
+    annotations: {}
+    name: ''
+
   replicaCount: 1
-  port: 80
+
+  # Container port (HAProxy listens on port 8080)
+  port: 8080
+
   env:
-    VITE_API_BASE_URL: /api
+    VITE_API_BASE_URL: '/v1/orchestrator'
+    VITE_API_ENV: 'production'
+    VITE_SESSION_REPLAY_PRIVACY: 'strict'
+
+  secrets:
+    ldSdkKey: ''
+
+  service:
+    type: ClusterIP
+    port: 8080
+    annotations: {}
+
+  # Frontend is static files served by HAProxy - very lightweight
   resources:
     requests:
-      memory: "128Mi"
-      cpu: "100m"
+      memory: '96Mi'
+      cpu: '50m'
     limits:
-      memory: "256Mi"
-      cpu: "250m"
-  service:
-    type: LoadBalancer
-    port: 80
+      memory: '192Mi'
+      cpu: '100m'
+
   livenessProbe:
     httpGet:
       path: /
-      port: 80
+      port: 8080
     initialDelaySeconds: 30
     periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 3
+
   readinessProbe:
     httpGet:
       path: /
-      port: 80
-    initialDelaySeconds: 5
+      port: 8080
+    initialDelaySeconds: 10
     periodSeconds: 5
+    timeoutSeconds: 3
+    failureThreshold: 3
 
+  podSecurityContext:
+    fsGroup: 1000
+    runAsUser: 1000
+    runAsNonRoot: true
+
+  containerSecurityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - ALL
+    readOnlyRootFilesystem: false
+
+  # Pod annotations
+  podAnnotations: {}
+
+  # Node selector
+  nodeSelector:
+    workload: application
+
+  tolerations: []
+
+  affinity: {}
+
+  autoscaling:
+    enabled: true
+    minReplicas: 1
+    maxReplicas: 2
+    targetCPUUtilizationPercentage: 75
+
+## FitSync Service Configuration (AI service using Ollama)
+fitSync:
+  enabled: true
+
+  image:
+    repository: fit-sync
+    tag: 'latest'
+    pullPolicy: IfNotPresent
+
+  serviceAccount:
+    create: true
+    annotations: {}
+    name: ''
+
+  replicaCount: 1
+
+  port: 3001
+
+  env:
+    NODE_ENV: production
+    PORT: '3001'
+    LOG_LEVEL: 'info'
+    OLLAMA_MODEL: 'neural-chat'
+    BACKEND_API_URL: 'http://personal-site-backend:3000'
+
+  secrets:
+    corsOrigin: ''
+
+  service:
+    type: ClusterIP
+    port: 3001
+    annotations: {}
+
+  # FitSync handles AI inference - needs more CPU than backend
+  resources:
+    requests:
+      memory: '96Mi'
+      cpu: '500m'
+    limits:
+      memory: '256Mi'
+      cpu: '1000m'
+
+  livenessProbe:
+    httpGet:
+      path: /api/health
+      port: 3001
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 3
+
+  readinessProbe:
+    httpGet:
+      path: /api/health
+      port: 3001
+    initialDelaySeconds: 10
+    periodSeconds: 5
+    timeoutSeconds: 3
+    failureThreshold: 3
+
+  podSecurityContext:
+    fsGroup: 1000
+    runAsUser: 1000
+    runAsNonRoot: true
+
+  containerSecurityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - ALL
+    readOnlyRootFilesystem: false
+
+  podAnnotations: {}
+
+  nodeSelector:
+    workload: compute
+
+  # Tolerations
+
+  # Affinity
+  affinity: {}
+
+  # Horizontal Pod Autoscaler (HPA)
+  autoscaling:
+    enabled: true
+    minReplicas: 1
+    maxReplicas: 2
+    targetCPUUtilizationPercentage: 75
+
+## Ollama Service Configuration (LLM inference engine)
+ollama:
+  # Enable Ollama deployment (WARNING: Requires significant resources - 2GB+ for small models)
+  # Set to false on small clusters, use external Ollama service instead
+  enabled: false
+
+  image:
+    repository: ollama/ollama
+    tag: 'latest'
+    pullPolicy: IfNotPresent
+    registry: ''
+
+  serviceAccount:
+    create: true
+    annotations: {}
+    name: ''
+
+  # Number of Ollama replicas (typically 1 due to GPU requirements)
+  replicaCount: 1
+
+  port: 11434
+
+  service:
+    type: ClusterIP
+    port: 11434
+    annotations: {}
+
+  # WARNING: These are MINIMUM requirements for Ollama
+  # In production with larger models, increase to 4Gi/4000m or more
+  # Consider GPU nodes for better inference performance
+  resources:
+    requests:
+      memory: '4Gi'
+      cpu: '1000m'
+    limits:
+      memory: '8Gi'
+      cpu: '2000m'
+
+  # Persistence for downloaded models
+  persistence:
+    enabled: true
+    size: 10Gi
+    storageClass: ''
+    accessModes:
+      - ReadWriteOnce
+
+  # Pod security context
+  podSecurityContext:
+    fsGroup: 1000
+    runAsUser: 1000
+    runAsNonRoot: true
+
+  # Container security context
+  containerSecurityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - ALL
+    readOnlyRootFilesystem: false
+
+  # Pod annotations
+  podAnnotations: {}
+
+  # Node selector (use this to schedule on GPU nodes)
+  nodeSelector:
+    workload: compute
+
+  # Tolerations
+  tolerations: []
+
+  # Affinity
+  affinity: {}
+
+## Ingress Configuration
 ingress:
   enabled: false
-  className: nginx
+
+  className: 'traefik'
+
   annotations: {}
+    # cert-manager.io/cluster-issuer: letsencrypt-prod
+    # traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    # traefik.ingress.kubernetes.io/router.tls: "true"
+    # traefik.ingress.kubernetes.io/router.middlewares: default-redirect-https@kubernetescrd
+
   hosts:
-    - host: personal-site.local
+    - host: personal-site.example.com
       paths:
         - path: /
           pathType: Prefix
+          service: frontend
+        - path: /api
+          pathType: Prefix
+          service: backend
+        - path: /fit-sync
+          pathType: Prefix
+          service: fit-sync
+
   tls: []
+    # - secretName: personal-site-tls
+    #   hosts:
+    #     - personal-site.example.com
+
+## ConfigMap for application configuration
+configMap:
+  data: {}

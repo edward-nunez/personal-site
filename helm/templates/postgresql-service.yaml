@@ -2,15 +2,16 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: postgresql
-  namespace: {{ .Values.global.namespace }}
+  name: {{ include "personal-site.postgresql.serviceName" . }}
   labels:
-    app: postgresql
+    {{- include "personal-site.componentLabels" (dict "component" "postgresql" "context" $) | nindent 4 }}
 spec:
+  type: ClusterIP
   ports:
     - port: {{ .Values.postgresql.port }}
-      targetPort: {{ .Values.postgresql.port }}
+      targetPort: postgresql
+      protocol: TCP
       name: postgresql
   selector:
-    app: postgresql
+    {{- include "personal-site.componentSelectorLabels" (dict "component" "postgresql" "context" $) | nindent 4 }}
 {{- end }}

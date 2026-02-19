@@ -21,20 +21,20 @@ declare module 'express-serve-static-core' {
  */
 export const authMiddleware = (req: Request, _res: Response, next: NextFunction): void => {
   try {
-    // Get token from Authorization header
+    // Extract JWT from Authorization header. Bearer scheme is HTTP standard for token-based auth.
     const authHeader = req.headers.authorization;
 
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       throw new UnauthorizedError('No token provided');
     }
 
-    const token = authHeader.substring(7); // Remove 'Bearer ' prefix
+    const token = authHeader.substring(7);
 
-    // Validate token
+    // Validate JWT signature and expiration. Invalid/expired tokens reject request at security boundary.
     const validateTokenUseCase = new ValidateTokenUseCase();
     const decoded = validateTokenUseCase.execute(token);
 
-    // Attach user to request
+    // Attach decoded payload to request for downstream route handlers. Enables role-based access control.
     req.user = decoded;
 
     next();

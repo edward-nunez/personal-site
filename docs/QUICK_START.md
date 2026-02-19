@@ -92,7 +92,7 @@ See [architecture/ARCHITECTURE.md](./architecture/ARCHITECTURE.md) for component
 
 3. **Deploy to Kubernetes**
    ```bash
-   helm install personal-site ./helm -n personal-site --create-namespace
+   helm install personal-site ./helm -n io-edwardnunez --create-namespace
    ```
 
 ### Most Common Next Action

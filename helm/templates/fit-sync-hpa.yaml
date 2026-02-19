@@ -1,0 +1,49 @@
+{{- if and .Values.fitSync.enabled .Values.fitSync.autoscaling.enabled }}
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "personal-site.fullname" . }}-fit-sync
+  labels:
+    {{- include "personal-site.componentLabels" (dict "component" "fit-sync" "context" $) | nindent 4 }}
+  {{- with .Values.global.commonAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include "personal-site.fullname" . }}-fit-sync
+  minReplicas: {{ .Values.fitSync.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.fitSync.autoscaling.maxReplicas }}
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.fitSync.autoscaling.targetCPUUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 80
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+        - type: Percent
+          value: 50
+          periodSeconds: 15
+    scaleUp:
+      stabilizationWindowSeconds: 30
+      policies:
+        - type: Percent
+          value: 100
+          periodSeconds: 15
+        - type: Pods
+          value: 1
+          periodSeconds: 15
+      selectPolicy: Max
+{{- end }}

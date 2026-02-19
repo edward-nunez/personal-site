@@ -1,12 +1,12 @@
 # Service Communication Contracts
 
-This document defines the explicit contracts between the three services in the Personal Site v2 architecture: **Frontend**, **Backend**, and **Agent**. These contracts ensure loose coupling while maintaining operational reliability.
+This document defines the explicit contracts between the three services in the Personal Site v2 architecture: **Frontend**, **Backend**, and **FitSync**. These contracts ensure loose coupling while maintaining operational reliability.
 
 ## Table of Contents
 
 1. [Service Overview](#service-overview)
-2. [Backend ↔ Agent Communication](#backend--agent-communication)
-3. [Frontend ↔ Agent Communication](#frontend--agent-communication)
+2. [Backend ↔ FitSync Communication](#backend--fitsync-communication)
+3. [Frontend ↔ FitSync Communication](#frontend--fitsync-communication)
 4. [Frontend ↔ Backend Communication](#frontend--backend-communication)
 5. [Authentication & Authorization](#authentication--authorization)
 6. [Error Handling Contracts](#error-handling-contracts)
@@ -31,13 +31,13 @@ This document defines the explicit contracts between the three services in the P
 
 - **Frontend**: User interface, client-side state management
 - **Backend**: Portfolio data, authentication, content management
-- **Agent**: AI-powered job assessment, conversational engagement
+- **FitSync**: AI-powered job assessment, conversational engagement
 
 ---
 
-## Backend ↔ Agent Communication
+## Backend ↔ FitSync Communication
 
-The Agent service consumes public portfolio data from the Backend to provide context for job fit assessments.
+The FitSync service consumes public portfolio data from the Backend to provide context for job fit assessments.
 
 ### 1. Get All Experiences
 
@@ -81,9 +81,9 @@ Accept: application/json
 }
 ```
 
-**Agent Usage**:
+**FitSync Usage**:
 ```typescript
-// packages/agent/src/infrastructure/services/PortfolioDataService.ts
+// packages/fit-sync/src/infrastructure/services/PortfolioDataService.ts
 const experiences = await this.httpClient.get<Experience[]>(
   `${this.backendUrl}/api/experiences`
 );
@@ -142,9 +142,9 @@ Accept: application/json
 }
 ```
 
-**Agent Usage**:
+**FitSync Usage**:
 ```typescript
-// packages/agent/src/infrastructure/services/PortfolioDataService.ts
+// packages/fit-sync/src/infrastructure/services/PortfolioDataService.ts
 const projects = await this.httpClient.get<Project[]>(
   `${this.backendUrl}/api/projects`
 );

@@ -1,5 +1,6 @@
 import { Observability } from '@launchdarkly/observability-node';
 import * as ld from '@launchdarkly/node-server-sdk';
+import logger from '../../shared/utils/logger.js';
 
 /**
  * LaunchDarkly Observability Configuration
@@ -61,11 +62,11 @@ export const createObservabilityPlugin = (): Observability | null => {
       environment: LD_ENVIRONMENT,
     });
 
-    console.log(
+    logger.info(
       `[Observability] Initialized for service "${config.serviceName}" (v${config.serviceVersion})`
     );
-    console.log(`[Observability] Environment: ${LD_ENVIRONMENT}`);
-    console.log(
+    logger.info(`[Observability] Environment: ${LD_ENVIRONMENT}`);
+    logger.info(
       `[Observability] Error sampling rate: ${(config.errorSamplingRate * 100).toFixed(1)}%`
     );
 

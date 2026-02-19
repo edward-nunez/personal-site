@@ -15,12 +15,12 @@ import { trackError } from '../../shared/utils/errorTracking.js';
  * Generate or retrieve a unique request ID for tracking
  */
 const getRequestId = (req: Request): string => {
-  // Check if request ID was already set (by upstream middleware)
+  // Request IDs enable tracing across distributed logs; reuse upstream ID if present (e.g., from load balancer).
   if (typeof req.headers['x-request-id'] === 'string') {
     return req.headers['x-request-id'];
   }
 
-  // Generate a new request ID if not present
+  // Generate unique ID for this request if not provided. Format: timestamp + random suffix for uniqueness.
   return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 };
 
@@ -48,16 +48,17 @@ const getRequestId = (req: Request): string => {
 export const errorTrackingMiddleware = (req: Request, res: Response, next: NextFunction): void => {
   const requestId = getRequestId(req);
 
-  // Capture the original res.json method to intercept JSON responses
+  // Intercept all JSON responses to capture error context (request ID, status, endpoint) for monitoring.
+  // This approach works with any error handler downstream without code changes needed in routes.
   const originalJson = res.json.bind(res);
 
   res.json = function (data: unknown) {
-    // Check if this is an error response (status code 4xx or 5xx)
+    // Only track 4xx/5xx responses; successful requests (2xx/3xx) don't need error tracking.
     const statusCode = res.statusCode;
     const isErrorResponse = statusCode >= 400;
 
     if (isErrorResponse) {
-      // Extract error message from response
+      // Extract error message from standardized API response format for clearer observability.
       let errorMessage = `HTTP ${statusCode}`;
 
       if (typeof data === 'object' && data !== null) {

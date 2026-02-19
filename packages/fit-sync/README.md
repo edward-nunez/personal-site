@@ -1,6 +1,6 @@
-# Agent Service - LLM-Powered Job Assessment
+# FitSync - LLM-Powered Job Assessment
 
-A Node.js self-hosted AI agent service built with Express and Ollama, designed to evaluate job opportunities and engage in conversations to showcase your professional expertise.
+A Node.js self-hosted AI microservice built with Express and Ollama, designed to evaluate job opportunities and engage in conversations to showcase your professional expertise.
 
 ## Features
 
@@ -40,10 +40,10 @@ npm install
 Copy `.env.example` to `.env` and update values:
 
 ```bash
-cp packages/agent/.env.example packages/agent/.env
+cp packages/fit-sync/.env.example packages/fit-sync/.env
 ```
 
-Edit `packages/agent/.env`:
+Edit `packages/fit-sync/.env`:
 
 ```env
 PORT=3001
@@ -75,10 +75,10 @@ Ollama should respond with a JSON completion. If it fails, start Ollama with `ol
 ### Development (with hot reload)
 
 ```bash
-# Run agent service only
-npm run dev:agent
+# Run FitSync service only
+npm run dev:fit-sync
 
-# Or run all services (backend, frontend, agent)
+# Or run all services (backend, frontend, FitSync)
 npm run dev
 ```
 
@@ -88,10 +88,10 @@ The service will start on `http://localhost:3001`
 
 ```bash
 # Build TypeScript
-npm run build:agent
+npm run build:fit-sync
 
 # Start compiled service
-npm run start -w packages/agent
+npm run start -w packages/fit-sync
 ```
 
 ## API Endpoints
@@ -438,7 +438,7 @@ To speed up:
 
 ## Integration with Main Backend
 
-The agent service integrates with the main backend to:
+The FitSync service integrates with the main backend to:
 
 1. **Validate JWT tokens** — Uses the same `JWT_SECRET`
 2. **Fetch portfolio data** — Calls `/api/experiences` and `/api/projects`

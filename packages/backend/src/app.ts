@@ -19,6 +19,10 @@ import config from './configs/index.js';
 export function createApp(): Express {
   const app = express();
 
+  // Trust proxy headers from ingress/reverse proxy with bounded hops.
+  // Using true is too permissive and triggers express-rate-limit validation.
+  app.set('trust proxy', config.trustProxy);
+
   app.use(helmet());
   const corsOrigins = config.corsOrigin
     .split(',')
@@ -36,8 +40,6 @@ export function createApp(): Express {
   // Error tracking middleware (capture errors for LaunchDarkly observability)
   app.use(errorTrackingMiddleware);
 
-  app.use('/api', apiLimiter);
-
   app.get('/health', (_req, res) => {
     res.json({ status: 'ok' });
   });
@@ -50,7 +52,8 @@ export function createApp(): Express {
     });
   });
 
-  app.use('/api', apiRoutes);
+  app.use(apiLimiter);
+  app.use(apiRoutes);
 
   app.use((_req, res) => {
     res.status(404).json({

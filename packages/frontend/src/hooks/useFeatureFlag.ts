@@ -20,6 +20,7 @@ import { useFeatureFlagsStore } from '../core/store/useFeatureFlagsStore';
 export const useFeatureFlag = (flagKey: string): boolean => {
   const flags = useFeatureFlagsStore((state) => state.flags);
 
-  // Return the flag value, defaulting to false if not found
+  // Use Zustand store to access flags synced from LaunchDarkly. Defaults to false for unknown flags.
+  // Store provides offline fallback values when LaunchDarkly unavailable, enabling UX resilience.
   return flags[flagKey] ?? false;
 };

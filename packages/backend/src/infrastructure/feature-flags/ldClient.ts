@@ -1,5 +1,6 @@
 import * as ld from '@launchdarkly/node-server-sdk';
 import { getLDConfigWithObservability, isObservabilityEnabled } from './observability.js';
+import logger from '../../shared/utils/logger.js';
 
 /**
  * LaunchDarkly client singleton for backend feature flag evaluation.
@@ -14,6 +15,10 @@ const LD_ENVIRONMENT = process.env.LD_ENVIRONMENT || process.env.NODE_ENV || 'de
 
 let ldClient: ld.LDClient | null = null;
 let initializationPromise: Promise<void> | null = null;
+
+const toKebabCase = (value: string): string => {
+  return value.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase();
+};
 
 /**
  * Feature flag fallback configuration based on maturity tiers.
@@ -77,10 +82,10 @@ export const initializeLDClient = async (): Promise<void> => {
 
       // Wait for client to be ready
       await ldClient.waitForInitialization({ timeout: 5 });
-      console.log('[LaunchDarkly] Client initialized successfully');
+      logger.info('[LaunchDarkly] Client initialized successfully');
 
       if (isObservabilityEnabled()) {
-        console.log('[LaunchDarkly] Observability features enabled');
+        logger.info('[LaunchDarkly] Observability features enabled');
       }
     } catch (error) {
       console.error('[LaunchDarkly] Failed to initialize client:', error);
@@ -114,7 +119,8 @@ export const evaluateFlags = async (context: ld.LDContext): Promise<Record<strin
     // Evaluate each flag
     for (const flagKey of Object.keys(defaultFlags)) {
       try {
-        const value = await ldClient.variation(flagKey, context, defaultFlags[flagKey]);
+        const launchDarklyKey = toKebabCase(flagKey);
+        const value = await ldClient.variation(launchDarklyKey, context, defaultFlags[flagKey]);
         flags[flagKey] = Boolean(value);
       } catch (error) {
         console.error(`[LaunchDarkly] Error evaluating flag "${flagKey}":`, error);
@@ -137,7 +143,7 @@ export const closeLDClient = async (): Promise<void> => {
   if (ldClient) {
     try {
       await ldClient.close();
-      console.log('[LaunchDarkly] Client closed successfully');
+      logger.info('[LaunchDarkly] Client closed successfully');
     } catch (error) {
       console.error('[LaunchDarkly] Error closing client:', error);
     } finally {
