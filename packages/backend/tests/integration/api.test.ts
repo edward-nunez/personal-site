@@ -42,14 +42,11 @@ describe('API integration', () => {
     });
 
     it('should return 400 for invalid email', async () => {
-      const res = await request(app)
-        .post('/contact')
-        .set('Content-Type', 'application/json')
-        .send({
-          name: 'Test',
-          email: 'not-an-email',
-          message: 'Hello',
-        });
+      const res = await request(app).post('/contact').set('Content-Type', 'application/json').send({
+        name: 'Test',
+        email: 'not-an-email',
+        message: 'Hello',
+      });
       expect(res.status).toBe(400);
     });
   });
