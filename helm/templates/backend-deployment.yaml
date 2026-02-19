@@ -84,13 +84,11 @@ spec:
                   name: {{ include "personal-site.apiSecretName" . }}
                   key: CORS_ORIGIN
             {{- end }}
-            {{- if .Values.backend.secrets.ldSdkKey }}
             - name: LD_SDK_KEY
               valueFrom:
                 secretKeyRef:
                   name: {{ include "personal-site.apiSecretName" . }}
                   key: LD_SDK_KEY
-            {{- end }}
             {{- if .Values.postgresql.enabled }}
             - name: DATABASE_URL
               valueFrom:

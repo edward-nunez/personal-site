@@ -56,7 +56,7 @@ postgresql:
 backend:
   image:
     repository: backend
-    tag: "1.0.7"
+    tag: "1.0.8"
     pullPolicy: IfNotPresent
   replicaCount: 1
   env:
@@ -70,7 +70,7 @@ backend:
     RATE_LIMIT_FORMS_MAX: "5"
     LD_ENVIRONMENT: "production"
     SERVICE_NAME: "personal-site-backend"
-    SERVICE_VERSION: "1.0.7"
+    SERVICE_VERSION: "1.0.8"
   migrations:
     enabled: true
   # CRITICAL: Set secrets via --set flags or external secret management
