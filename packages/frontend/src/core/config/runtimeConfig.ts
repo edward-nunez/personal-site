@@ -3,6 +3,7 @@ type RuntimeConfig = {
   VITE_API_ENV?: string;
   VITE_SESSION_REPLAY_PRIVACY?: 'strict' | 'default' | 'none';
   LD_CLIENT_ID?: string;
+  LD_DISABLE_EVENTS?: string;
 };
 
 const getRuntimeConfig = (): RuntimeConfig => {
@@ -39,6 +40,26 @@ export const getApiEnvironment = (): string => {
 
 export const getLdClientId = (): string => {
   return getRuntimeConfig().LD_CLIENT_ID || import.meta.env.LD_CLIENT_ID || '';
+};
+
+export const getLdDisableEvents = (): boolean | null => {
+  const rawValue = getRuntimeConfig().LD_DISABLE_EVENTS || import.meta.env.LD_DISABLE_EVENTS || '';
+
+  if (!rawValue) {
+    return null;
+  }
+
+  const normalized = rawValue.toLowerCase();
+
+  if (normalized === 'true') {
+    return true;
+  }
+
+  if (normalized === 'false') {
+    return false;
+  }
+
+  return null;
 };
 
 export const getSessionReplayPrivacy = (): 'strict' | 'default' | 'none' => {

@@ -1,7 +1,7 @@
 import * as LDClient from 'launchdarkly-react-client-sdk';
 import { useFeatureFlagsStore } from '../store/useFeatureFlagsStore';
 import { getObservabilityPlugins, isObservabilityEnabled } from './observability.js';
-import { getApiEnvironment, getLdClientId } from '@/core/config/runtimeConfig';
+import { getApiEnvironment, getLdClientId, getLdDisableEvents } from '@/core/config/runtimeConfig';
 
 /**
  * LaunchDarkly client configuration and initialization.
@@ -51,6 +51,10 @@ export const getLDConfig = (): {
   context: LDClient.LDContext;
   options?: LDClient.LDOptions;
 } => {
+  const isProduction = ENVIRONMENT === 'production';
+  const disableEventsOverride = getLdDisableEvents();
+  const shouldDisableEvents = disableEventsOverride ?? isProduction;
+
   return {
     clientSideID: LD_CLIENT_ID,
     context: {
@@ -64,6 +68,11 @@ export const getLDConfig = (): {
       bootstrap: 'localStorage',
       // Stream updates for real-time flag changes
       streaming: true,
+      // Disable client-side analytics/diagnostic event POSTs based on override, defaulting to production only.
+      ...(shouldDisableEvents && {
+        sendEvents: false,
+        diagnosticOptOut: true,
+      }),
       // Include observability and session replay plugins if enabled
       ...(isObservabilityEnabled() && {
         plugins: getObservabilityPlugins(),

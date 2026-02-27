@@ -1,0 +1,168 @@
+{
+  "metadata": {
+    "owner": "Edward Nunez",
+    "source": "LinkedIn PDF export (Feb 2026)",
+    "contact": {
+      "email": "edwardnnz@gmail.com",
+      "phone": "732-710-5144",
+      "location": "Bridgewater, NJ 08807",
+      "portfolio": "edwardnunez.io",
+      "linkedin": "linkedin.com/in/edwardnunez"
+    }
+  },
+  "experiences": [
+    {
+      "company": "AT&T",
+      "role": "Application Architect",
+      "startDate": "2023-03-01",
+      "endDate": null,
+      "description": "Lead architect for cloud infrastructure and microservices platform. Designing scalable, distributed systems supporting enterprise operations.",
+      "achievements": [
+        "Architected microservices migration reducing deployment time by 60%",
+        "Implemented comprehensive CI/CD pipelines (Jenkins, Docker, Kubernetes)",
+        "Led cross-functional team for cloud modernization initiatives",
+        "Designed RESTful APIs handling millions of requests daily"
+      ],
+      "skills": ["System Architecture", "Cloud Design", "Leadership", "DevOps", "Strategic Planning"],
+      "technologies": ["Kubernetes", "Docker", "Jenkins", "AWS", "Node.js", "Python", "Java", "MySQL", "PostgreSQL"],
+      "location": "Bedminster, NJ",
+      "employmentType": "Full-time",
+      "featured": true,
+      "order": 1
+    },
+    {
+      "company": "AT&T",
+      "role": "Lead Software Engineer",
+      "startDate": "2018-12-01",
+      "endDate": "2023-02-28",
+      "description": "Full-stack engineer developing operational tools and administration platforms. Implemented microservices best practices and deployment automation.",
+      "achievements": [
+        "Developed full-stack operational tools reducing manual data gathering by 70%",
+        "Implemented microservices patterns with standardized code quality and security scanning",
+        "Designed scalable RESTful APIs with on-demand data processing",
+        "Increased feature releases while maintaining comprehensive quality reporting",
+        "Created non-traditional flow diagrams for improved team onboarding"
+      ],
+      "skills": ["Full-Stack Development", "Microservices", "Test Automation", "Software Quality", "Database Design"],
+      "technologies": ["Angular 7+", "Node.js", "Python", "Java", "MySQL", "Kubernetes", "NGRX", "Docker", "SonarQube", "Veracode"],
+      "location": "Middletown, NJ",
+      "employmentType": "Full-time",
+      "featured": true,
+      "order": 2
+    },
+    {
+      "company": "AT&T",
+      "role": "Cloud Support Engineer",
+      "startDate": "2020-04-01",
+      "endDate": "2023-02-28",
+      "description": "Cloud infrastructure engineer managing enterprise cloud services and platform reliability.",
+      "achievements": [
+        "Managed cloud infrastructure scaling and optimization",
+        "Provided cloud consulting for enterprise clients",
+        "Improved platform reliability and uptime metrics"
+      ],
+      "skills": ["Cloud Infrastructure", "Troubleshooting", "Optimization", "Systems Administration"],
+      "technologies": ["Kubernetes", "AWS", "Docker", "Linux"],
+      "location": "Middletown, NJ",
+      "employmentType": "Full-time",
+      "featured": false,
+      "order": 3
+    },
+    {
+      "company": "SHI International Corp",
+      "role": "Lead Integration Engineer",
+      "startDate": "2015-10-01",
+      "endDate": "2018-12-31",
+      "description": "Led infrastructure team implementing DevOps methodology and server/network automation at scale.",
+      "achievements": [
+        "Managed and trained team of 5 network engineers and 2 junior developers",
+        "Successfully implemented 'three ways' of DevOps culture",
+        "Built comprehensive server and network automation infrastructure using OEM APIs",
+        "Designed BYOD check-in/out system reducing manual visitor tracking",
+        "Provided enterprise consulting for network, server, and datacenter solutions"
+      ],
+      "skills": ["Team Leadership", "DevOps", "Network Engineering", "Automation", "Infrastructure Design", "Consulting"],
+      "technologies": ["Docker", "Linux", "MongoDB", "PostgreSQL", "Python", "Node.js", "Elasticsearch", "Redfish API", "Netconf", "Cisco Nexus", "HPE Proliant", "Dell PowerEdge"],
+      "location": "Piscataway, NJ",
+      "employmentType": "Full-time",
+      "featured": true,
+      "order": 4
+    },
+    {
+      "company": "SHI International Corp",
+      "role": "Integration Technician",
+      "startDate": "2013-03-01",
+      "endDate": "2015-09-30",
+      "description": "Systems technician installing, configuring, and managing enterprise IT infrastructure.",
+      "achievements": [
+        "Configured and deployed Windows and Linux operating systems at scale",
+        "Managed BIOS settings, raid configurations, and disk encryption",
+        "Set up enterprise services (MySQL, MS SQL, DHCP, DNS, TFTP)"
+      ],
+      "skills": ["Systems Administration", "Network Configuration", "Linux/Windows Administration"],
+      "technologies": ["Windows Server", "Ubuntu", "RedHat Linux", "VMware ESXi", "MySQL", "MS SQL", "Bitlocker"],
+      "location": "Piscataway, NJ",
+      "employmentType": "Full-time",
+      "featured": false,
+      "order": 5
+    },
+    {
+      "company": "ZapWeb, LLC",
+      "role": "Lead Web Developer",
+      "startDate": "2010-03-01",
+      "endDate": "2013-08-31",
+      "description": "Led web development team building consumer-facing web applications and providing SEO consulting.",
+      "achievements": [
+        "Designed and developed multiple consumer web applications",
+        "Managed remote development team using SCRUM methodology",
+        "Provided SEO consulting optimizing page ranking and content strategy",
+        "Established project management processes and best practices"
+      ],
+      "skills": ["Web Development", "Team Leadership", "SEO", "Project Management"],
+      "technologies": ["Linux", "Apache", "MySQL", "PHP", "Joomla", "Wordpress", "SMTP/POP3"],
+      "location": "Somerset, NJ",
+      "employmentType": "Full-time",
+      "featured": false,
+      "order": 6
+    }
+  ],
+  "projects": [],
+  "toolkit": [
+    {
+      "slug": "strong",
+      "title": "STRONG",
+      "items": [
+        "Microservices Architecture & Design",
+        "Full-Stack Development (Backend/Frontend)",
+        "Cloud Infrastructure & DevOps",
+        "System Design & Scalability",
+        "RESTful API Design & Implementation"
+      ],
+      "order": 0
+    },
+    {
+      "slug": "moderate",
+      "title": "MODERATE",
+      "items": [
+        "Team Leadership & Mentoring",
+        "Network Engineering & Infrastructure",
+        "Database Design & Optimization",
+        "CI/CD Pipeline Implementation",
+        "Security & Code Quality (SonarQube, Veracode)"
+      ],
+      "order": 1
+    },
+    {
+      "slug": "gaps",
+      "title": "GAPS — Honest Audit",
+      "items": [
+        "Machine Learning & AI Systems",
+        "Mobile Development (iOS/Android)",
+        "Advanced Ethical Hacking & Penetration Testing",
+        "Data Science & Analytics",
+        "Game Development & Graphics Programming"
+      ],
+      "order": 2
+    }
+  ]
+}

@@ -6,5 +6,6 @@ interface Window {
     VITE_API_ENV?: string;
     VITE_SESSION_REPLAY_PRIVACY?: 'strict' | 'default' | 'none';
     LD_CLIENT_ID?: string;
+    LD_DISABLE_EVENTS?: string;
   };
 }

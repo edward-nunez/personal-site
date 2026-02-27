@@ -44,6 +44,7 @@ Configured in `values.yaml` → `frontend.env` → injected as container env var
 | `VITE_API_BASE_URL` | `/api` | `lib/api.ts`, `core/ld/observability.ts` | `frontend.env.VITE_API_BASE_URL` |
 | `VITE_API_ENV` | `production` | `core/store/useFeatureFlagsStore.ts` | `frontend.env.VITE_API_ENV` |
 | `VITE_SESSION_REPLAY_PRIVACY` | `strict` | `core/ld/observability.ts` | `frontend.env.VITE_SESSION_REPLAY_PRIVACY` |
+| `LD_DISABLE_EVENTS` | `true` (prod), `false` (dev) | `core/config/runtimeConfig.ts`, `core/ld/ldClient.ts` | `frontend.env.LD_DISABLE_EVENTS` |
 
 ### Secret Environment Variables
 Configured in `values.yaml` → `frontend.secrets` → injected via Kubernetes Secret
@@ -150,12 +151,14 @@ Each secret contains a single variable for maximum flexibility and reusability a
 - `backend.secrets.ldSdkKey`: Empty (LaunchDarkly disabled in dev)
 - `backend.secrets.corsOrigin`: `http://localhost:5173`
 - `frontend.secrets.ldSdkKey`: Empty
+- `frontend.env.LD_DISABLE_EVENTS`: `false`
 - `fitSync.secrets.corsOrigin`: `http://localhost:5173,http://localhost:3000`
 
 ### Production (`values-prod.yaml`)
 - `backend.secrets.ldSdkKey`: **MUST be set via --set flag**
 - `backend.secrets.corsOrigin`: **MUST be set to production domain**
 - `frontend.secrets.ldSdkKey`: **MUST be set via --set flag**
+- `frontend.env.LD_DISABLE_EVENTS`: `true`
 - `fitSync.secrets.corsOrigin`: **MUST be set to production domain**
 
 ---

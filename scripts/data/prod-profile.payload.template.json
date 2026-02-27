@@ -1,0 +1,67 @@
+{
+  "metadata": {
+    "owner": "Edward Nunez",
+    "source": "LinkedIn export",
+    "notes": [
+      "Fill this from your LinkedIn export before importing.",
+      "Use ISO 8601 dates for startDate/endDate (e.g., 2024-01-01T00:00:00.000Z).",
+      "Set endDate to null for current roles."
+    ]
+  },
+  "experiences": [
+    {
+      "company": "",
+      "role": "",
+      "startDate": "",
+      "endDate": null,
+      "description": "",
+      "achievements": [],
+      "skills": [],
+      "technologies": [],
+      "location": "",
+      "employmentType": "Full-time",
+      "featured": true,
+      "order": 1
+    }
+  ],
+  "projects": [
+    {
+      "title": "",
+      "slug": "",
+      "description": "",
+      "shortDescription": "",
+      "technologies": [],
+      "category": "Web",
+      "tags": [],
+      "githubUrl": null,
+      "liveUrl": null,
+      "godotWebExport": null,
+      "images": [],
+      "featured": true,
+      "status": "completed",
+      "startDate": null,
+      "endDate": null,
+      "order": 1
+    }
+  ],
+  "toolkit": [
+    {
+      "slug": "strong",
+      "title": "STRONG",
+      "items": [""],
+      "order": 0
+    },
+    {
+      "slug": "moderate",
+      "title": "MODERATE",
+      "items": [""],
+      "order": 1
+    },
+    {
+      "slug": "gaps",
+      "title": "GAPS — Honest Audit",
+      "items": [""],
+      "order": 2
+    }
+  ]
+}

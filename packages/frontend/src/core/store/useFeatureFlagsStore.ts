@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { getApiEnvironment } from '@/core/config/runtimeConfig';
 
 /**
  * Feature flag maturity tiers define fallback behavior when LaunchDarkly is unavailable
@@ -58,7 +59,7 @@ const getDefaultFlags = (environment: Environment): Record<string, boolean> => {
  * Determine environment from Vite environment variables
  */
 const getEnvironment = (): Environment => {
-  const env = import.meta.env.VITE_API_ENV || import.meta.env.MODE || 'development';
+  const env = getApiEnvironment();
   return env === 'production' ? 'production' : 'development';
 };
 
